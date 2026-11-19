@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://wedplan-ice.vercel.app"),
   title: "WedPlan — Wedding Planning Platform",
   description:
     "Discover exquisite wedding venues, photography, catering, and styling services. Connect with trusted vendors to craft your perfect day.",

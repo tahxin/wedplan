@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "WedPlan — Premier Wedding Planning Platform";
 export const size = {
   width: 1200,
@@ -22,7 +21,6 @@ export default async function Image() {
           backgroundColor: "#fff1f2",
           backgroundImage: "radial-gradient(#f43f5e 1px, transparent 1px)",
           backgroundSize: "28px 28px",
-          fontFamily: "serif",
           color: "#1c1917",
           padding: "60px",
         }}
@@ -37,12 +35,25 @@ export default async function Image() {
             width: "80px",
             height: "80px",
             borderRadius: "24px",
-            fontSize: "40px",
             marginBottom: "24px",
             boxShadow: "0 10px 25px -5px rgba(225, 29, 72, 0.4)",
           }}
         >
-          ✦
+          <svg
+            width="44"
+            height="44"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 3v18" />
+            <path d="M3 12h18" />
+            <path d="m5.5 5.5 13 13" />
+            <path d="m18.5 5.5-13 13" />
+          </svg>
         </div>
 
         <h1
@@ -64,7 +75,6 @@ export default async function Image() {
             textAlign: "center",
             maxWidth: "800px",
             margin: "0 0 32px 0",
-            fontFamily: "sans-serif",
             lineHeight: "1.4",
           }}
         >
@@ -74,21 +84,16 @@ export default async function Image() {
         <div
           style={{
             display: "flex",
-            gap: "16px",
-            fontFamily: "sans-serif",
-            fontSize: "16px",
+            gap: "24px",
+            fontSize: "18px",
             fontWeight: "600",
             color: "#e11d48",
           }}
         >
           <span>Photography</span>
-          <span>•</span>
           <span>Venues</span>
-          <span>•</span>
           <span>Florists</span>
-          <span>•</span>
           <span>Catering</span>
-          <span>•</span>
           <span>Bridal Fashion</span>
         </div>
       </div>
