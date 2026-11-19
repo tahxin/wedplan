@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -92,7 +93,12 @@ export default function HomePage() {
           <div className="absolute inset-0 -z-10 opacity-30 bg-[radial-gradient(#f43f5e_1px,transparent_1px)] [background-size:24px_24px]" />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="lg:col-span-7 space-y-6 text-center lg:text-left"
+              >
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-100/80 text-rose-700 text-xs font-semibold tracking-wide uppercase">
                   <Sparkles className="w-3.5 h-3.5" />
                   Your Wedding, Perfectly Planned
@@ -138,10 +144,15 @@ export default function HomePage() {
                     <span>Top-Rated Quality</span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Hero Image Collage */}
-              <div className="lg:col-span-5 relative">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
+                className="lg:col-span-5 relative"
+              >
                 <div className="relative mx-auto max-w-md lg:max-w-none">
                   <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl shadow-rose-200/50 border-4 border-white">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -153,7 +164,12 @@ export default function HomePage() {
                   </div>
 
                   {/* Floating badge 1 */}
-                  <div className="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-rose-100 flex items-center gap-3">
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.5 }}
+                    className="absolute -bottom-6 -left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-rose-100 flex items-center gap-3"
+                  >
                     <div className="w-10 h-10 rounded-xl bg-rose-500 flex items-center justify-center text-white">
                       <Heart className="w-5 h-5 fill-white" />
                     </div>
@@ -161,19 +177,24 @@ export default function HomePage() {
                       <p className="text-xs text-neutral-400 font-medium">Happy Couples</p>
                       <p className="text-sm font-bold text-neutral-900">2,400+ Weddings Planned</p>
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Floating badge 2 */}
-                  <div className="absolute -top-6 -right-6 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-rose-100 hidden sm:flex items-center gap-2.5">
+                  <motion.div
+                    initial={{ y: -20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 0.5 }}
+                    className="absolute -top-6 -right-6 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-rose-100 hidden sm:flex items-center gap-2.5"
+                  >
                     <div className="flex text-amber-400">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-3.5 h-3.5 fill-current" />
                       ))}
                     </div>
                     <span className="text-xs font-bold text-neutral-800">4.9/5 Rating</span>
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -194,34 +215,42 @@ export default function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {CATEGORIES_DATA.map((cat) => {
+              {CATEGORIES_DATA.map((cat, idx) => {
                 const Icon = cat.icon;
                 return (
-                  <Link
+                  <motion.div
                     key={cat.name}
-                    href={`/services?category=${encodeURIComponent(cat.name)}`}
-                    className="group relative rounded-2xl overflow-hidden border border-neutral-100 shadow-sm hover:shadow-xl hover:border-rose-200 transition-all duration-300 bg-white"
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: idx * 0.08 }}
+                    whileHover={{ y: -6 }}
                   >
-                    <div className="aspect-[16/10] overflow-hidden">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={cat.image}
-                        alt={cat.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="p-5">
-                      <div className="flex items-center gap-2.5 mb-1.5">
-                        <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center group-hover:bg-rose-500 group-hover:text-white transition-colors">
-                          <Icon className="w-4 h-4" />
-                        </div>
-                        <h3 className="font-semibold text-neutral-900 group-hover:text-rose-600 transition-colors">
-                          {cat.name}
-                        </h3>
+                    <Link
+                      href={`/services?category=${encodeURIComponent(cat.name)}`}
+                      className="group block rounded-2xl overflow-hidden border border-neutral-100 shadow-sm hover:shadow-xl hover:border-rose-200 transition-all duration-300 bg-white"
+                    >
+                      <div className="aspect-[16/10] overflow-hidden">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={cat.image}
+                          alt={cat.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
                       </div>
-                      <p className="text-xs text-neutral-500">{cat.desc}</p>
-                    </div>
-                  </Link>
+                      <div className="p-5">
+                        <div className="flex items-center gap-2.5 mb-1.5">
+                          <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center group-hover:bg-rose-500 group-hover:text-white transition-colors">
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <h3 className="font-semibold text-neutral-900 group-hover:text-rose-600 transition-colors">
+                            {cat.name}
+                          </h3>
+                        </div>
+                        <p className="text-xs text-neutral-500">{cat.desc}</p>
+                      </div>
+                    </Link>
+                  </motion.div>
                 );
               })}
             </div>
@@ -264,9 +293,14 @@ export default function HomePage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {featuredServices.map((service) => (
-                  <div
+                {featuredServices.map((service, idx) => (
+                  <motion.div
                     key={service._id}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: idx * 0.07 }}
+                    whileHover={{ y: -6 }}
                     className="group bg-white rounded-2xl overflow-hidden border border-neutral-100 shadow-sm hover:shadow-xl hover:border-rose-200 transition-all duration-300 flex flex-col"
                   >
                     <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
@@ -313,7 +347,7 @@ export default function HomePage() {
                         </Link>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             )}
@@ -336,7 +370,11 @@ export default function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="p-8 rounded-2xl bg-neutral-50/60 border border-neutral-100 hover:border-rose-200 transition-all">
+              <motion.div
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.3 }}
+                className="p-8 rounded-2xl bg-neutral-50/60 border border-neutral-100 hover:border-rose-200 transition-all shadow-xs hover:shadow-md"
+              >
                 <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-5">
                   <ShieldCheck className="w-6 h-6" />
                 </div>
@@ -344,9 +382,13 @@ export default function HomePage() {
                 <p className="text-sm text-neutral-600 leading-relaxed">
                   Every vendor is carefully reviewed to ensure exceptional quality, reliability, and professionalism on your most important day.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="p-8 rounded-2xl bg-neutral-50/60 border border-neutral-100 hover:border-rose-200 transition-all">
+              <motion.div
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.3 }}
+                className="p-8 rounded-2xl bg-neutral-50/60 border border-neutral-100 hover:border-rose-200 transition-all shadow-xs hover:shadow-md"
+              >
                 <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-5">
                   <CalendarCheck className="w-6 h-6" />
                 </div>
@@ -354,9 +396,13 @@ export default function HomePage() {
                 <p className="text-sm text-neutral-600 leading-relaxed">
                   Submit date-specific requests, communicate your vision, and receive official confirmations directly through your dashboard.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="p-8 rounded-2xl bg-neutral-50/60 border border-neutral-100 hover:border-rose-200 transition-all">
+              <motion.div
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.3 }}
+                className="p-8 rounded-2xl bg-neutral-50/60 border border-neutral-100 hover:border-rose-200 transition-all shadow-xs hover:shadow-md"
+              >
                 <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-5">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
@@ -364,7 +410,7 @@ export default function HomePage() {
                 <p className="text-sm text-neutral-600 leading-relaxed">
                   Clear pricing, verified portfolios, and genuine customer reviews so you can budget with total clarity and zero surprises.
                 </p>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
