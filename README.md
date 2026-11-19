@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WedPlan — Wedding Planning Platform (Client)
 
-## Getting Started
+WedPlan is a role-based wedding planning web application where couples can discover wedding services, submit booking inquiries, and manage their reservations. Wedding vendors can publish catalog offerings, respond to client inquiries, and upgrade to Premium through Stripe Checkout. Administrators moderate users, approve or reject published services, and monitor transactions.
 
-First, run the development server:
+- **Live Application:** [https://wedplan-ice.vercel.app/](https://wedplan-ice.vercel.app/)
+- **Live Backend API:** [https://wedplan-backend.vercel.app/](https://wedplan-backend.vercel.app/)
+- **Client Repository:** [https://github.com/tahxin/wedplan](https://github.com/tahxin/wedplan)
+- **Server Repository:** [https://github.com/tahxin/wedplan-backend](https://github.com/tahxin/wedplan-backend)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Important Features
+
+### Customer
+- **Service Discovery**: Filter wedding packages by 6 core categories (Photography & Videography, Venues, Florists, Catering, Makeup & Styling, Fashion), location, and keyword.
+- **Price Sorting**: Real-time sorting by price ascending and descending.
+- **Package Inquiries**: Request direct wedding bookings with event date, venue location, and custom vision notes.
+- **Inquiry Management**: Dedicated dashboard tracking request statuses (Pending, Accepted, Declined, Cancelled) with one-click cancellation for pending inquiries.
+
+### Vendor
+- **Showcase Management**: Publish and manage wedding packages with multi-photo uploads via ImgBB.
+- **Availability Toggle**: Pause or reactivate listings at any time.
+- **Client Requests**: Review incoming customer requests with one-click Accept or Decline actions.
+- **Subscription Tiers**: Free tier (maximum 3 active services) and Premium Partner tier ($20 one-time via Stripe Checkout) for unlimited service listings.
+
+### Admin
+- **User Moderation**: Filter registered accounts by role, inspect profiles, and block/unblock users (instantly invalidating active sessions).
+- **Service Queue**: Review pending vendor submissions to approve or reject them before public listing.
+- **Transaction Logs**: Read-only ledger of platform subscription payments.
+
+---
+
+## Technology Stack
+
+- **Framework**: Next.js 16 (App Router), React 19
+- **Language**: TypeScript
+- **Styling & UI**: Tailwind CSS v4, Lucide React, Sonner (Toasts)
+- **Authentication**: Better Auth with MongoDB adapter & Google OAuth
+- **Image Hosting**: ImgBB API
+- **Deployment**: Vercel
+
+---
+
+## Environment Variables
+
+Create a `.env` file in the root directory based on `.env.example`:
+
+```env
+NEXT_PUBLIC_API_URL=
+NEXT_PUBLIC_APP_URL=
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=
+MONGODB_URI=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+IMAGEBB_API_KEY=
+STRIPE_API_KEY=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Installation & Local Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/tahxin/wedplan.git
+   cd wedplan
+   ```
 
-## Learn More
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. **Configure environment variables:**
+   Copy `.env.example` to `.env` and populate with your credentials.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. **Run development server:**
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. **Build for production:**
+   ```bash
+   npm run build
+   npm start
+   ```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) to view the client.
