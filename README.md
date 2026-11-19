@@ -86,4 +86,9 @@ STRIPE_API_KEY=
    npm start
    ```
 
+8. **Run End-to-End Tests (Playwright):**
+   ```bash
+   npm run test:e2e
+   ```
+
 Open [http://localhost:3000](http://localhost:3000) to view the client.
