@@ -1,2 +1,4 @@
 
-setup github secrets and redirect uri
+moocat
+
+update the env files in vercel
