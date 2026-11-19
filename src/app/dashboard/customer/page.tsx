@@ -22,6 +22,7 @@ import {
   Heart,
   Store,
   Ban,
+  Eye,
 } from "lucide-react";
 import { Booking } from "@/types";
 
@@ -41,6 +42,7 @@ export default function CustomerDashboardPage() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
 
   const user = session?.user as { role?: string; name?: string } | undefined;
 
@@ -292,9 +294,18 @@ export default function CustomerDashboardPage() {
                         </div>
                       </div>
 
-                      {/* Status & Cancel Action */}
-                      <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 pt-4 md:pt-0 border-neutral-100">
+                      {/* Status & Actions */}
+                      <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 pt-4 md:pt-0 border-neutral-100">
                         {getStatusBadge(booking.status)}
+
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSelectedBooking(booking)}
+                          className="text-xs text-neutral-700 hover:bg-neutral-50"
+                        >
+                          <Eye className="w-3.5 h-3.5 mr-1 text-neutral-500" /> Details
+                        </Button>
 
                         {booking.status === "pending" && (
                           <Button
@@ -319,6 +330,125 @@ export default function CustomerDashboardPage() {
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+        )}
+        {/* Booking Details Modal */}
+        {selectedBooking && (
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-neutral-100 space-y-6">
+              <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-serif text-xl font-bold text-neutral-900">
+                    Booking Request Details
+                  </h3>
+                  {getStatusBadge(selectedBooking.status)}
+                </div>
+                <button
+                  onClick={() => setSelectedBooking(null)}
+                  className="text-neutral-400 hover:text-neutral-600 text-sm font-semibold p-1"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Service Header */}
+              <div className="flex items-start gap-4 bg-neutral-50 p-4 rounded-xl border border-neutral-100">
+                <div className="w-16 h-14 rounded-lg overflow-hidden bg-neutral-200 shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={
+                      selectedBooking.service?.images?.[0] ||
+                      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80"
+                    }
+                    alt={selectedBooking.service?.serviceName || "Service"}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h4 className="font-bold text-neutral-900 text-sm">
+                    {selectedBooking.service?.serviceName || "Wedding Service"}
+                  </h4>
+                  <Badge variant="outline" className="text-[10px] text-neutral-600 mt-0.5">
+                    {selectedBooking.service?.category}
+                  </Badge>
+                  {selectedBooking.service?.price && (
+                    <p className="text-xs font-semibold text-neutral-800 mt-1">
+                      Package: ${selectedBooking.service.price.toLocaleString()}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Information Grid */}
+              <div className="space-y-3 text-xs">
+                {selectedBooking.vendor && (
+                  <div className="p-3 rounded-lg border border-neutral-100 flex items-center justify-between">
+                    <span className="text-neutral-500 font-medium">Wedding Vendor</span>
+                    <span className="font-semibold text-neutral-800">
+                      {selectedBooking.vendor.businessName || selectedBooking.vendor.name} ({selectedBooking.vendor.email})
+                    </span>
+                  </div>
+                )}
+
+                <div className="p-3 rounded-lg border border-neutral-100 flex items-center justify-between">
+                  <span className="text-neutral-500 font-medium">Celebration Date</span>
+                  <span className="font-semibold text-neutral-800">
+                    {new Date(selectedBooking.eventDate).toLocaleDateString(undefined, {
+                      dateStyle: "full",
+                    })}
+                  </span>
+                </div>
+
+                <div className="p-3 rounded-lg border border-neutral-100 flex items-center justify-between">
+                  <span className="text-neutral-500 font-medium">Event Location</span>
+                  <span className="font-semibold text-neutral-800">
+                    {selectedBooking.eventLocation}
+                  </span>
+                </div>
+
+                <div className="p-3 rounded-lg border border-neutral-100 flex items-center justify-between">
+                  <span className="text-neutral-500 font-medium">Request Sent On</span>
+                  <span className="text-neutral-600">
+                    {new Date(selectedBooking.createdAt).toLocaleDateString(undefined, {
+                      dateStyle: "medium",
+                    })}
+                  </span>
+                </div>
+
+                {selectedBooking.message && (
+                  <div className="p-3.5 rounded-lg border border-neutral-100 bg-neutral-50 space-y-1">
+                    <span className="text-neutral-500 font-medium block">Vision & Notes</span>
+                    <p className="text-neutral-700 italic leading-relaxed">
+                      &ldquo;{selectedBooking.message}&rdquo;
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-neutral-100">
+                {selectedBooking.status === "pending" && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={cancellingId === selectedBooking._id}
+                    onClick={() => {
+                      handleCancelBooking(selectedBooking._id);
+                      setSelectedBooking(null);
+                    }}
+                    className="text-xs text-rose-600 border-rose-200 hover:bg-rose-50"
+                  >
+                    Cancel Request
+                  </Button>
+                )}
+                <Button
+                  size="sm"
+                  onClick={() => setSelectedBooking(null)}
+                  className="bg-neutral-900 text-white text-xs"
+                >
+                  Close
+                </Button>
+              </div>
             </div>
           </div>
         )}
