@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -60,22 +63,24 @@ const CATEGORIES_DATA = [
   },
 ];
 
-async function getFeaturedServices(): Promise<Service[]> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-  try {
-    const res = await fetch(`${apiUrl}/services/featured`, {
-      next: { revalidate: 60 },
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.services || [];
-  } catch {
-    return [];
-  }
-}
+export default function HomePage() {
+  const [featuredServices, setFeaturedServices] = useState<Service[]>([]);
 
-export default async function HomePage() {
-  const featuredServices = await getFeaturedServices();
+  useEffect(() => {
+    async function fetchFeatured() {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+      try {
+        const res = await fetch(`${apiUrl}/services/featured`);
+        if (res.ok) {
+          const data = await res.json();
+          setFeaturedServices(data.services || []);
+        }
+      } catch {
+        // Fallback
+      }
+    }
+    fetchFeatured();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-white">

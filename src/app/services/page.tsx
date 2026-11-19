@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
@@ -32,7 +32,7 @@ const CATEGORIES = [
   "Wedding Fashion",
 ];
 
-export default function BrowseServicesPage() {
+function BrowseServicesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session } = useSession();
@@ -304,5 +304,19 @@ export default function BrowseServicesPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function BrowseServicesPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-neutral-50/40">
+          <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+        </div>
+      }
+    >
+      <BrowseServicesContent />
+    </Suspense>
   );
 }
