@@ -21,6 +21,7 @@ import {
   Store,
 } from "lucide-react";
 import { Service } from "@/types";
+import { getApiBaseUrl } from "@/lib/api";
 
 const CATEGORIES = [
   "All Categories",
@@ -55,7 +56,7 @@ function BrowseServicesContent() {
 
   const fetchServices = async () => {
     setLoading(true);
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+    const apiUrl = getApiBaseUrl();
 
     const params = new URLSearchParams();
     if (search.trim()) params.append("search", search.trim());

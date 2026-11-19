@@ -1,10 +1,20 @@
 import { authClient } from "./auth-client";
 
-function getApiBaseUrl() {
+export function getApiBaseUrl() {
   const raw = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_LINK || "";
   const cleaned = raw.split("||")[0].split("#")[0].trim();
   if (cleaned && (cleaned.startsWith("http://") || cleaned.startsWith("https://"))) {
     return cleaned.replace(/\/$/, "");
+  }
+  // When running in the browser on a live website (not local dev), route to production backend
+  if (typeof window !== "undefined") {
+    if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+      return "https://wedplan-backend.vercel.app";
+    }
+  }
+  // Server-side production fallback
+  if (process.env.NODE_ENV === "production" || process.env.VERCEL) {
+    return "https://wedplan-backend.vercel.app";
   }
   return "http://localhost:5000";
 }
