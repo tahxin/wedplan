@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { fetchApi } from "@/lib/api";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -10,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, Crown, Loader2, Sparkles } from "lucide-react";
 
 export default function PaymentSuccessPage() {
-  const router = useRouter();
   const [checking, setChecking] = useState(true);
   const [isPremium, setIsPremium] = useState(false);
 

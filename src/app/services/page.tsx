@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition, Suspense } from "react";
+import { useEffect, useState, useTransition, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
@@ -54,7 +54,7 @@ function BrowseServicesContent() {
 
   const [, startTransition] = useTransition();
 
-  const fetchServices = async () => {
+  const fetchServices = useCallback(async () => {
     setLoading(true);
     const apiUrl = getApiBaseUrl();
 
@@ -80,12 +80,11 @@ function BrowseServicesContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [category, sort, search, location]);
 
   useEffect(() => {
     fetchServices();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, sort]);
+  }, [fetchServices]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();

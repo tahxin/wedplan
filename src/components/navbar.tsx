@@ -9,7 +9,6 @@ import {
   Sparkles,
   Menu,
   X,
-  User,
   LayoutDashboard,
   Settings,
   LogOut,

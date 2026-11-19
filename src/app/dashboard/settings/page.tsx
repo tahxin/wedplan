@@ -16,7 +16,6 @@ import {
   User,
   Mail,
   Briefcase,
-  Upload,
   Loader2,
   Save,
   ShieldCheck,

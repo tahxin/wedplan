@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 import { fetchApi } from "@/lib/api";
@@ -16,7 +16,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Store,
-  Sparkles,
   Crown,
   Plus,
   Trash2,
@@ -26,9 +25,6 @@ import {
   Loader2,
   Calendar,
   MapPin,
-  Mail,
-  Upload,
-  AlertCircle,
   ToggleLeft,
   ToggleRight,
   Pencil,
@@ -96,24 +92,7 @@ export default function VendorDashboardPage() {
       }
     | undefined;
 
-  useEffect(() => {
-    if (!sessionPending) {
-      if (!session) {
-        router.replace("/sign-in?callbackUrl=/dashboard/vendor");
-        return;
-      }
-
-      if (user?.role && user.role !== "vendor") {
-        router.replace(`/dashboard/${user.role}`);
-        return;
-      }
-
-      loadVendorData();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, sessionPending]);
-
-  const loadVendorData = async () => {
+  const loadVendorData = useCallback(async () => {
     setLoading(true);
     try {
       const [ovRes, srvRes, bkgRes] = await Promise.all([
@@ -131,7 +110,23 @@ export default function VendorDashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!sessionPending) {
+      if (!session) {
+        router.replace("/sign-in?callbackUrl=/dashboard/vendor");
+        return;
+      }
+
+      if (user?.role && user.role !== "vendor") {
+        router.replace(`/dashboard/${user.role}`);
+        return;
+      }
+
+      loadVendorData();
+    }
+  }, [session, sessionPending, user, router, loadVendorData]);
 
   const handleCreateService = async (e: React.FormEvent) => {
     e.preventDefault();

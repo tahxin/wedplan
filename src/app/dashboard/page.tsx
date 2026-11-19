@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, getSession } from "@/lib/auth-client";
-import { Loader2, Sparkles, LayoutDashboard, ArrowRight } from "lucide-react";
+import { Loader2, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function DashboardRedirectPage() {
@@ -112,7 +111,7 @@ export default function DashboardRedirectPage() {
               <ArrowRight className="w-3.5 h-3.5 text-neutral-400" />
             </Button>
             <Button
-              onClick={() => (window.location.href = "/sign-in")}
+              onClick={() => router.replace("/sign-in")}
               className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs mt-2"
             >
               Back to Sign In

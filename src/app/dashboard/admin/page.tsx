@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 import { fetchApi } from "@/lib/api";
@@ -24,7 +24,6 @@ import {
   Loader2,
   Ban,
   Unlock,
-  Sparkles,
 } from "lucide-react";
 import { User, Service, Transaction } from "@/types";
 
@@ -56,25 +55,7 @@ export default function AdminDashboardPage() {
 
   const currentUser = session?.user as { role?: string; name?: string } | undefined;
 
-  useEffect(() => {
-    if (!sessionPending) {
-      if (!session) {
-        router.replace("/sign-in?callbackUrl=/dashboard/admin");
-        return;
-      }
-
-      if (currentUser?.role !== "admin") {
-        toast.error("Access restricted: Administrator role required");
-        router.replace(currentUser?.role ? `/dashboard/${currentUser.role}` : "/dashboard");
-        return;
-      }
-
-      loadAdminData();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, sessionPending]);
-
-  const loadAdminData = async () => {
+  const loadAdminData = useCallback(async () => {
     setLoading(true);
     try {
       const [ovRes, usrRes, srvRes, txRes] = await Promise.all([
@@ -94,7 +75,24 @@ export default function AdminDashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!sessionPending) {
+      if (!session) {
+        router.replace("/sign-in?callbackUrl=/dashboard/admin");
+        return;
+      }
+
+      if (currentUser?.role !== "admin") {
+        toast.error("Access restricted: Administrator role required");
+        router.replace(currentUser?.role ? `/dashboard/${currentUser.role}` : "/dashboard");
+        return;
+      }
+
+      loadAdminData();
+    }
+  }, [session, sessionPending, currentUser, router, loadAdminData]);
 
   const handleBlockUser = async (userId: string) => {
     setActionLoadingId(userId);

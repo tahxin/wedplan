@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
@@ -15,7 +15,6 @@ import {
   Clock,
   CheckCircle2,
   XCircle,
-  AlertCircle,
   Loader2,
   Sparkles,
   MapPin,
@@ -46,24 +45,7 @@ export default function CustomerDashboardPage() {
 
   const user = session?.user as { role?: string; name?: string } | undefined;
 
-  useEffect(() => {
-    if (!sessionPending) {
-      if (!session) {
-        router.replace("/sign-in?callbackUrl=/dashboard/customer");
-        return;
-      }
-
-      if (user?.role && user.role !== "customer") {
-        router.replace(`/dashboard/${user.role}`);
-        return;
-      }
-
-      loadData();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session, sessionPending]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const [overviewRes, bookingsRes] = await Promise.all([
@@ -79,7 +61,23 @@ export default function CustomerDashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!sessionPending) {
+      if (!session) {
+        router.replace("/sign-in?callbackUrl=/dashboard/customer");
+        return;
+      }
+
+      if (user?.role && user.role !== "customer") {
+        router.replace(`/dashboard/${user.role}`);
+        return;
+      }
+
+      loadData();
+    }
+  }, [session, sessionPending, user, router, loadData]);
 
   const handleCancelBooking = async (bookingId: string) => {
     if (!confirm("Are you sure you want to cancel this booking request?")) return;
