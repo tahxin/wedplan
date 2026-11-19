@@ -27,14 +27,15 @@ test.describe("Browse Services Catalog", () => {
 
   test("should allow changing the sort order", async ({ page }) => {
     await page.goto("/services");
+    await expect(page.getByRole("heading", { name: /Browse Wedding Services/i })).toBeVisible();
 
-    const sortSelect = page.locator("select");
+    const sortSelect = page.locator("#sort-select");
     await expect(sortSelect).toBeVisible();
 
-    await sortSelect.selectOption("price_asc");
+    await sortSelect.selectOption({ value: "price_asc" });
     await expect(sortSelect).toHaveValue("price_asc");
 
-    await sortSelect.selectOption("price_desc");
+    await sortSelect.selectOption({ value: "price_desc" });
     await expect(sortSelect).toHaveValue("price_desc");
   });
 

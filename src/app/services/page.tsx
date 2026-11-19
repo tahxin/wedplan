@@ -148,6 +148,9 @@ function BrowseServicesContent() {
             <div className="relative">
               <ArrowUpDown className="w-4 h-4 text-neutral-400 absolute left-3 top-3" />
               <select
+                id="sort-select"
+                name="sort"
+                aria-label="Sort wedding services"
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
                 className="w-full h-10 pl-9 pr-3 rounded-md border border-neutral-200 bg-white text-sm text-neutral-800 focus:outline-none focus:ring-2 focus:ring-rose-500 cursor-pointer"
