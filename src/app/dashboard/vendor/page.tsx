@@ -31,6 +31,7 @@ import {
   AlertCircle,
   ToggleLeft,
   ToggleRight,
+  Pencil,
 } from "lucide-react";
 import { Service, Booking } from "@/types";
 
@@ -73,6 +74,15 @@ export default function VendorDashboardPage() {
 
   // Upgrade state
   const [isUpgrading, setIsUpgrading] = useState(false);
+
+  // Edit Service Form State
+  const [editingService, setEditingService] = useState<Service | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editCategory, setEditCategory] = useState(CATEGORIES[0]);
+  const [editDescription, setEditDescription] = useState("");
+  const [editPrice, setEditPrice] = useState("");
+  const [editLocation, setEditLocation] = useState("");
+  const [savingEdit, setSavingEdit] = useState(false);
 
   // Processing state for booking accept/reject
   const [processingBookingId, setProcessingBookingId] = useState<string | null>(null);
@@ -201,6 +211,43 @@ export default function VendorDashboardPage() {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to delete service";
       toast.error(msg);
+    }
+  };
+
+  const openEditModal = (service: Service) => {
+    setEditingService(service);
+    setEditName(service.serviceName);
+    setEditCategory(service.category);
+    setEditDescription(service.description);
+    setEditPrice(String(service.price));
+    setEditLocation(service.location);
+  };
+
+  const handleUpdateService = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingService) return;
+    setSavingEdit(true);
+
+    try {
+      await fetchApi(`/vendor/services/${editingService._id}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          serviceName: editName.trim(),
+          category: editCategory,
+          description: editDescription.trim(),
+          price: Number(editPrice),
+          location: editLocation.trim(),
+        }),
+      });
+
+      toast.success("Service updated successfully!");
+      setEditingService(null);
+      loadVendorData();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to update service";
+      toast.error(msg);
+    } finally {
+      setSavingEdit(false);
     }
   };
 
@@ -483,6 +530,17 @@ export default function VendorDashboardPage() {
                                   <ToggleLeft className="w-4 h-4 text-neutral-400" /> Activate Listing
                                 </>
                               )}
+                            </Button>
+
+                            {/* Edit */}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => openEditModal(service)}
+                              className="text-xs text-neutral-700 hover:bg-neutral-50"
+                              title="Edit service details"
+                            >
+                              <Pencil className="w-3.5 h-3.5 mr-1 text-neutral-500" /> Edit
                             </Button>
 
                             {/* Delete */}
@@ -840,6 +898,126 @@ export default function VendorDashboardPage() {
                       </>
                     ) : (
                       "Submit Service"
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+        {/* Edit Service Modal */}
+        {editingService && (
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-neutral-100 space-y-5">
+              <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+                <h3 className="font-serif text-xl font-bold text-neutral-900">
+                  Update Service Package
+                </h3>
+                <button
+                  onClick={() => setEditingService(null)}
+                  className="text-neutral-400 hover:text-neutral-600 text-sm font-semibold p-1"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdateService} className="space-y-4">
+                <div>
+                  <Label htmlFor="edit-srv-name" className="text-xs font-medium text-neutral-700">
+                    Service Name
+                  </Label>
+                  <Input
+                    id="edit-srv-name"
+                    required
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    className="mt-1 text-sm border-neutral-200"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label htmlFor="edit-srv-cat" className="text-xs font-medium text-neutral-700">
+                      Category
+                    </Label>
+                    <select
+                      id="edit-srv-cat"
+                      value={editCategory}
+                      onChange={(e) => setEditCategory(e.target.value)}
+                      className="w-full h-10 px-3 mt-1 rounded-md border border-neutral-200 bg-white text-xs text-neutral-800"
+                    >
+                      {CATEGORIES.map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="edit-srv-price" className="text-xs font-medium text-neutral-700">
+                      Price ($ USD)
+                    </Label>
+                    <Input
+                      id="edit-srv-price"
+                      type="number"
+                      required
+                      min={1}
+                      value={editPrice}
+                      onChange={(e) => setEditPrice(e.target.value)}
+                      className="mt-1 text-sm border-neutral-200"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-srv-loc" className="text-xs font-medium text-neutral-700">
+                    Location
+                  </Label>
+                  <Input
+                    id="edit-srv-loc"
+                    required
+                    value={editLocation}
+                    onChange={(e) => setEditLocation(e.target.value)}
+                    className="mt-1 text-sm border-neutral-200"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-srv-desc" className="text-xs font-medium text-neutral-700">
+                    Description & Offerings
+                  </Label>
+                  <Textarea
+                    id="edit-srv-desc"
+                    required
+                    rows={4}
+                    value={editDescription}
+                    onChange={(e) => setEditDescription(e.target.value)}
+                    className="mt-1 text-sm border-neutral-200"
+                  />
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-3 border-t border-neutral-100">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setEditingService(null)}
+                    className="text-xs"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={savingEdit}
+                    className="bg-rose-600 hover:bg-rose-700 text-white text-xs font-medium"
+                  >
+                    {savingEdit ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                        Saving Changes...
+                      </>
+                    ) : (
+                      "Save Updates"
                     )}
                   </Button>
                 </div>
