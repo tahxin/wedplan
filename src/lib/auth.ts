@@ -7,7 +7,23 @@ if (!process.env.MONGODB_URI) {
   console.warn("MONGODB_URI is not set. Better Auth will fail if database is accessed.");
 }
 
-const client = new MongoClient(process.env.MONGODB_URI || "mongodb://localhost:27017/wedplan");
+declare global {
+  // eslint-disable-next-line no-var
+  var _betterAuthMongoClient: MongoClient | undefined;
+}
+
+const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/wedplan";
+
+let client: MongoClient;
+if (process.env.NODE_ENV === "development") {
+  if (!global._betterAuthMongoClient) {
+    global._betterAuthMongoClient = new MongoClient(mongoUri);
+  }
+  client = global._betterAuthMongoClient;
+} else {
+  client = new MongoClient(mongoUri);
+}
+
 const db = client.db();
 
 function getBaseUrl() {
@@ -24,6 +40,7 @@ export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET,
   database: mongodbAdapter(db, {
     client,
+    transaction: false,
   }),
   emailAndPassword: {
     enabled: true,

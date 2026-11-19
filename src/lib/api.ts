@@ -1,6 +1,15 @@
 import { authClient } from "./auth-client";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+function getApiBaseUrl() {
+  const raw = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_LINK || "";
+  const cleaned = raw.split("||")[0].split("#")[0].trim();
+  if (cleaned && (cleaned.startsWith("http://") || cleaned.startsWith("https://"))) {
+    return cleaned.replace(/\/$/, "");
+  }
+  return "http://localhost:5000";
+}
+
+const API_BASE_URL = getApiBaseUrl();
 
 interface FetchOptions extends RequestInit {
   token?: string;

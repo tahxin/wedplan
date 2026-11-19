@@ -40,11 +40,15 @@ function SignInContent() {
 
       toast.success("Welcome back!");
 
-      // If user had an intended return URL, send them there; otherwise /dashboard
-      if (callbackUrl && callbackUrl.startsWith("/")) {
+      // Retrieve user role from login response
+      const user = (res.data as { user?: { role?: string } })?.user;
+      const role = user?.role || "customer";
+
+      // If user had an intended return URL (that is not generic /dashboard), send them there; otherwise direct role dashboard
+      if (callbackUrl && callbackUrl.startsWith("/") && callbackUrl !== "/dashboard") {
         router.push(callbackUrl);
       } else {
-        router.push("/dashboard");
+        router.push(`/dashboard/${role}`);
       }
       router.refresh();
     } catch (err: unknown) {

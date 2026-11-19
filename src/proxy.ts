@@ -18,8 +18,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(signInUrl);
   }
 
-  // If user is already authenticated and visits sign-in / sign-up -> redirect to dashboard
-  if (isAuthRoute && sessionToken) {
+  // If user is already authenticated and visits sign-in / sign-up without an explicit callbackUrl -> redirect to dashboard
+  if (isAuthRoute && sessionToken && !request.nextUrl.searchParams.has("callbackUrl")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
