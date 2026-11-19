@@ -1,1 +1,2 @@
-install shadcn and all of its components and connect git repo
+
+setup github secrets and redirect uri
