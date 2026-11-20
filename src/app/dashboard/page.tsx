@@ -25,13 +25,11 @@ export default function DashboardRedirectPage() {
       }
     };
 
-    // 1. If useSession resolved with user
     if (!isPending && session?.user) {
       navigateRole((session.user as { role?: string }).role);
       return;
     }
 
-    // 2. Active probe via getSession()
     getSession()
       .then((res) => {
         if (!active) return;
@@ -48,7 +46,6 @@ export default function DashboardRedirectPage() {
         }
       });
 
-    // 3. Fallback timer in case network / cookies hang
     const timer = setTimeout(() => {
       if (active) {
         setTimedOut(true);
@@ -62,17 +59,17 @@ export default function DashboardRedirectPage() {
   }, [session, isPending, router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-4">
-      <div className="flex flex-col items-center gap-4 text-center max-w-sm">
-        <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 shadow-sm border border-rose-100">
-          <Sparkles className="w-6 h-6 animate-pulse" />
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
+      <div className="flex w-full max-w-sm flex-col items-center gap-5 rounded-[2rem] border border-border/60 bg-card/70 p-8 text-center shadow-xl shadow-primary/5 backdrop-blur-xl">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/15">
+          <Sparkles className="h-6 w-6 animate-pulse" />
         </div>
-        
-        <div>
-          <h2 className="text-lg font-serif font-bold text-neutral-900">
+
+        <div className="space-y-1.5">
+          <h2 className="font-serif text-2xl font-semibold tracking-tight text-foreground">
             {timedOut ? "Taking a moment..." : "Opening Your Dashboard"}
           </h2>
-          <p className="text-sm text-neutral-500 mt-1">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {timedOut
               ? "We're having trouble retrieving your active session. You can choose your destination below or sign in again."
               : "Verifying your credentials and directing you to your workspace..."}
@@ -80,40 +77,25 @@ export default function DashboardRedirectPage() {
         </div>
 
         {!timedOut ? (
-          <div className="flex items-center gap-2 text-rose-600 text-xs font-medium bg-rose-50/60 px-3 py-1.5 rounded-full border border-rose-100">
-            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3.5 py-1.5 text-xs font-medium text-primary">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
             <span>Loading workspace...</span>
           </div>
         ) : (
-          <div className="w-full flex flex-col gap-2 mt-2">
-            <Button
-              onClick={() => router.replace("/dashboard/admin")}
-              variant="outline"
-              className="w-full justify-between text-xs"
-            >
+          <div className="mt-1 flex w-full flex-col gap-2">
+            <Button onClick={() => router.replace("/dashboard/admin")} variant="outline" className="w-full justify-between rounded-xl border-border/70 bg-background/60 text-sm">
               <span>Admin Dashboard</span>
-              <ArrowRight className="w-3.5 h-3.5 text-neutral-400" />
+              <ArrowRight className="h-4 w-4 text-muted-foreground" />
             </Button>
-            <Button
-              onClick={() => router.replace("/dashboard/vendor")}
-              variant="outline"
-              className="w-full justify-between text-xs"
-            >
+            <Button onClick={() => router.replace("/dashboard/vendor")} variant="outline" className="w-full justify-between rounded-xl border-border/70 bg-background/60 text-sm">
               <span>Vendor Dashboard</span>
-              <ArrowRight className="w-3.5 h-3.5 text-neutral-400" />
+              <ArrowRight className="h-4 w-4 text-muted-foreground" />
             </Button>
-            <Button
-              onClick={() => router.replace("/dashboard/customer")}
-              variant="outline"
-              className="w-full justify-between text-xs"
-            >
+            <Button onClick={() => router.replace("/dashboard/customer")} variant="outline" className="w-full justify-between rounded-xl border-border/70 bg-background/60 text-sm">
               <span>Customer Dashboard</span>
-              <ArrowRight className="w-3.5 h-3.5 text-neutral-400" />
+              <ArrowRight className="h-4 w-4 text-muted-foreground" />
             </Button>
-            <Button
-              onClick={() => router.replace("/sign-in")}
-              className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs mt-2"
-            >
+            <Button onClick={() => router.replace("/sign-in")} className="mt-1 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary/90">
               Back to Sign In
             </Button>
           </div>
