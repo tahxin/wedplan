@@ -11,6 +11,16 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Calendar,
   Clock,
   CheckCircle2,
@@ -42,6 +52,7 @@ export default function CustomerDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [bookingToCancel, setBookingToCancel] = useState<Booking | null>(null);
 
   const user = session?.user as { role?: string; name?: string } | undefined;
 
@@ -80,8 +91,6 @@ export default function CustomerDashboardPage() {
   }, [session, sessionPending, user, router, loadData]);
 
   const handleCancelBooking = async (bookingId: string) => {
-    if (!confirm("Are you sure you want to cancel this booking request?")) return;
-
     setCancellingId(bookingId);
     try {
       await fetchApi(`/customer/bookings/${bookingId}/cancel`, {
@@ -96,6 +105,12 @@ export default function CustomerDashboardPage() {
     } finally {
       setCancellingId(null);
     }
+  };
+
+  const confirmCancelBooking = async () => {
+    const booking = bookingToCancel;
+    setBookingToCancel(null);
+    if (booking) await handleCancelBooking(booking._id);
   };
 
   const getStatusBadge = (status: Booking["status"]) => {
@@ -310,7 +325,7 @@ export default function CustomerDashboardPage() {
                             variant="outline"
                             size="sm"
                             disabled={cancellingId === booking._id}
-                            onClick={() => handleCancelBooking(booking._id)}
+                            onClick={() => setBookingToCancel(booking)}
                             className="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200"
                           >
                             {cancellingId === booking._id ? (
@@ -431,7 +446,7 @@ export default function CustomerDashboardPage() {
                     size="sm"
                     disabled={cancellingId === selectedBooking._id}
                     onClick={() => {
-                      handleCancelBooking(selectedBooking._id);
+                      setBookingToCancel(selectedBooking);
                       setSelectedBooking(null);
                     }}
                     className="text-xs text-rose-600 border-rose-200 hover:bg-rose-50"
@@ -450,6 +465,37 @@ export default function CustomerDashboardPage() {
             </div>
           </div>
         )}
+
+        {/* Cancel confirmation */}
+        <AlertDialog
+          open={Boolean(bookingToCancel)}
+          onOpenChange={(open) => {
+            if (!open) setBookingToCancel(null);
+          }}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Cancel this booking request?</AlertDialogTitle>
+              <AlertDialogDescription>
+                {bookingToCancel?.service?.serviceName
+                  ? `Your request for ${bookingToCancel.service.serviceName} will be withdrawn. This cannot be undone.`
+                  : "Your request will be withdrawn. This cannot be undone."}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Keep Request</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={(event) => {
+                  event.preventDefault();
+                  confirmCancelBooking();
+                }}
+                className="bg-rose-600 text-white hover:bg-rose-700"
+              >
+                Cancel Request
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </main>
 
       <Footer />
