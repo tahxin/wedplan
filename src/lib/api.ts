@@ -25,6 +25,58 @@ interface FetchOptions extends RequestInit {
   token?: string;
 }
 
+/**
+ * `authClient.getSession()` is a network round-trip. Dashboards fire several
+ * requests at once, so cache the token briefly instead of asking every time.
+ */
+let cachedToken: { value: string; expiresAt: number } | null = null;
+const TOKEN_CACHE_MS = 30_000;
+
+function clearTokenCache() {
+  cachedToken = null;
+}
+
+async function resolveToken(explicitToken?: string): Promise<string | undefined> {
+  if (explicitToken) return explicitToken;
+
+  if (cachedToken && cachedToken.expiresAt > Date.now()) {
+    return cachedToken.value;
+  }
+
+  try {
+    const sessionData = await authClient.getSession();
+    const token = sessionData?.data?.session?.token;
+    if (token) {
+      cachedToken = { value: token, expiresAt: Date.now() + TOKEN_CACHE_MS };
+      return token;
+    }
+  } catch {
+    // Session retrieval failed or user is guest
+  }
+
+  return undefined;
+}
+
+function redirectToSignIn() {
+  if (typeof window === "undefined") return;
+  if (window.location.pathname.startsWith("/sign-in")) return;
+
+  const callbackUrl = encodeURIComponent(window.location.pathname + window.location.search);
+  window.location.assign(`/sign-in?callbackUrl=${callbackUrl}`);
+}
+
+async function handleBlockedUser() {
+  clearTokenCache();
+  try {
+    await authClient.signOut();
+  } catch {
+    // Ignore - the redirect below is what matters.
+  }
+  if (typeof window !== "undefined") {
+    window.location.assign("/sign-in?blocked=1");
+  }
+}
+
 export async function fetchApi<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
   const url = `${API_BASE_URL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
 
@@ -33,18 +85,7 @@ export async function fetchApi<T>(endpoint: string, options: FetchOptions = {}):
     headers.set("Content-Type", "application/json");
   }
 
-  let token = options.token;
-  if (!token) {
-    try {
-      const sessionData = await authClient.getSession();
-      if (sessionData?.data?.session?.token) {
-        token = sessionData.data.session.token;
-      }
-    } catch {
-      // Session retrieval failed or user is guest
-    }
-  }
-
+  const token = await resolveToken(options.token);
   if (token) {
     headers.set("Authorization", `Bearer ${token}`);
   }
@@ -57,9 +98,22 @@ export async function fetchApi<T>(endpoint: string, options: FetchOptions = {}):
   const data = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    const error: Error & { status?: number; data?: Record<string, unknown> } = new Error(
-      data?.message || `Request failed with status ${response.status}`
-    );
+    const message: string =
+      (data as { message?: string })?.message || `Request failed with status ${response.status}`;
+
+    // The session is gone or expired: send the user to sign in once, instead
+    // of surfacing "Authorization token required" as a toast.
+    if (response.status === 401) {
+      clearTokenCache();
+      redirectToSignIn();
+    }
+
+    // A blocked account is a 403 with a specific message.
+    if (response.status === 403 && /blocked/i.test(message)) {
+      await handleBlockedUser();
+    }
+
+    const error: Error & { status?: number; data?: Record<string, unknown> } = new Error(message);
     error.status = response.status;
     error.data = data;
     throw error;
