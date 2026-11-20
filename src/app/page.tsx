@@ -119,15 +119,12 @@ export default function HomePage() {
                 <span className="block italic text-primary">truly trust.</span>
               </h1>
 
-              <div className="mt-7 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-start">
-                <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                  Discover wedding venues, photographers, florists, caterers, stylists, and fashion ateliers in one place.
-                  Compare services, send booking requests, and shape a celebration that feels personal from the first detail.
-                </p>
-                <div className="hidden h-full w-px bg-border/70 lg:block" aria-hidden="true" />
-              </div>
+              <p className="mt-7 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Discover wedding venues, photographers, florists, caterers, stylists, and fashion ateliers in one place.
+                Compare services, send booking requests, and shape a celebration that feels personal from the first detail.
+              </p>
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link href="/services" className="w-full sm:w-auto">
                   <Button size="lg" className="h-12 w-full rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground hover:bg-primary/90 sm:w-auto">
                     Explore Wedding Services
@@ -140,30 +137,6 @@ export default function HomePage() {
                   </Button>
                 </Link>
               </div>
-
-              <dl className="mt-10 grid grid-cols-1 gap-x-8 gap-y-4 border-t border-border/60 pt-6 text-sm sm:grid-cols-3">
-                <div>
-                  <dt className="flex items-center gap-2 font-medium text-foreground">
-                    <ShieldCheck className="h-4 w-4 text-primary" />
-                    Verified vendors
-                  </dt>
-                  <dd className="mt-1 leading-relaxed text-muted-foreground">Approved services and clear profiles.</dd>
-                </div>
-                <div>
-                  <dt className="flex items-center gap-2 font-medium text-foreground">
-                    <CalendarCheck className="h-4 w-4 text-primary" />
-                    Direct requests
-                  </dt>
-                  <dd className="mt-1 leading-relaxed text-muted-foreground">Book by date, location, and vision.</dd>
-                </div>
-                <div>
-                  <dt className="flex items-center gap-2 font-medium text-foreground">
-                    <Star className="h-4 w-4 text-amber-500" />
-                    Curated choices
-                  </dt>
-                  <dd className="mt-1 leading-relaxed text-muted-foreground">Venues, florals, fashion, and more.</dd>
-                </div>
-              </dl>
             </motion.div>
 
             <motion.div
@@ -187,31 +160,6 @@ export default function HomePage() {
                 <div className="absolute -left-3 top-8 hidden w-36 border-l-2 border-primary/50 bg-background/90 px-4 py-3 shadow-sm backdrop-blur sm:block lg:-left-6">
                   <p className="font-serif text-2xl font-semibold leading-none text-foreground">2,400+</p>
                   <p className="mt-1 text-xs leading-snug text-muted-foreground">weddings planned with WedPlan vendors</p>
-                </div>
-
-                <div className="mt-4 grid grid-cols-[1.15fr_0.85fr] gap-4 sm:mt-5">
-                  <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted">
-                    <div className="aspect-[16/10]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=80"
-                        alt="Wedding floral styling details"
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-between rounded-2xl border border-border/60 bg-card/70 p-4">
-                    <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Services</p>
-                      <p className="mt-2 text-sm leading-relaxed text-foreground">Venues, photography, décor, catering, styling, and fashion.</p>
-                    </div>
-                    <div className="mt-3 flex items-center gap-1.5 text-amber-500">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="h-3.5 w-3.5 fill-current" />
-                      ))}
-                      <span className="ml-1 text-xs font-medium text-muted-foreground">4.9/5</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </motion.div>
