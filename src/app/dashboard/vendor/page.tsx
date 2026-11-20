@@ -57,6 +57,7 @@ export default function VendorDashboardPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<"services" | "bookings" | "subscription">("services");
 
   // Add Service Form State
   const [isAddingService, setIsAddingService] = useState(false);
@@ -361,16 +362,24 @@ export default function VendorDashboardPage() {
           <div className="space-y-8">
             {/* Stat Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              <div className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setActiveTab("services")}
+                className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm text-left cursor-pointer transition-colors hover:bg-neutral-50 hover:border-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+              >
                 <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 block mb-1">
                   Total Services
                 </span>
                 <p className="text-2xl sm:text-3xl font-bold text-neutral-900">
                   {overview?.totalServices ?? 0}
                 </p>
-              </div>
+              </button>
 
-              <div className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setActiveTab("services")}
+                className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm text-left cursor-pointer transition-colors hover:bg-neutral-50 hover:border-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+              >
                 <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 block mb-1">
                   Active Services
                 </span>
@@ -380,29 +389,37 @@ export default function VendorDashboardPage() {
                     <span className="text-xs text-neutral-400 font-normal ml-1">/ 3 max</span>
                   )}
                 </p>
-              </div>
+              </button>
 
-              <div className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setActiveTab("bookings")}
+                className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm text-left cursor-pointer transition-colors hover:bg-neutral-50 hover:border-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+              >
                 <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 block mb-1">
                   Pending Requests
                 </span>
                 <p className="text-2xl sm:text-3xl font-bold text-amber-600">
                   {overview?.pendingRequests ?? 0}
                 </p>
-              </div>
+              </button>
 
-              <div className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm">
+              <button
+                type="button"
+                onClick={() => setActiveTab("bookings")}
+                className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm text-left cursor-pointer transition-colors hover:bg-neutral-50 hover:border-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+              >
                 <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 block mb-1">
                   Accepted Bookings
                 </span>
                 <p className="text-2xl sm:text-3xl font-bold text-rose-600">
                   {overview?.acceptedBookings ?? 0}
                 </p>
-              </div>
+              </button>
             </div>
 
             {/* Main Tabs */}
-            <Tabs defaultValue="services" className="space-y-6">
+            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "services" | "bookings" | "subscription")} className="space-y-6">
               <TabsList className="bg-white border border-neutral-200 p-1 rounded-xl">
                 <TabsTrigger value="services" className="text-xs font-semibold">
                   My Services ({services.length})
