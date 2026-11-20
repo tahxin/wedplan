@@ -17,7 +17,6 @@ import {
   MapPin,
   Calendar,
   Store,
-  Sparkles,
   ShieldCheck,
   CheckCircle2,
   Loader2,
@@ -25,6 +24,7 @@ import {
   Mail,
   AlertCircle,
 } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import { Service } from "@/types";
 
 function ServiceDetailsContent({
@@ -40,7 +40,6 @@ function ServiceDetailsContent({
   const [loading, setLoading] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  // Booking Form State
   const [eventDate, setEventDate] = useState("");
   const [eventLocation, setEventLocation] = useState("");
   const [message, setMessage] = useState("");
@@ -125,57 +124,53 @@ function ServiceDetailsContent({
   const isOwner = user && service && service.vendorId === user.id;
   const isVendorOrAdmin = user && (user.role === "vendor" || user.role === "admin");
 
-  // Get tomorrow's date for date-picker min
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const minDate = tomorrow.toISOString().split("T")[0];
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50/50">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-        {/* Breadcrumb / Back button */}
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
         <div className="mb-6">
           <Link
             href="/services"
-            className="inline-flex items-center text-xs font-medium text-neutral-500 hover:text-rose-600 transition-colors"
+            className="inline-flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
           >
-            <ChevronLeft className="w-4 h-4 mr-1" />
+            <ChevronLeft className="mr-1 h-4 w-4" />
             Back to all wedding services
           </Link>
         </div>
 
         {loading ? (
-          <div className="py-28 flex flex-col items-center justify-center gap-3 text-neutral-400">
-            <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+          <div className="flex flex-col items-center justify-center gap-3 py-28 text-muted-foreground">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <p className="text-sm font-medium">Loading service details...</p>
           </div>
         ) : !service ? (
-          <div className="bg-white rounded-2xl border border-neutral-200 p-12 text-center max-w-lg mx-auto space-y-4">
-            <AlertCircle className="w-10 h-10 text-rose-500 mx-auto" />
-            <h2 className="text-xl font-bold text-neutral-900">Service Not Found</h2>
-            <p className="text-sm text-neutral-500">
+          <div className="mx-auto max-w-lg space-y-4 rounded-3xl border border-border/70 bg-card/50 p-10 text-center shadow-sm sm:p-12">
+            <AlertCircle className="mx-auto h-10 w-10 text-primary" />
+            <h2 className="font-serif text-3xl font-semibold text-foreground">Service Not Found</h2>
+            <p className="text-sm leading-relaxed text-muted-foreground">
               The service you requested may have been removed or is temporarily unavailable.
             </p>
             <Link href="/services">
-              <Button className="bg-rose-600 hover:bg-rose-700 text-white mt-2">
+              <Button className="mt-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
                 Browse Other Services
               </Button>
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            {/* Left Column: Gallery & Details */}
-            <div className="lg:col-span-7 xl:col-span-8 space-y-8">
-              {/* Image Carousel / Gallery */}
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
+            <div className="space-y-6 lg:col-span-7 xl:col-span-8">
               <div className="space-y-3">
-                <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-neutral-100 shadow-md">
+                <div className="aspect-[16/10] overflow-hidden rounded-[2rem] border border-border/60 bg-muted shadow-xl shadow-primary/5">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={images[activeImageIndex]}
                     alt={service.serviceName}
-                    className="w-full h-full object-cover transition-all duration-300"
+                    className="h-full w-full object-cover transition-all duration-500"
                   />
                 </div>
 
@@ -185,66 +180,62 @@ function ServiceDetailsContent({
                       <button
                         key={idx}
                         onClick={() => setActiveImageIndex(idx)}
-                        className={`w-20 h-16 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                        className={`h-16 w-20 shrink-0 cursor-pointer overflow-hidden rounded-xl border-2 transition-all ${
                           activeImageIndex === idx
-                            ? "border-rose-600 ring-2 ring-rose-200"
+                            ? "border-primary ring-2 ring-primary/20"
                             : "border-transparent opacity-70 hover:opacity-100"
                         }`}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                        <img src={img} alt={`Thumbnail ${idx + 1}`} className="h-full w-full object-cover" />
                       </button>
                     ))}
                   </div>
                 )}
               </div>
 
-              {/* Title & Metadata */}
-              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-neutral-100 shadow-sm space-y-5">
+              <div className="space-y-5 rounded-3xl border border-border/60 bg-card/50 p-6 shadow-sm backdrop-blur-sm sm:p-8">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <Badge variant="outline" className="text-rose-600 border-rose-200 bg-rose-50/50 px-3 py-1 font-semibold">
+                  <Badge variant="outline" className="border-primary/20 bg-primary/5 px-3 py-1 font-semibold text-primary">
                     {service.category}
                   </Badge>
-                  <div className="flex items-center gap-1.5 text-xs text-neutral-500">
-                    <MapPin className="w-4 h-4 text-rose-500" />
+                  <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <MapPin className="h-4 w-4 text-primary" />
                     <span>{service.location}</span>
                   </div>
                 </div>
 
-                <h1 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 leading-tight">
+                <h1 className="font-serif text-4xl font-semibold leading-tight tracking-tight text-foreground sm:text-5xl">
                   {service.serviceName}
                 </h1>
 
-                <div className="pt-4 border-t border-neutral-100">
-                  <h3 className="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-3">
+                <div className="border-t border-border/60 pt-5">
+                  <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     Description & Offerings
                   </h3>
-                  <div className="text-neutral-600 leading-relaxed text-sm sm:text-base whitespace-pre-line">
+                  <div className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground sm:text-base">
                     {service.description}
                   </div>
                 </div>
               </div>
 
-              {/* Vendor Profile Card */}
               {service.vendor && (
-                <div className="bg-white rounded-2xl p-6 sm:p-8 border border-neutral-100 shadow-sm space-y-4">
-                  <h3 className="text-sm font-semibold text-neutral-900 uppercase tracking-wider">
+                <div className="space-y-4 rounded-3xl border border-border/60 bg-card/50 p-6 shadow-sm backdrop-blur-sm sm:p-8">
+                  <h3 className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     Service Provider
                   </h3>
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-lg shrink-0">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-lg font-semibold text-primary ring-1 ring-primary/15">
                       {service.vendor.businessName?.[0] || service.vendor.name[0]}
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-lg text-neutral-900">
+                    <div className="min-w-0">
+                      <h4 className="truncate text-xl font-semibold text-foreground">
                         {service.vendor.businessName || service.vendor.name}
                       </h4>
-                      <p className="text-xs text-neutral-500 flex items-center gap-2 mt-0.5">
-                        <Store className="w-3.5 h-3.5 text-neutral-400" />
-                        <span>Verified Wedding Vendor</span>
-                        <span>•</span>
-                        <Mail className="w-3.5 h-3.5 text-neutral-400" />
-                        <span>{service.vendor.email}</span>
+                      <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+                        <span className="inline-flex items-center gap-1"><Store className="h-3.5 w-3.5" /> Verified Wedding Vendor</span>
+                        <span className="text-border">•</span>
+                        <span className="inline-flex items-center gap-1"><Mail className="h-3.5 w-3.5" /> {service.vendor.email}</span>
                       </p>
                     </div>
                   </div>
@@ -252,62 +243,61 @@ function ServiceDetailsContent({
               )}
             </div>
 
-            {/* Right Column: Pricing & Booking Widget */}
             <div className="lg:col-span-5 xl:col-span-4">
-              <div className="sticky top-24 bg-white rounded-2xl p-6 sm:p-8 border border-rose-100 shadow-xl shadow-rose-100/40 space-y-6">
+              <div className="sticky top-24 space-y-6 rounded-3xl border border-primary/15 bg-card/70 p-6 shadow-xl shadow-primary/5 backdrop-blur-md sm:p-8">
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 block mb-1">
+                  <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                     Investment
                   </span>
                   <div className="flex items-baseline gap-2">
-                    <span className="font-serif text-4xl font-bold text-neutral-900">
+                    <span className="font-serif text-4xl font-semibold text-foreground sm:text-5xl">
                       ${service.price.toLocaleString()}
                     </span>
-                    <span className="text-xs text-neutral-500">/ package</span>
+                    <span className="text-sm text-muted-foreground">/ package</span>
                   </div>
                 </div>
 
-                <div className="border-t border-neutral-100 pt-5">
-                  <h3 className="font-semibold text-neutral-900 text-base mb-1">
-                    Request a Booking
-                  </h3>
-                  <p className="text-xs text-neutral-500 mb-4">
+                <div className="border-t border-border/60 pt-5">
+                  <h3 className="mb-1 text-lg font-semibold text-foreground">Request a Booking</h3>
+                  <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
                     Submit your celebration date and location to inquire directly with this vendor.
                   </p>
 
                   {sessionLoading ? (
-                    <div className="py-6 flex items-center justify-center text-neutral-400">
-                      <Loader2 className="w-5 h-5 animate-spin text-rose-500" />
+                    <div className="flex items-center justify-center py-6 text-muted-foreground">
+                      <Loader2 className="h-5 w-5 animate-spin text-primary" />
                     </div>
                   ) : !session ? (
-                    <div className="bg-neutral-50 rounded-xl p-5 text-center space-y-3 border border-neutral-100">
-                      <Sparkles className="w-6 h-6 text-rose-500 mx-auto" />
-                      <p className="text-xs text-neutral-600">
+                    <div className="space-y-3 rounded-2xl border border-border/60 bg-background/60 p-5 text-center">
+                      <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
+                        <LogoMark className="h-6 w-6" />
+                      </div>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
                         Please sign in with your customer account to submit a booking inquiry.
                       </p>
                       <Link href={`/sign-in?callbackUrl=/services/${id}`} className="block">
-                        <Button className="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs">
+                        <Button className="w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary/90">
                           Sign In to Book
                         </Button>
                       </Link>
                     </div>
                   ) : isOwner ? (
-                    <div className="bg-amber-50 rounded-xl p-4 text-xs text-amber-800 border border-amber-200">
+                    <div className="rounded-2xl border border-amber-200/70 bg-amber-50/70 p-4 text-sm text-amber-900">
                       <strong>Vendor Notice:</strong> This is your published service. You cannot book your own offering.
                     </div>
                   ) : isVendorOrAdmin ? (
-                    <div className="bg-neutral-50 rounded-xl p-4 text-xs text-neutral-600 border border-neutral-200">
+                    <div className="rounded-2xl border border-border/60 bg-background/60 p-4 text-sm text-muted-foreground">
                       Booking is reserved for customer accounts. Please switch to a customer account to submit reservations.
                     </div>
                   ) : bookingSuccess ? (
-                    <div className="bg-emerald-50 rounded-xl p-6 text-center space-y-3 border border-emerald-200">
-                      <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
-                      <h4 className="font-bold text-neutral-900 text-sm">Request Sent!</h4>
-                      <p className="text-xs text-neutral-600 leading-relaxed">
+                    <div className="space-y-3 rounded-2xl border border-emerald-200/70 bg-emerald-50/70 p-6 text-center">
+                      <CheckCircle2 className="mx-auto h-10 w-10 text-emerald-600" />
+                      <h4 className="text-base font-semibold text-foreground">Request Sent!</h4>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
                         Your booking request has been delivered to the vendor. You can track status in your dashboard.
                       </p>
                       <Link href="/dashboard/customer">
-                        <Button variant="outline" className="text-xs border-emerald-300 text-emerald-700 mt-2">
+                        <Button variant="outline" className="mt-1 rounded-xl border-emerald-300/70 text-emerald-700 hover:bg-emerald-100/60">
                           View in My Bookings
                         </Button>
                       </Link>
@@ -315,11 +305,11 @@ function ServiceDetailsContent({
                   ) : (
                     <form onSubmit={handleBookingSubmit} className="space-y-4">
                       <div>
-                        <Label htmlFor="eventDate" className="text-xs font-medium text-neutral-700">
+                        <Label htmlFor="eventDate" className="text-sm font-medium text-foreground">
                           Celebration Date
                         </Label>
-                        <div className="relative mt-1">
-                          <Calendar className="w-4 h-4 text-neutral-400 absolute left-3 top-3 pointer-events-none" />
+                        <div className="relative mt-1.5">
+                          <Calendar className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
                             id="eventDate"
                             type="date"
@@ -327,17 +317,17 @@ function ServiceDetailsContent({
                             required
                             value={eventDate}
                             onChange={(e) => setEventDate(e.target.value)}
-                            className="pl-9 h-10 text-sm border-neutral-200 focus-visible:ring-rose-500"
+                            className="h-11 rounded-xl border-border/70 bg-background/70 pl-9 text-sm"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <Label htmlFor="eventLocation" className="text-xs font-medium text-neutral-700">
+                        <Label htmlFor="eventLocation" className="text-sm font-medium text-foreground">
                           Event Location / Venue
                         </Label>
-                        <div className="relative mt-1">
-                          <MapPin className="w-4 h-4 text-neutral-400 absolute left-3 top-3 pointer-events-none" />
+                        <div className="relative mt-1.5">
+                          <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
                             id="eventLocation"
                             type="text"
@@ -345,33 +335,33 @@ function ServiceDetailsContent({
                             placeholder="e.g. The Rosewood Estate, Dallas TX"
                             value={eventLocation}
                             onChange={(e) => setEventLocation(e.target.value)}
-                            className="pl-9 h-10 text-sm border-neutral-200 focus-visible:ring-rose-500"
+                            className="h-11 rounded-xl border-border/70 bg-background/70 pl-9 text-sm"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <Label htmlFor="message" className="text-xs font-medium text-neutral-700">
+                        <Label htmlFor="message" className="text-sm font-medium text-foreground">
                           Vision & Notes (Optional)
                         </Label>
                         <Textarea
                           id="message"
-                          rows={3}
+                          rows={4}
                           placeholder="Tell the vendor about your guest count, schedule, or theme..."
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
-                          className="mt-1 text-sm border-neutral-200 focus-visible:ring-rose-500"
+                          className="mt-1.5 rounded-xl border-border/70 bg-background/70 text-sm"
                         />
                       </div>
 
                       <Button
                         type="submit"
                         disabled={isSubmittingBooking}
-                        className="w-full h-11 bg-rose-600 hover:bg-rose-700 text-white font-medium shadow-md shadow-rose-200 mt-2"
+                        className="mt-2 h-11 w-full rounded-xl bg-primary font-semibold text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90"
                       >
                         {isSubmittingBooking ? (
                           <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             Sending Request...
                           </>
                         ) : (
@@ -382,13 +372,13 @@ function ServiceDetailsContent({
                   )}
                 </div>
 
-                <div className="border-t border-neutral-100 pt-4 space-y-2 text-xs text-neutral-500">
+                <div className="space-y-2 border-t border-border/60 pt-4 text-xs text-muted-foreground sm:text-sm">
                   <div className="flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-rose-500 shrink-0" />
+                    <ShieldCheck className="h-4 w-4 shrink-0 text-primary" />
                     <span>Vendor response time: usually within 24h</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-rose-500 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" />
                     <span>No upfront fee to send booking inquiries</span>
                   </div>
                 </div>
@@ -411,8 +401,8 @@ export default function ServiceDetailsPage({
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-neutral-50/50">
-          <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       }
     >

@@ -2,40 +2,41 @@ import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Home, Search } from "lucide-react";
+import { Home, Search } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 text-center">
-        <div className="max-w-md w-full space-y-6">
-          <div className="w-16 h-16 rounded-3xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto shadow-sm">
-            <Sparkles className="w-8 h-8" />
+      <main className="flex flex-1 items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
+        <div className="w-full max-w-lg space-y-6 rounded-[2rem] border border-border/60 bg-card/70 p-10 text-center shadow-xl shadow-primary/5 backdrop-blur-xl sm:p-12">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-primary/10 text-primary ring-1 ring-primary/15">
+            <LogoMark className="h-9 w-9" />
           </div>
 
-          <div className="space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-rose-600">
+          <div className="space-y-3">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               404 Error
             </span>
-            <h1 className="font-serif text-4xl font-bold text-neutral-900">
+            <h1 className="font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
               Page Not Found
             </h1>
-            <p className="text-sm text-neutral-500 leading-relaxed">
-              We couldn&apos;t find the wedding page you were looking for. It may have moved or no longer exists.
+            <p className="mx-auto max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
+              We couldn&apos;t find the wedding page you were looking for. It may have moved, been removed, or the link may be incorrect.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <div className="flex flex-col items-center justify-center gap-3 pt-2 sm:flex-row">
             <Link href="/" className="w-full sm:w-auto">
-              <Button className="w-full bg-rose-600 hover:bg-rose-700 text-white">
-                <Home className="w-4 h-4 mr-2" /> Back to Home
+              <Button className="w-full rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90 sm:w-auto">
+                <Home className="mr-2 h-4 w-4" /> Back to Home
               </Button>
             </Link>
             <Link href="/services" className="w-full sm:w-auto">
-              <Button variant="outline" className="w-full border-neutral-300">
-                <Search className="w-4 h-4 mr-2" /> Browse Services
+              <Button variant="outline" className="w-full rounded-full border-border/70 bg-background/60 sm:w-auto">
+                <Search className="mr-2 h-4 w-4" /> Browse Services
               </Button>
             </Link>
           </div>

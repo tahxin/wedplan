@@ -108,121 +108,115 @@ export default function ProfileSettingsPage() {
   const role = user?.role || "customer";
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50/50">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
 
-      <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-8 sm:p-10 space-y-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-neutral-100 pb-6">
+      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
+        <div className="space-y-8 rounded-[2rem] border border-border/60 bg-card/60 p-8 shadow-sm backdrop-blur-xl sm:p-10">
+          <div className="flex flex-col justify-between gap-4 border-b border-border/60 pb-6 sm:flex-row sm:items-center">
             <div>
-              <div className="flex items-center gap-2 mb-1.5">
-                <Badge variant="outline" className="capitalize text-xs">
-                  {role === "admin" && <ShieldCheck className="w-3.5 h-3.5 mr-1 text-rose-500" />}
-                  {role === "vendor" && <Store className="w-3.5 h-3.5 mr-1 text-amber-500" />}
-                  {role === "customer" && <Heart className="w-3.5 h-3.5 mr-1 text-pink-500" />}
+              <div className="mb-2 flex items-center gap-2">
+                <Badge variant="outline" className="capitalize border-primary/20 bg-primary/5 text-primary">
+                  {role === "admin" && <ShieldCheck className="mr-1 h-3.5 w-3.5" />}
+                  {role === "vendor" && <Store className="mr-1 h-3.5 w-3.5" />}
+                  {role === "customer" && <Heart className="mr-1 h-3.5 w-3.5" />}
                   {role} Account
                 </Badge>
               </div>
-              <h1 className="font-serif text-3xl font-bold text-neutral-900">
+              <h1 className="font-serif text-4xl font-semibold tracking-tight text-foreground">
                 Profile Settings
               </h1>
-              <p className="text-xs text-neutral-500 mt-1">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Manage your public personal profile and business identity.
               </p>
             </div>
           </div>
 
           <form onSubmit={handleSave} className="space-y-6">
-            {/* Avatar upload */}
-            <div className="flex items-center gap-5">
-              <div className="w-20 h-20 rounded-2xl overflow-hidden bg-neutral-100 border-2 border-rose-100 shadow-xs shrink-0 flex items-center justify-center text-neutral-400">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border/60 bg-muted/40 text-muted-foreground ring-1 ring-primary/10">
                 {imagePreview ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={imagePreview} alt="Profile" className="w-full h-full object-cover" />
+                  <img src={imagePreview} alt="Profile" className="h-full w-full object-cover" />
                 ) : (
-                  <User className="w-8 h-8" />
+                  <User className="h-8 w-8" />
                 )}
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="avatar-file" className="text-xs font-semibold text-neutral-700">
+                <Label htmlFor="avatar-file" className="text-sm font-medium text-foreground">
                   Profile Photo
                 </Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    id="avatar-file"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="text-xs h-9 cursor-pointer file:cursor-pointer"
-                  />
-                </div>
-                <p className="text-[11px] text-neutral-400">JPG, PNG or WEBP under 5MB.</p>
+                <Input
+                  id="avatar-file"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="h-10 cursor-pointer rounded-xl border-border/70 bg-background/70 text-sm file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-muted file:px-3 file:py-1.5 file:text-xs file:font-medium"
+                />
+                <p className="text-xs text-muted-foreground">JPG, PNG or WEBP under 5MB.</p>
               </div>
             </div>
 
-            {/* Email (Read-only) */}
             <div>
-              <Label className="text-xs font-medium text-neutral-700">Email Address (Read-only)</Label>
-              <div className="relative mt-1">
-                <Mail className="w-4 h-4 text-neutral-400 absolute left-3.5 top-3" />
+              <Label className="text-sm font-medium text-foreground">Email Address (Read-only)</Label>
+              <div className="relative mt-1.5">
+                <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   disabled
                   value={user?.email || ""}
-                  className="pl-10 h-10 bg-neutral-50 text-neutral-500 border-neutral-200 text-sm"
+                  className="h-11 rounded-xl border-border/70 bg-muted/40 pl-10 text-sm text-muted-foreground"
                 />
               </div>
             </div>
 
-            {/* Name */}
             <div>
-              <Label htmlFor="prof-name" className="text-xs font-medium text-neutral-700">
+              <Label htmlFor="prof-name" className="text-sm font-medium text-foreground">
                 Full Name
               </Label>
-              <div className="relative mt-1">
-                <User className="w-4 h-4 text-neutral-400 absolute left-3.5 top-3" />
+              <div className="relative mt-1.5">
+                <User className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   id="prof-name"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="pl-10 h-10 border-neutral-200 text-sm focus-visible:ring-rose-500"
+                  className="h-11 rounded-xl border-border/70 bg-background/70 pl-10 text-sm"
                 />
               </div>
             </div>
 
-            {/* Business name (Vendor only) */}
             {role === "vendor" && (
               <div>
-                <Label htmlFor="prof-biz" className="text-xs font-medium text-neutral-700">
+                <Label htmlFor="prof-biz" className="text-sm font-medium text-foreground">
                   Studio / Business Name
                 </Label>
-                <div className="relative mt-1">
-                  <Briefcase className="w-4 h-4 text-neutral-400 absolute left-3.5 top-3" />
+                <div className="relative mt-1.5">
+                  <Briefcase className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     id="prof-biz"
                     value={businessName}
                     onChange={(e) => setBusinessName(e.target.value)}
                     placeholder="e.g. Celestial Bridal Studios"
-                    className="pl-10 h-10 border-neutral-200 text-sm focus-visible:ring-rose-500"
+                    className="h-11 rounded-xl border-border/70 bg-background/70 pl-10 text-sm"
                   />
                 </div>
               </div>
             )}
 
-            <div className="pt-4 border-t border-neutral-100 flex items-center justify-end gap-3">
+            <div className="flex items-center justify-end gap-3 border-t border-border/60 pt-4">
               <Button
                 type="submit"
                 disabled={isSaving}
-                className="bg-rose-600 hover:bg-rose-700 text-white font-medium text-xs px-6 h-10 shadow-sm"
+                className="h-11 rounded-xl bg-primary px-6 font-semibold text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90"
               >
                 {isSaving ? (
                   <>
-                    <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Saving Changes...
                   </>
                 ) : (
                   <>
-                    <Save className="w-3.5 h-3.5 mr-1.5" />
+                    <Save className="mr-2 h-4 w-4" />
                     Save Settings
                   </>
                 )}

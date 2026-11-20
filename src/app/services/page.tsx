@@ -14,12 +14,12 @@ import {
   MapPin,
   Filter,
   ArrowUpDown,
-  Sparkles,
   Loader2,
   X,
   ChevronRight,
   Store,
 } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import { Service } from "@/types";
 import { getApiBaseUrl } from "@/lib/api";
 
@@ -102,58 +102,53 @@ function BrowseServicesContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50/40">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
 
-      <main className="flex-1 py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        {/* Header */}
-        <div className="mb-8 space-y-2">
-          <Badge variant="outline" className="text-rose-600 border-rose-200 bg-rose-50/50 px-3 py-1">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div className="mb-8 space-y-3 sm:mb-10">
+          <Badge variant="outline" className="w-fit border-primary/20 bg-primary/5 px-3 py-1 text-primary">
             Catalog
           </Badge>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">
+          <h1 className="font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
             Browse Wedding Services
           </h1>
-          <p className="text-sm text-neutral-500">
-            Discover and connect with top wedding professionals across photography, venues, catering, and more.
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+            Search approved and active wedding services, filter by category and location, and sort by price to find the perfect fit for your celebration.
           </p>
         </div>
 
-        {/* Filter & Search Bar */}
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-neutral-100 mb-8 space-y-4">
-          <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {/* Search by name */}
+        <div className="mb-8 space-y-4 rounded-3xl border border-border/60 bg-card/50 p-4 shadow-sm backdrop-blur-sm sm:p-5">
+          <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <div className="relative">
-              <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-3" />
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search services..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 h-10 border-neutral-200 focus-visible:ring-rose-500 text-sm"
+                className="h-11 rounded-xl border-border/70 bg-background/70 pl-9 text-sm"
               />
             </div>
 
-            {/* Location */}
             <div className="relative">
-              <MapPin className="w-4 h-4 text-neutral-400 absolute left-3 top-3" />
+              <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="City, State, or Region..."
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                className="pl-9 h-10 border-neutral-200 focus-visible:ring-rose-500 text-sm"
+                className="h-11 rounded-xl border-border/70 bg-background/70 pl-9 text-sm"
               />
             </div>
 
-            {/* Sort by price */}
             <div className="relative">
-              <ArrowUpDown className="w-4 h-4 text-neutral-400 absolute left-3 top-3" />
+              <ArrowUpDown className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <select
                 id="sort-select"
                 name="sort"
                 aria-label="Sort wedding services"
                 value={sort}
                 onChange={(e) => setSort(e.target.value)}
-                className="w-full h-10 pl-9 pr-3 rounded-md border border-neutral-200 bg-white text-sm text-neutral-800 focus:outline-none focus:ring-2 focus:ring-rose-500 cursor-pointer"
+                className="h-11 w-full cursor-pointer rounded-xl border border-border/70 bg-background/70 pl-9 pr-3 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring"
               >
                 <option value="newest">Newest First</option>
                 <option value="price_asc">Price: Low to High</option>
@@ -161,9 +156,8 @@ function BrowseServicesContent() {
               </select>
             </div>
 
-            {/* Actions */}
             <div className="flex items-center gap-2">
-              <Button type="submit" className="flex-1 h-10 bg-rose-600 hover:bg-rose-700 text-white text-sm">
+              <Button type="submit" className="h-11 flex-1 rounded-xl bg-primary text-sm font-semibold text-primary-foreground hover:bg-primary/90">
                 Apply Filters
               </Button>
               {(search || location || category !== "All Categories" || sort !== "newest") && (
@@ -171,29 +165,29 @@ function BrowseServicesContent() {
                   type="button"
                   variant="outline"
                   onClick={clearFilters}
-                  className="h-10 px-3 text-neutral-600 hover:bg-rose-50"
+                  className="h-11 rounded-xl px-3"
                   title="Clear all filters"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="h-4 w-4" />
                 </Button>
               )}
             </div>
           </form>
 
-          {/* Category Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 no-scrollbar text-xs">
-            <span className="text-neutral-400 font-medium flex items-center gap-1 shrink-0 mr-1">
-              <Filter className="w-3.5 h-3.5" /> Category:
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 text-xs">
+            <span className="mr-1 flex shrink-0 items-center gap-1 font-medium text-muted-foreground">
+              <Filter className="h-3.5 w-3.5" /> Category:
             </span>
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 type="button"
                 onClick={() => setCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all shrink-0 cursor-pointer ${category === cat
-                  ? "bg-rose-600 text-white shadow-sm"
-                  : "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
-                  }`}
+                className={`shrink-0 cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-medium transition-all ${
+                  category === cat
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "border border-border/60 bg-background/70 text-foreground/80 hover:bg-muted"
+                }`}
               >
                 {cat}
               </button>
@@ -201,49 +195,47 @@ function BrowseServicesContent() {
           </div>
         </div>
 
-        {/* Results Info */}
-        <div className="flex items-center justify-between text-xs text-neutral-500 mb-6">
+        <div className="mb-6 flex flex-col gap-2 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>
-            Showing <strong className="text-neutral-800">{services.length}</strong> of{" "}
-            <strong className="text-neutral-800">{totalCount}</strong> services
+            Showing <strong className="text-foreground">{services.length}</strong> of{" "}
+            <strong className="text-foreground">{totalCount}</strong> services
           </span>
           {category !== "All Categories" && (
-            <span className="font-medium text-rose-600">Filtered by {category}</span>
+            <span className="font-medium text-primary">Filtered by {category}</span>
           )}
         </div>
 
-        {/* Services Grid */}
         {loading ? (
-          <div className="py-24 flex flex-col items-center justify-center gap-3 text-neutral-400">
-            <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+          <div className="flex flex-col items-center justify-center gap-3 py-24 text-muted-foreground">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <p className="text-sm font-medium">Loading wedding services...</p>
           </div>
         ) : services.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-dashed border-neutral-200 p-12 text-center max-w-md mx-auto space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center mx-auto">
-              <Sparkles className="w-6 h-6" />
+          <div className="mx-auto max-w-md space-y-4 rounded-3xl border border-dashed border-border/70 bg-card/40 p-10 text-center sm:p-12">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/15">
+              <LogoMark className="h-7 w-7" />
             </div>
-            <h3 className="font-semibold text-neutral-800 text-base">No services found</h3>
-            <p className="text-xs text-neutral-500 leading-relaxed">
+            <h3 className="text-lg font-semibold text-foreground">No services found</h3>
+            <p className="text-sm leading-relaxed text-muted-foreground">
               We couldn&apos;t find any approved services matching your search or filters. Try adjusting your criteria.
             </p>
-            <Button variant="outline" onClick={clearFilters} className="text-xs">
+            <Button variant="outline" onClick={clearFilters} className="rounded-full">
               Clear All Filters
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => {
               const detailsHref = session
                 ? `/services/${service._id}`
                 : `/sign-in?callbackUrl=/services/${service._id}`;
 
               return (
-                <div
+                <article
                   key={service._id}
-                  className="group bg-white rounded-2xl overflow-hidden border border-neutral-100 shadow-sm hover:shadow-xl hover:border-rose-200 transition-all duration-300 flex flex-col"
+                  className="group flex h-full flex-col overflow-hidden rounded-3xl border border-border/60 bg-card/50 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/5"
                 >
-                  <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-muted">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={
@@ -251,53 +243,53 @@ function BrowseServicesContent() {
                         "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80"
                       }
                       alt={service.serviceName}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-neutral-800 text-[11px] font-semibold px-2.5 py-1 rounded-full shadow-sm">
+                    <span className="absolute left-3 top-3 rounded-full border border-white/30 bg-background/85 px-3 py-1 text-[11px] font-semibold text-foreground shadow-sm backdrop-blur">
                       {service.category}
                     </span>
                   </div>
 
-                  <div className="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-1.5 text-xs text-neutral-400 mb-2">
-                        <MapPin className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                  <div className="flex flex-1 flex-col justify-between p-5 sm:p-6">
+                    <div className="space-y-2.5">
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" />
                         <span className="truncate">{service.location}</span>
                       </div>
-                      <h3 className="font-semibold text-base text-neutral-900 group-hover:text-rose-600 transition-colors line-clamp-1">
+                      <h3 className="line-clamp-1 text-lg font-semibold text-foreground transition-colors group-hover:text-primary">
                         {service.serviceName}
                       </h3>
-                      <p className="text-xs text-neutral-500 mt-1 line-clamp-2">
+                      <p className="line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                         {service.description}
                       </p>
 
                       {service.vendor && (
-                        <div className="mt-3 flex items-center gap-2 text-xs text-neutral-600 bg-neutral-50 px-2.5 py-1.5 rounded-lg border border-neutral-100">
-                          <Store className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                          <span className="truncate font-medium">
+                        <div className="mt-1 flex items-center gap-2 rounded-xl border border-border/50 bg-background/60 px-3 py-2 text-xs text-muted-foreground">
+                          <Store className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                          <span className="truncate font-medium text-foreground/80">
                             {service.vendor.businessName || service.vendor.name}
                           </span>
                         </div>
                       )}
                     </div>
 
-                    <div className="mt-5 pt-4 border-t border-neutral-100 flex items-center justify-between">
+                    <div className="mt-5 flex items-end justify-between border-t border-border/60 pt-4">
                       <div>
-                        <span className="text-xs text-neutral-400 block">Starting at</span>
-                        <span className="text-lg font-bold text-neutral-900">
+                        <span className="block text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Starting at</span>
+                        <span className="text-xl font-semibold text-foreground">
                           ${service.price.toLocaleString()}
                         </span>
                       </div>
 
                       <Link href={detailsHref}>
-                        <Button size="sm" className="bg-rose-600 hover:bg-rose-700 text-white text-xs">
+                        <Button size="sm" className="rounded-full bg-primary px-4 text-primary-foreground hover:bg-primary/90">
                           View Details
-                          <ChevronRight className="w-3.5 h-3.5 ml-1" />
+                          <ChevronRight className="ml-1 h-3.5 w-3.5" />
                         </Button>
                       </Link>
                     </div>
                   </div>
-                </div>
+                </article>
               );
             })}
           </div>
@@ -313,8 +305,8 @@ export default function BrowseServicesPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-neutral-50/40">
-          <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       }
     >

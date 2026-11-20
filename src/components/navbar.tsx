@@ -6,7 +6,6 @@ import { useRouter, usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 import { toast } from "sonner";
 import {
-  Sparkles,
   Menu,
   X,
   LayoutDashboard,
@@ -17,6 +16,7 @@ import {
   Store,
   Heart,
 } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -77,9 +77,9 @@ export function Navbar() {
       : "/dashboard/customer";
 
   const getRoleIcon = () => {
-    if (role === "admin") return <ShieldCheck className="w-3.5 h-3.5 text-rose-500" />;
-    if (role === "vendor") return <Store className="w-3.5 h-3.5 text-amber-500" />;
-    return <Heart className="w-3.5 h-3.5 text-pink-500" />;
+    if (role === "admin") return <ShieldCheck className="w-3.5 h-3.5 text-primary" />;
+    if (role === "vendor") return <Store className="w-3.5 h-3.5 text-amber-600" />;
+    return <Heart className="w-3.5 h-3.5 text-rose-500" />;
   };
 
   const getInitials = (name?: string) => {
@@ -92,73 +92,70 @@ export function Navbar() {
       .toUpperCase();
   };
 
+  const navLinkClass = (active: boolean) =>
+    `relative text-sm font-medium transition-colors hover:text-primary ${
+      active ? "text-primary" : "text-foreground/70"
+    } after:absolute after:left-0 after:-bottom-1.5 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-primary/70 after:transition-transform after:duration-300 hover:after:scale-x-100 ${
+      active ? "after:scale-x-100" : ""
+    }`;
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-rose-100/60 bg-white/80 backdrop-blur-md transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-500 to-pink-500 flex items-center justify-center text-white shadow-sm shadow-rose-200 group-hover:scale-105 transition-transform">
-            <Sparkles className="w-5 h-5 fill-white/20" />
+    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/75 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="group flex items-center gap-3">
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-rose-500 to-amber-500 text-primary-foreground shadow-lg shadow-primary/20 ring-1 ring-white/40 transition-transform duration-300 group-hover:-translate-y-0.5">
+            <LogoMark className="h-6 w-6" />
           </div>
-          <span className="font-serif text-2xl font-bold tracking-tight text-neutral-900 group-hover:text-rose-600 transition-colors">
-            Wed<span className="text-rose-600 font-sans font-medium">Plan</span>
-          </span>
+          <div className="leading-none">
+            <span className="block font-serif text-2xl font-semibold tracking-tight text-foreground">
+              WedPlan
+            </span>
+            <span className="mt-0.5 block text-[10px] font-medium uppercase tracking-[0.22em] text-muted-foreground">
+              Wedding Atelier
+            </span>
+          </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8">
-          <Link
-            href="/"
-            className={`text-sm font-medium transition-colors hover:text-rose-600 ${
-              pathname === "/" ? "text-rose-600 font-semibold" : "text-neutral-600"
-            }`}
-          >
+        <nav className="hidden items-center gap-8 md:flex">
+          <Link href="/" className={navLinkClass(pathname === "/")}>
             Home
           </Link>
-          <Link
-            href="/services"
-            className={`text-sm font-medium transition-colors hover:text-rose-600 ${
-              pathname.startsWith("/services")
-                ? "text-rose-600 font-semibold"
-                : "text-neutral-600"
-            }`}
-          >
+          <Link href="/services" className={navLinkClass(pathname.startsWith("/services"))}>
             Browse Services
           </Link>
         </nav>
 
-        {/* Desktop Auth Section */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden items-center gap-3 md:flex">
           {isPending ? (
-            <div className="w-8 h-8 rounded-full bg-neutral-100 animate-pulse" />
+            <div className="h-9 w-9 animate-pulse rounded-full bg-muted" />
           ) : user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-2.5 p-1 rounded-full hover:bg-rose-50/60 transition-colors focus:outline-none">
-                <Avatar className="w-9 h-9 ring-2 ring-rose-200 ring-offset-1">
+              <DropdownMenuTrigger className="flex items-center gap-2.5 rounded-full border border-border/60 bg-card/60 p-1.5 pr-3 shadow-sm transition-all hover:border-primary/30 hover:bg-card focus:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                <Avatar className="h-8 w-8 ring-1 ring-border">
                   <AvatarImage src={user.image || ""} alt={user.name || "User"} />
-                  <AvatarFallback className="bg-rose-100 text-rose-700 font-medium text-xs">
+                  <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
                     {getInitials(user.name)}
                   </AvatarFallback>
                 </Avatar>
-                <span className="text-sm font-medium text-neutral-800 max-w-[120px] truncate">
+                <span className="max-w-[120px] truncate text-sm font-medium text-foreground">
                   {user.name}
                 </span>
-                <ChevronDown className="w-4 h-4 text-neutral-400" />
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 mt-1">
-                <DropdownMenuLabel className="font-normal py-2">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-semibold text-neutral-900 leading-none truncate">
+              <DropdownMenuContent align="end" className="mt-2 w-60 rounded-xl border-border/60 bg-popover/95 p-1.5 shadow-xl backdrop-blur-xl">
+                <DropdownMenuLabel className="rounded-lg px-3 py-2.5 font-normal">
+                  <div className="flex flex-col space-y-1.5">
+                    <p className="truncate text-sm font-semibold leading-none text-foreground">
                       {user.name}
                     </p>
-                    <p className="text-xs text-neutral-500 truncate">{user.email}</p>
-                    <div className="pt-1 flex items-center gap-1.5">
-                      <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-100 capitalize">
+                    <p className="truncate text-xs text-muted-foreground">{user.email}</p>
+                    <div className="flex items-center gap-1.5 pt-0.5">
+                      <span className="inline-flex items-center gap-1 rounded-full border border-primary/15 bg-primary/5 px-2 py-0.5 text-[11px] font-medium capitalize text-primary">
                         {getRoleIcon()}
                         {role}
                       </span>
                       {user.subscriptionPlan === "premium" && (
-                        <span className="inline-flex items-center text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-500 text-white">
+                        <span className="inline-flex items-center rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-2 py-0.5 text-[10px] font-semibold text-white shadow-sm">
                           PREMIUM
                         </span>
                       )}
@@ -166,23 +163,23 @@ export function Navbar() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push(dashboardHref)} className="cursor-pointer">
-                  <LayoutDashboard className="w-4 h-4 mr-2 text-neutral-500" />
+                <DropdownMenuItem onClick={() => router.push(dashboardHref)} className="cursor-pointer rounded-lg">
+                  <LayoutDashboard className="mr-2 h-4 w-4 text-muted-foreground" />
                   Dashboard
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => router.push(`${dashboardHref}/settings`)}
-                  className="cursor-pointer"
+                  className="cursor-pointer rounded-lg"
                 >
-                  <Settings className="w-4 h-4 mr-2 text-neutral-500" />
+                  <Settings className="mr-2 h-4 w-4 text-muted-foreground" />
                   Profile Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={handleSignOut}
-                  className="cursor-pointer text-rose-600 focus:text-rose-700 focus:bg-rose-50"
+                  className="cursor-pointer rounded-lg text-destructive focus:bg-destructive/10 focus:text-destructive"
                 >
-                  <LogOut className="w-4 h-4 mr-2" />
+                  <LogOut className="mr-2 h-4 w-4" />
                   Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -190,12 +187,12 @@ export function Navbar() {
           ) : (
             <div className="flex items-center gap-2">
               <Link href={authHref("/sign-in")}>
-                <Button variant="ghost" className="text-neutral-700 hover:text-rose-600 hover:bg-rose-50">
+                <Button variant="ghost" className="text-foreground/80 hover:bg-primary/5 hover:text-primary">
                   Sign In
                 </Button>
               </Link>
               <Link href={authHref("/sign-up")}>
-                <Button className="bg-rose-600 hover:bg-rose-700 text-white shadow-sm shadow-rose-200">
+                <Button className="rounded-full bg-primary px-5 text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90">
                   Sign Up
                 </Button>
               </Link>
@@ -203,68 +200,70 @@ export function Navbar() {
           )}
         </div>
 
-        {/* Mobile menu button */}
-        <div className="flex md:hidden items-center">
+        <div className="flex items-center md:hidden">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg text-neutral-600 hover:text-neutral-900 hover:bg-rose-50 focus:outline-none"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border/60 bg-card/60 text-foreground/80 transition-colors hover:bg-card hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             aria-label="Toggle navigation menu"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-rose-100 bg-white px-4 pt-3 pb-6 space-y-4">
-          <div className="flex flex-col space-y-3">
+        <div className="border-t border-border/60 bg-background/95 px-4 pb-6 pt-4 shadow-lg backdrop-blur-xl md:hidden">
+          <div className="mx-auto flex max-w-7xl flex-col space-y-2">
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-base font-medium text-neutral-700 hover:text-rose-600 px-2 py-1.5 rounded-md hover:bg-rose-50"
+              className={`rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
+                pathname === "/" ? "bg-primary/10 text-primary" : "text-foreground/80 hover:bg-muted"
+              }`}
             >
               Home
             </Link>
             <Link
               href="/services"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-base font-medium text-neutral-700 hover:text-rose-600 px-2 py-1.5 rounded-md hover:bg-rose-50"
+              className={`rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
+                pathname.startsWith("/services") ? "bg-primary/10 text-primary" : "text-foreground/80 hover:bg-muted"
+              }`}
             >
               Browse Services
             </Link>
           </div>
 
-          <div className="pt-3 border-t border-neutral-100">
+          <div className="mx-auto mt-4 max-w-7xl border-t border-border/60 pt-4">
             {user ? (
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 px-2 py-1">
-                  <Avatar className="w-10 h-10 ring-2 ring-rose-200">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 rounded-xl bg-card/60 p-3 ring-1 ring-border/50">
+                  <Avatar className="h-10 w-10 ring-1 ring-border">
                     <AvatarImage src={user.image || ""} />
-                    <AvatarFallback className="bg-rose-100 text-rose-700">
+                    <AvatarFallback className="bg-primary/10 text-sm font-semibold text-primary">
                       {getInitials(user.name)}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="overflow-hidden">
-                    <p className="text-sm font-semibold text-neutral-900 truncate">{user.name}</p>
-                    <p className="text-xs text-neutral-500 truncate">{user.email}</p>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-foreground">{user.name}</p>
+                    <p className="truncate text-xs text-muted-foreground">{user.email}</p>
                   </div>
                 </div>
-                <div className="flex flex-col space-y-1">
+                <div className="flex flex-col gap-1.5">
                   <Link
                     href={dashboardHref}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 text-sm text-neutral-700 px-3 py-2 rounded-md hover:bg-rose-50 font-medium"
+                    className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                   >
-                    <LayoutDashboard className="w-4 h-4 text-neutral-500" />
+                    <LayoutDashboard className="h-4 w-4 text-muted-foreground" />
                     Dashboard
                   </Link>
                   <Link
                     href={`${dashboardHref}/settings`}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-2 text-sm text-neutral-700 px-3 py-2 rounded-md hover:bg-rose-50 font-medium"
+                    className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                   >
-                    <Settings className="w-4 h-4 text-neutral-500" />
+                    <Settings className="h-4 w-4 text-muted-foreground" />
                     Profile Settings
                   </Link>
                   <button
@@ -272,22 +271,22 @@ export function Navbar() {
                       setMobileMenuOpen(false);
                       handleSignOut();
                     }}
-                    className="flex items-center gap-2 text-sm text-rose-600 px-3 py-2 rounded-md hover:bg-rose-50 font-medium w-full text-left"
+                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-destructive transition-colors hover:bg-destructive/10"
                   >
-                    <LogOut className="w-4 h-4" />
+                    <LogOut className="h-4 w-4" />
                     Sign Out
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col gap-2 pt-2">
+              <div className="flex flex-col gap-2.5 pt-1">
                 <Link href={authHref("/sign-in")} onClick={() => setMobileMenuOpen(false)}>
-                  <Button variant="outline" className="w-full justify-center">
+                  <Button variant="outline" className="w-full justify-center rounded-xl border-border/70">
                     Sign In
                   </Button>
                 </Link>
                 <Link href={authHref("/sign-up")} onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full justify-center bg-rose-600 hover:bg-rose-700 text-white">
+                  <Button className="w-full justify-center rounded-xl bg-primary text-primary-foreground hover:bg-primary/90">
                     Sign Up
                   </Button>
                 </Link>

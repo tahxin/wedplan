@@ -26,13 +26,13 @@ import {
   CheckCircle2,
   XCircle,
   Loader2,
-  Sparkles,
   MapPin,
   Heart,
   Store,
   Ban,
   Eye,
 } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import { Booking } from "@/types";
 
 interface CustomerOverview {
@@ -117,26 +117,26 @@ export default function CustomerDashboardPage() {
     switch (status) {
       case "accepted":
         return (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-            <CheckCircle2 className="w-3.5 h-3.5" /> Accepted
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/70 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+            <CheckCircle2 className="h-3.5 w-3.5" /> Accepted
           </span>
         );
       case "pending":
         return (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
-            <Clock className="w-3.5 h-3.5" /> Pending Review
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200/70 bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
+            <Clock className="h-3.5 w-3.5" /> Pending Review
           </span>
         );
       case "rejected":
         return (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
-            <XCircle className="w-3.5 h-3.5" /> Declined
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-rose-200/70 bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700">
+            <XCircle className="h-3.5 w-3.5" /> Declined
           </span>
         );
       case "cancelled":
         return (
-          <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-neutral-100 text-neutral-600 border border-neutral-200">
-            <Ban className="w-3.5 h-3.5" /> Cancelled
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/50 px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+            <Ban className="h-3.5 w-3.5" /> Cancelled
           </span>
         );
       default:
@@ -145,119 +145,105 @@ export default function CustomerDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50/50">
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-pink-600 border-pink-200 bg-pink-50/50">
-                <Heart className="w-3 h-3 mr-1 fill-pink-500" /> Customer Portal
-              </Badge>
-            </div>
-            <h1 className="font-serif text-3xl font-bold text-neutral-900 mt-2">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div className="space-y-2">
+            <Badge variant="outline" className="w-fit border-primary/20 bg-primary/5 px-3 py-1 text-primary">
+              <Heart className="mr-1 h-3 w-3 fill-current" /> Customer Portal
+            </Badge>
+            <h1 className="font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
               Welcome, {user?.name || "Friend"}
             </h1>
-            <p className="text-sm text-neutral-500 mt-0.5">
-              Track your wedding service inquiries and reservation statuses.
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Track your wedding service inquiries, review booking statuses, and manage pending requests.
             </p>
           </div>
 
           <Link href="/services">
-            <Button className="bg-rose-600 hover:bg-rose-700 text-white shadow-sm">
-              <Sparkles className="w-4 h-4 mr-2" /> Browse More Services
+            <Button className="rounded-full bg-primary px-6 text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90">
+              <LogoMark className="mr-2 h-4 w-4" /> Browse More Services
             </Button>
           </Link>
         </div>
 
         {loading || sessionPending ? (
-          <div className="py-24 flex flex-col items-center justify-center gap-3 text-neutral-400">
-            <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+          <div className="flex flex-col items-center justify-center gap-3 py-24 text-muted-foreground">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <p className="text-sm font-medium">Loading your bookings...</p>
           </div>
         ) : (
           <div className="space-y-10">
-            {/* Stat Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              <div className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm">
-                <div className="flex items-center justify-between text-neutral-400 mb-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider">Total Requests</span>
-                  <Calendar className="w-4 h-4 text-rose-500" />
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 sm:gap-5">
+              <div className="rounded-3xl border border-border/60 bg-card/50 p-5 shadow-sm backdrop-blur-sm">
+                <div className="mb-2 flex items-center justify-between text-muted-foreground">
+                  <span className="text-xs font-semibold uppercase tracking-[0.14em]">Total Requests</span>
+                  <Calendar className="h-4 w-4 text-primary" />
                 </div>
-                <p className="text-2xl sm:text-3xl font-bold text-neutral-900">
-                  {overview?.total ?? 0}
-                </p>
+                <p className="text-3xl font-semibold text-foreground">{overview?.total ?? 0}</p>
               </div>
-
-              <div className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm">
-                <div className="flex items-center justify-between text-neutral-400 mb-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider">Pending</span>
-                  <Clock className="w-4 h-4 text-amber-500" />
+              <div className="rounded-3xl border border-border/60 bg-card/50 p-5 shadow-sm backdrop-blur-sm">
+                <div className="mb-2 flex items-center justify-between text-muted-foreground">
+                  <span className="text-xs font-semibold uppercase tracking-[0.14em]">Pending</span>
+                  <Clock className="h-4 w-4 text-amber-600" />
                 </div>
-                <p className="text-2xl sm:text-3xl font-bold text-amber-600">
-                  {overview?.pending ?? 0}
-                </p>
+                <p className="text-3xl font-semibold text-amber-700">{overview?.pending ?? 0}</p>
               </div>
-
-              <div className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm">
-                <div className="flex items-center justify-between text-neutral-400 mb-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider">Accepted</span>
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <div className="rounded-3xl border border-border/60 bg-card/50 p-5 shadow-sm backdrop-blur-sm">
+                <div className="mb-2 flex items-center justify-between text-muted-foreground">
+                  <span className="text-xs font-semibold uppercase tracking-[0.14em]">Accepted</span>
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
                 </div>
-                <p className="text-2xl sm:text-3xl font-bold text-emerald-600">
-                  {overview?.accepted ?? 0}
-                </p>
+                <p className="text-3xl font-semibold text-emerald-700">{overview?.accepted ?? 0}</p>
               </div>
-
-              <div className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm">
-                <div className="flex items-center justify-between text-neutral-400 mb-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider">Declined</span>
-                  <XCircle className="w-4 h-4 text-rose-500" />
+              <div className="rounded-3xl border border-border/60 bg-card/50 p-5 shadow-sm backdrop-blur-sm">
+                <div className="mb-2 flex items-center justify-between text-muted-foreground">
+                  <span className="text-xs font-semibold uppercase tracking-[0.14em]">Declined</span>
+                  <XCircle className="h-4 w-4 text-rose-600" />
                 </div>
-                <p className="text-2xl sm:text-3xl font-bold text-rose-600">
-                  {overview?.rejected ?? 0}
-                </p>
+                <p className="text-3xl font-semibold text-rose-700">{overview?.rejected ?? 0}</p>
               </div>
             </div>
 
-            {/* Bookings List */}
-            <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-neutral-100 flex items-center justify-between">
+            <div className="overflow-hidden rounded-3xl border border-border/60 bg-card/50 shadow-sm backdrop-blur-sm">
+              <div className="flex flex-col gap-2 border-b border-border/60 p-6 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 className="text-lg font-bold text-neutral-900">My Booking Requests</h2>
-                  <p className="text-xs text-neutral-500 mt-0.5">
+                  <h2 className="text-xl font-semibold text-foreground">My Booking Requests</h2>
+                  <p className="mt-0.5 text-sm text-muted-foreground">
                     All direct inquiries you have submitted to wedding vendors.
                   </p>
                 </div>
-                <span className="text-xs font-semibold text-neutral-400">
+                <span className="text-sm font-medium text-muted-foreground">
                   {bookings.length} {bookings.length === 1 ? "Inquiry" : "Inquiries"}
                 </span>
               </div>
 
               {bookings.length === 0 ? (
-                <div className="py-16 text-center p-6 space-y-3">
-                  <Sparkles className="w-10 h-10 text-neutral-300 mx-auto" />
-                  <h3 className="font-semibold text-neutral-800 text-base">No booking requests yet</h3>
-                  <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+                <div className="space-y-3 p-10 text-center sm:p-14">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary/70 ring-1 ring-primary/15">
+                    <LogoMark className="h-7 w-7" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground">No booking requests yet</h3>
+                  <p className="mx-auto max-w-sm text-sm leading-relaxed text-muted-foreground">
                     Explore our wedding catalog and inquire directly with vendors to begin reserving services.
                   </p>
                   <Link href="/services">
-                    <Button className="bg-rose-600 hover:bg-rose-700 text-white text-xs mt-2">
+                    <Button className="mt-2 rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90">
                       Explore Wedding Services
                     </Button>
                   </Link>
                 </div>
               ) : (
-                <div className="divide-y divide-neutral-100">
+                <div className="divide-y divide-border/50">
                   {bookings.map((booking) => (
                     <div
                       key={booking._id}
-                      className="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:bg-neutral-50/50 transition-colors"
+                      className="flex flex-col justify-between gap-5 p-6 transition-colors hover:bg-background/40 md:flex-row md:items-center"
                     >
-                      <div className="flex items-start gap-4 flex-1">
-                        <div className="w-20 h-16 rounded-xl overflow-hidden bg-neutral-100 shrink-0">
+                      <div className="flex flex-1 items-start gap-4">
+                        <div className="h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-muted ring-1 ring-border/50">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={
@@ -265,79 +251,78 @@ export default function CustomerDashboardPage() {
                               "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80"
                             }
                             alt={booking.service?.serviceName || "Service"}
-                            className="w-full h-full object-cover"
+                            className="h-full w-full object-cover"
                           />
                         </div>
 
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-semibold text-neutral-900 text-base">
+                        <div className="min-w-0 space-y-1.5">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="text-base font-semibold text-foreground">
                               {booking.service?.serviceName || "Wedding Service"}
                             </h3>
-                            <Badge variant="outline" className="text-[10px] text-neutral-500">
+                            <Badge variant="outline" className="text-[10px] border-border/70 text-muted-foreground">
                               {booking.service?.category}
                             </Badge>
                           </div>
 
                           {booking.vendor && (
-                            <p className="text-xs text-neutral-600 flex items-center gap-1.5">
-                              <Store className="w-3.5 h-3.5 text-neutral-400" />
+                            <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                              <Store className="h-3.5 w-3.5" />
                               <span>{booking.vendor.businessName || booking.vendor.name}</span>
                             </p>
                           )}
 
-                          <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-500 pt-1">
-                            <span className="flex items-center gap-1 text-neutral-700 font-medium">
-                              <Calendar className="w-3.5 h-3.5 text-rose-500" />
-                              {new Date(booking.eventDate).toLocaleDateString(undefined, {
-                                dateStyle: "medium",
-                              })}
+                          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-0.5 text-sm text-muted-foreground">
+                            <span className="inline-flex items-center gap-1.5 font-medium text-foreground/85">
+                              <Calendar className="h-3.5 w-3.5 text-primary" />
+                              {new Date(booking.eventDate).toLocaleDateString(undefined, { dateStyle: "medium" })}
                             </span>
-                            <span className="flex items-center gap-1">
-                              <MapPin className="w-3.5 h-3.5 text-neutral-400" />
+                            <span className="inline-flex items-center gap-1.5">
+                              <MapPin className="h-3.5 w-3.5" />
                               {booking.eventLocation}
                             </span>
                           </div>
 
                           {booking.message && (
-                            <p className="text-xs text-neutral-500 italic pt-1 bg-neutral-50 p-2 rounded-lg max-w-xl">
+                            <p className="mt-1 max-w-xl rounded-xl border border-border/50 bg-background/50 p-2.5 text-sm italic text-muted-foreground">
                               &ldquo;{booking.message}&rdquo;
                             </p>
                           )}
                         </div>
                       </div>
 
-                      {/* Status & Actions */}
-                      <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 pt-4 md:pt-0 border-neutral-100">
+                      <div className="flex w-full items-center justify-between gap-3 border-t border-border/50 pt-4 md:w-auto md:justify-end md:border-t-0 md:pt-0">
                         {getStatusBadge(booking.status)}
 
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setSelectedBooking(booking)}
-                          className="text-xs text-neutral-700 hover:bg-neutral-50"
-                        >
-                          <Eye className="w-3.5 h-3.5 mr-1 text-neutral-500" /> Details
-                        </Button>
-
-                        {booking.status === "pending" && (
+                        <div className="flex items-center gap-2">
                           <Button
                             variant="outline"
                             size="sm"
-                            disabled={cancellingId === booking._id}
-                            onClick={() => setBookingToCancel(booking)}
-                            className="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200"
+                            onClick={() => setSelectedBooking(booking)}
+                            className="rounded-xl border-border/70 bg-background/60"
                           >
-                            {cancellingId === booking._id ? (
-                              <>
-                                <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" />
-                                Cancelling...
-                              </>
-                            ) : (
-                              "Cancel Request"
-                            )}
+                            <Eye className="mr-1.5 h-3.5 w-3.5" /> Details
                           </Button>
-                        )}
+
+                          {booking.status === "pending" && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              disabled={cancellingId === booking._id}
+                              onClick={() => setBookingToCancel(booking)}
+                              className="rounded-xl border-rose-200/70 text-rose-700 hover:bg-rose-50"
+                            >
+                              {cancellingId === booking._id ? (
+                                <>
+                                  <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                                  Cancelling...
+                                </>
+                              ) : (
+                                "Cancel Request"
+                              )}
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -346,100 +331,64 @@ export default function CustomerDashboardPage() {
             </div>
           </div>
         )}
-        {/* Booking Details Modal */}
+
         {selectedBooking && (
-          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-neutral-100 space-y-6">
-              <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-serif text-xl font-bold text-neutral-900">
-                    Booking Request Details
-                  </h3>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+            <div className="max-h-[90vh] w-full max-w-lg space-y-6 overflow-y-auto rounded-3xl border border-border/60 bg-card p-6 shadow-2xl sm:p-8">
+              <div className="flex items-start justify-between gap-4 border-b border-border/60 pb-4">
+                <div className="space-y-2">
+                  <h3 className="font-serif text-2xl font-semibold text-foreground">Booking Request Details</h3>
                   {getStatusBadge(selectedBooking.status)}
                 </div>
-                <button
-                  onClick={() => setSelectedBooking(null)}
-                  className="text-neutral-400 hover:text-neutral-600 text-sm font-semibold p-1"
-                >
-                  ✕
-                </button>
+                <button onClick={() => setSelectedBooking(null)} className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">✕</button>
               </div>
 
-              {/* Service Header */}
-              <div className="flex items-start gap-4 bg-neutral-50 p-4 rounded-xl border border-neutral-100">
-                <div className="w-16 h-14 rounded-lg overflow-hidden bg-neutral-200 shrink-0">
+              <div className="flex items-start gap-4 rounded-2xl border border-border/60 bg-background/50 p-4">
+                <div className="h-14 w-16 shrink-0 overflow-hidden rounded-lg bg-muted">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={
-                      selectedBooking.service?.images?.[0] ||
-                      "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80"
-                    }
+                    src={selectedBooking.service?.images?.[0] || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80"}
                     alt={selectedBooking.service?.serviceName || "Service"}
-                    className="w-full h-full object-cover"
+                    className="h-full w-full object-cover"
                   />
                 </div>
                 <div>
-                  <h4 className="font-bold text-neutral-900 text-sm">
-                    {selectedBooking.service?.serviceName || "Wedding Service"}
-                  </h4>
-                  <Badge variant="outline" className="text-[10px] text-neutral-600 mt-0.5">
-                    {selectedBooking.service?.category}
-                  </Badge>
+                  <h4 className="font-semibold text-foreground">{selectedBooking.service?.serviceName || "Wedding Service"}</h4>
+                  <Badge variant="outline" className="mt-1 text-[10px] border-border/70">{selectedBooking.service?.category}</Badge>
                   {selectedBooking.service?.price && (
-                    <p className="text-xs font-semibold text-neutral-800 mt-1">
-                      Package: ${selectedBooking.service.price.toLocaleString()}
-                    </p>
+                    <p className="mt-1.5 text-sm font-semibold text-foreground">Package: ${selectedBooking.service.price.toLocaleString()}</p>
                   )}
                 </div>
               </div>
 
-              {/* Information Grid */}
-              <div className="space-y-3 text-xs">
+              <div className="space-y-3 text-sm">
                 {selectedBooking.vendor && (
-                  <div className="p-3 rounded-lg border border-neutral-100 flex items-center justify-between">
-                    <span className="text-neutral-500 font-medium">Wedding Vendor</span>
-                    <span className="font-semibold text-neutral-800">
-                      {selectedBooking.vendor.businessName || selectedBooking.vendor.name} ({selectedBooking.vendor.email})
-                    </span>
+                  <div className="flex items-center justify-between gap-4 rounded-xl border border-border/60 p-3">
+                    <span className="font-medium text-muted-foreground">Wedding Vendor</span>
+                    <span className="text-right font-semibold text-foreground">{selectedBooking.vendor.businessName || selectedBooking.vendor.name} ({selectedBooking.vendor.email})</span>
                   </div>
                 )}
-
-                <div className="p-3 rounded-lg border border-neutral-100 flex items-center justify-between">
-                  <span className="text-neutral-500 font-medium">Celebration Date</span>
-                  <span className="font-semibold text-neutral-800">
-                    {new Date(selectedBooking.eventDate).toLocaleDateString(undefined, {
-                      dateStyle: "full",
-                    })}
-                  </span>
+                <div className="flex items-center justify-between gap-4 rounded-xl border border-border/60 p-3">
+                  <span className="font-medium text-muted-foreground">Celebration Date</span>
+                  <span className="font-semibold text-foreground">{new Date(selectedBooking.eventDate).toLocaleDateString(undefined, { dateStyle: "full" })}</span>
                 </div>
-
-                <div className="p-3 rounded-lg border border-neutral-100 flex items-center justify-between">
-                  <span className="text-neutral-500 font-medium">Event Location</span>
-                  <span className="font-semibold text-neutral-800">
-                    {selectedBooking.eventLocation}
-                  </span>
+                <div className="flex items-center justify-between gap-4 rounded-xl border border-border/60 p-3">
+                  <span className="font-medium text-muted-foreground">Event Location</span>
+                  <span className="text-right font-semibold text-foreground">{selectedBooking.eventLocation}</span>
                 </div>
-
-                <div className="p-3 rounded-lg border border-neutral-100 flex items-center justify-between">
-                  <span className="text-neutral-500 font-medium">Request Sent On</span>
-                  <span className="text-neutral-600">
-                    {new Date(selectedBooking.createdAt).toLocaleDateString(undefined, {
-                      dateStyle: "medium",
-                    })}
-                  </span>
+                <div className="flex items-center justify-between gap-4 rounded-xl border border-border/60 p-3">
+                  <span className="font-medium text-muted-foreground">Request Sent On</span>
+                  <span className="text-foreground/80">{new Date(selectedBooking.createdAt).toLocaleDateString(undefined, { dateStyle: "medium" })}</span>
                 </div>
-
                 {selectedBooking.message && (
-                  <div className="p-3.5 rounded-lg border border-neutral-100 bg-neutral-50 space-y-1">
-                    <span className="text-neutral-500 font-medium block">Vision & Notes</span>
-                    <p className="text-neutral-700 italic leading-relaxed">
-                      &ldquo;{selectedBooking.message}&rdquo;
-                    </p>
+                  <div className="space-y-1.5 rounded-xl border border-border/60 bg-background/50 p-3.5">
+                    <span className="block font-medium text-muted-foreground">Vision & Notes</span>
+                    <p className="italic leading-relaxed text-foreground/85">&ldquo;{selectedBooking.message}&rdquo;</p>
                   </div>
                 )}
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-neutral-100">
+              <div className="flex items-center justify-end gap-3 border-t border-border/60 pt-4">
                 {selectedBooking.status === "pending" && (
                   <Button
                     variant="outline"
@@ -449,16 +398,12 @@ export default function CustomerDashboardPage() {
                       setBookingToCancel(selectedBooking);
                       setSelectedBooking(null);
                     }}
-                    className="text-xs text-rose-600 border-rose-200 hover:bg-rose-50"
+                    className="rounded-xl border-rose-200/70 text-rose-700 hover:bg-rose-50"
                   >
                     Cancel Request
                   </Button>
                 )}
-                <Button
-                  size="sm"
-                  onClick={() => setSelectedBooking(null)}
-                  className="bg-neutral-900 text-white text-xs"
-                >
+                <Button size="sm" onClick={() => setSelectedBooking(null)} className="rounded-xl bg-foreground text-background hover:bg-foreground/90">
                   Close
                 </Button>
               </div>
@@ -466,14 +411,13 @@ export default function CustomerDashboardPage() {
           </div>
         )}
 
-        {/* Cancel confirmation */}
         <AlertDialog
           open={Boolean(bookingToCancel)}
           onOpenChange={(open) => {
             if (!open) setBookingToCancel(null);
           }}
         >
-          <AlertDialogContent>
+          <AlertDialogContent className="rounded-2xl border-border/60 bg-card">
             <AlertDialogHeader>
               <AlertDialogTitle>Cancel this booking request?</AlertDialogTitle>
               <AlertDialogDescription>
@@ -483,13 +427,13 @@ export default function CustomerDashboardPage() {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Keep Request</AlertDialogCancel>
+              <AlertDialogCancel className="rounded-xl">Keep Request</AlertDialogCancel>
               <AlertDialogAction
                 onClick={(event) => {
                   event.preventDefault();
                   confirmCancelBooking();
                 }}
-                className="bg-rose-600 text-white hover:bg-rose-700"
+                className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 Cancel Request
               </AlertDialogAction>

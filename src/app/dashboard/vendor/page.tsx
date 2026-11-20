@@ -298,47 +298,46 @@ export default function VendorDashboardPage() {
   const isPremium = overview?.currentPlan === "premium";
 
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50/50">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-amber-700 border-amber-200 bg-amber-50">
-                <Store className="w-3.5 h-3.5 mr-1" /> Vendor Portal
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div className="mb-8 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline" className="border-primary/20 bg-primary/5 px-3 py-1 text-primary">
+                <Store className="mr-1.5 h-3.5 w-3.5" /> Vendor Portal
               </Badge>
               {isPremium ? (
-                <span className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-xs">
-                  <Crown className="w-3 h-3" /> PREMIUM PARTNER
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 px-3 py-1 text-[11px] font-semibold text-white shadow-sm">
+                  <Crown className="h-3.5 w-3.5" /> PREMIUM PARTNER
                 </span>
               ) : (
-                <span className="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-neutral-200 text-neutral-700">
+                <span className="inline-flex items-center rounded-full border border-border/70 bg-muted/40 px-3 py-1 text-[11px] font-semibold text-foreground/80">
                   FREE PLAN (Max 3 Active)
                 </span>
               )}
             </div>
-            <h1 className="font-serif text-3xl font-bold text-neutral-900 mt-2">
+            <h1 className="font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
               {user?.businessName || user?.name || "Vendor Studio"}
             </h1>
-            <p className="text-sm text-neutral-500 mt-0.5">
+            <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
               Manage your published wedding offerings, respond to client inquiries, and scale your business.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {!isPremium && (
               <Button
                 variant="outline"
                 disabled={isUpgrading}
                 onClick={handleUpgradeToPremium}
-                className="border-amber-400 text-amber-800 bg-amber-50 hover:bg-amber-100 font-semibold"
+                className="rounded-full border-amber-300/70 bg-amber-50/70 text-amber-900 hover:bg-amber-100/70"
               >
                 {isUpgrading ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
-                  <Crown className="w-4 h-4 mr-2 text-amber-600" />
+                  <Crown className="mr-2 h-4 w-4 text-amber-600" />
                 )}
                 Upgrade to Premium ($20)
               </Button>
@@ -346,127 +345,120 @@ export default function VendorDashboardPage() {
 
             <Button
               onClick={() => setIsAddingService(true)}
-              className="bg-rose-600 hover:bg-rose-700 text-white shadow-sm"
+              className="rounded-full bg-primary px-6 text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90"
             >
-              <Plus className="w-4 h-4 mr-1.5" /> Publish New Service
+              <Plus className="mr-1.5 h-4 w-4" /> Publish New Service
             </Button>
           </div>
         </div>
 
         {loading || sessionPending ? (
-          <div className="py-24 flex flex-col items-center justify-center gap-3 text-neutral-400">
-            <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+          <div className="flex flex-col items-center justify-center gap-3 py-24 text-muted-foreground">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
             <p className="text-sm font-medium">Loading vendor portal...</p>
           </div>
         ) : (
           <div className="space-y-8">
-            {/* Stat Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 sm:gap-5">
               <button
                 type="button"
                 onClick={() => setActiveTab("services")}
-                className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm text-left cursor-pointer transition-colors hover:bg-neutral-50 hover:border-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                className="rounded-3xl border border-border/60 bg-card/50 p-5 text-left shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 block mb-1">
+                <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   Total Services
                 </span>
-                <p className="text-2xl sm:text-3xl font-bold text-neutral-900">
-                  {overview?.totalServices ?? 0}
-                </p>
+                <p className="text-3xl font-semibold text-foreground">{overview?.totalServices ?? 0}</p>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveTab("services")}
-                className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm text-left cursor-pointer transition-colors hover:bg-neutral-50 hover:border-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                className="rounded-3xl border border-border/60 bg-card/50 p-5 text-left shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 block mb-1">
+                <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   Active Services
                 </span>
-                <p className="text-2xl sm:text-3xl font-bold text-emerald-600">
+                <p className="text-3xl font-semibold text-emerald-700">
                   {overview?.activeServices ?? 0}
-                  {!isPremium && (
-                    <span className="text-xs text-neutral-400 font-normal ml-1">/ 3 max</span>
-                  )}
+                  {!isPremium && <span className="ml-1 text-xs font-normal text-muted-foreground">/ 3 max</span>}
                 </p>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveTab("bookings")}
-                className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm text-left cursor-pointer transition-colors hover:bg-neutral-50 hover:border-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                className="rounded-3xl border border-border/60 bg-card/50 p-5 text-left shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 block mb-1">
+                <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   Pending Requests
                 </span>
-                <p className="text-2xl sm:text-3xl font-bold text-amber-600">
-                  {overview?.pendingRequests ?? 0}
-                </p>
+                <p className="text-3xl font-semibold text-amber-700">{overview?.pendingRequests ?? 0}</p>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveTab("bookings")}
-                className="bg-white p-5 rounded-2xl border border-neutral-100 shadow-sm text-left cursor-pointer transition-colors hover:bg-neutral-50 hover:border-neutral-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                className="rounded-3xl border border-border/60 bg-card/50 p-5 text-left shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 block mb-1">
+                <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   Accepted Bookings
                 </span>
-                <p className="text-2xl sm:text-3xl font-bold text-rose-600">
-                  {overview?.acceptedBookings ?? 0}
-                </p>
+                <p className="text-3xl font-semibold text-primary">{overview?.acceptedBookings ?? 0}</p>
               </button>
             </div>
 
-            {/* Main Tabs */}
-            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "services" | "bookings" | "subscription")} className="space-y-6">
-              <TabsList className="bg-white border border-neutral-200 p-1 rounded-xl">
-                <TabsTrigger value="services" className="text-xs font-semibold">
+            <Tabs
+              value={activeTab}
+              onValueChange={(v) => setActiveTab(v as "services" | "bookings" | "subscription")}
+              className="space-y-6"
+            >
+              <TabsList className="h-auto w-full flex-wrap justify-start gap-1.5 rounded-2xl border border-border/60 bg-card/50 p-1.5 shadow-sm backdrop-blur-sm sm:w-fit">
+                <TabsTrigger value="services" className="rounded-xl px-4 py-2 text-xs font-semibold sm:text-sm">
                   My Services ({services.length})
                 </TabsTrigger>
-                <TabsTrigger value="bookings" className="text-xs font-semibold">
+                <TabsTrigger value="bookings" className="rounded-xl px-4 py-2 text-xs font-semibold sm:text-sm">
                   Booking Inquiries ({bookings.length})
                 </TabsTrigger>
-                <TabsTrigger value="subscription" className="text-xs font-semibold">
+                <TabsTrigger value="subscription" className="rounded-xl px-4 py-2 text-xs font-semibold sm:text-sm">
                   Subscription Plan
                 </TabsTrigger>
               </TabsList>
 
-              {/* TAB 1: SERVICES */}
               <TabsContent value="services" className="space-y-4">
-                <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
-                  <div className="p-6 border-b border-neutral-100 flex items-center justify-between">
+                <div className="overflow-hidden rounded-3xl border border-border/60 bg-card/50 shadow-sm backdrop-blur-sm">
+                  <div className="flex items-center justify-between border-b border-border/60 p-6">
                     <div>
-                      <h2 className="text-base font-bold text-neutral-900">Published Wedding Services</h2>
-                      <p className="text-xs text-neutral-500">
+                      <h2 className="text-xl font-semibold text-foreground">Published Wedding Services</h2>
+                      <p className="mt-0.5 text-sm text-muted-foreground">
                         Services submitted by your studio. Once approved by admins, they appear in public search.
                       </p>
                     </div>
                   </div>
 
                   {services.length === 0 ? (
-                    <div className="py-16 text-center p-6 space-y-3">
-                      <Store className="w-10 h-10 text-neutral-300 mx-auto" />
-                      <h3 className="font-semibold text-neutral-800 text-base">No services published yet</h3>
-                      <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+                    <div className="space-y-3 p-10 text-center sm:p-14">
+                      <Store className="mx-auto h-10 w-10 text-primary/35" />
+                      <h3 className="text-lg font-semibold text-foreground">No services published yet</h3>
+                      <p className="mx-auto max-w-sm text-sm leading-relaxed text-muted-foreground">
                         Start reaching couples by publishing your wedding packages and photography or venue listings.
                       </p>
                       <Button
                         onClick={() => setIsAddingService(true)}
-                        className="bg-rose-600 hover:bg-rose-700 text-white text-xs mt-2"
+                        className="mt-2 rounded-full bg-primary px-6 text-primary-foreground hover:bg-primary/90"
                       >
-                        <Plus className="w-3.5 h-3.5 mr-1" /> Add Your First Service
+                        <Plus className="mr-1.5 h-4 w-4" /> Add Your First Service
                       </Button>
                     </div>
                   ) : (
-                    <div className="divide-y divide-neutral-100">
+                    <div className="divide-y divide-border/50">
                       {services.map((service) => (
                         <div
                           key={service._id}
-                          className="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 hover:bg-neutral-50/50 transition-colors"
+                          className="flex flex-col justify-between gap-5 p-6 transition-colors hover:bg-background/40 md:flex-row md:items-center"
                         >
-                          <div className="flex items-start gap-4 flex-1">
-                            <div className="w-20 h-16 rounded-xl overflow-hidden bg-neutral-100 shrink-0">
+                          <div className="flex flex-1 items-start gap-4">
+                            <div className="h-16 w-20 shrink-0 overflow-hidden rounded-xl bg-muted ring-1 ring-border/50">
                               {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img
                                 src={
@@ -474,95 +466,84 @@ export default function VendorDashboardPage() {
                                   "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80"
                                 }
                                 alt={service.serviceName}
-                                className="w-full h-full object-cover"
+                                className="h-full w-full object-cover"
                               />
                             </div>
 
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-2">
-                                <h3 className="font-semibold text-neutral-900 text-base">
-                                  {service.serviceName}
-                                </h3>
-                                <Badge variant="outline" className="text-[10px] text-neutral-600">
+                            <div className="min-w-0 space-y-1.5">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <h3 className="text-base font-semibold text-foreground">{service.serviceName}</h3>
+                                <Badge variant="outline" className="text-[10px] border-border/70 text-muted-foreground">
                                   {service.category}
                                 </Badge>
                               </div>
 
-                              <p className="text-xs text-neutral-500 flex items-center gap-2">
-                                <MapPin className="w-3.5 h-3.5 text-neutral-400" />
-                                <span>{service.location}</span>
-                                <span>•</span>
-                                <span className="font-bold text-neutral-900">
-                                  ${service.price.toLocaleString()}
+                              <p className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                                <span className="inline-flex items-center gap-1.5">
+                                  <MapPin className="h-3.5 w-3.5" /> {service.location}
                                 </span>
+                                <span className="text-border">•</span>
+                                <span className="font-semibold text-foreground">${service.price.toLocaleString()}</span>
                               </p>
 
-                              <div className="flex items-center gap-3 pt-1">
+                              <div className="flex flex-wrap items-center gap-2.5 pt-0.5">
                                 {service.status === "approved" && (
-                                  <span className="inline-flex items-center text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                                  <span className="inline-flex items-center rounded-full border border-emerald-200/70 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
                                     Approved
                                   </span>
                                 )}
                                 {service.status === "pending" && (
-                                  <span className="inline-flex items-center text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                                  <span className="inline-flex items-center rounded-full border border-amber-200/70 bg-amber-50 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700">
                                     Pending Admin Approval
                                   </span>
                                 )}
                                 {service.status === "rejected" && (
-                                  <span className="inline-flex items-center text-[11px] font-semibold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">
+                                  <span className="inline-flex items-center rounded-full border border-rose-200/70 bg-rose-50 px-2.5 py-0.5 text-[11px] font-semibold text-rose-700">
                                     Rejected
                                   </span>
                                 )}
-
-                                <span
-                                  className={`text-[11px] font-medium ${
-                                    service.isActive ? "text-neutral-600" : "text-neutral-400 italic"
-                                  }`}
-                                >
+                                <span className={`text-[11px] font-medium ${service.isActive ? "text-foreground/70" : "italic text-muted-foreground"}`}>
                                   {service.isActive ? "Active (Accepting Bookings)" : "Paused"}
                                 </span>
                               </div>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 pt-4 md:pt-0 border-neutral-100">
-                            {/* Toggle Availability */}
+                          <div className="flex w-full flex-wrap items-center justify-between gap-2 border-t border-border/50 pt-4 md:w-auto md:justify-end md:border-t-0 md:pt-0">
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => handleToggleAvailability(service._id)}
-                              className="text-xs gap-1.5"
+                              className="rounded-xl border-border/70 bg-background/60 text-xs"
                             >
                               {service.isActive ? (
                                 <>
-                                  <ToggleRight className="w-4 h-4 text-emerald-600" /> Pause Listing
+                                  <ToggleRight className="mr-1.5 h-4 w-4 text-emerald-600" /> Pause Listing
                                 </>
                               ) : (
                                 <>
-                                  <ToggleLeft className="w-4 h-4 text-neutral-400" /> Activate Listing
+                                  <ToggleLeft className="mr-1.5 h-4 w-4 text-muted-foreground" /> Activate Listing
                                 </>
                               )}
                             </Button>
 
-                            {/* Edit */}
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => openEditModal(service)}
-                              className="text-xs text-neutral-700 hover:bg-neutral-50"
+                              className="rounded-xl border-border/70 bg-background/60 text-xs"
                               title="Edit service details"
                             >
-                              <Pencil className="w-3.5 h-3.5 mr-1 text-neutral-500" /> Edit
+                              <Pencil className="mr-1.5 h-3.5 w-3.5" /> Edit
                             </Button>
 
-                            {/* Delete */}
                             <Button
                               variant="ghost"
                               size="sm"
                               onClick={() => handleDeleteService(service._id)}
-                              className="text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                              className="rounded-xl text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
                         </div>
@@ -572,86 +553,79 @@ export default function VendorDashboardPage() {
                 </div>
               </TabsContent>
 
-              {/* TAB 2: BOOKING INQUIRIES */}
               <TabsContent value="bookings" className="space-y-4">
-                <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm overflow-hidden">
-                  <div className="p-6 border-b border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <h2 className="text-base font-bold text-neutral-900">Client Booking Requests</h2>
-                      <p className="text-xs text-neutral-500">
-                        Inquiries from couples for your wedding services.
-                      </p>
-                    </div>
+                <div className="overflow-hidden rounded-3xl border border-border/60 bg-card/50 shadow-sm backdrop-blur-sm">
+                  <div className="border-b border-border/60 p-6">
+                    <h2 className="text-xl font-semibold text-foreground">Client Booking Requests</h2>
+                    <p className="mt-0.5 text-sm text-muted-foreground">
+                      Inquiries from couples for your wedding services.
+                    </p>
                   </div>
 
                   {bookings.length === 0 ? (
-                    <div className="py-16 text-center p-6 space-y-3">
-                      <Clock className="w-10 h-10 text-neutral-300 mx-auto" />
-                      <h3 className="font-semibold text-neutral-800 text-base">No booking requests yet</h3>
-                      <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+                    <div className="space-y-3 p-10 text-center sm:p-14">
+                      <Clock className="mx-auto h-10 w-10 text-primary/35" />
+                      <h3 className="text-lg font-semibold text-foreground">No booking requests yet</h3>
+                      <p className="mx-auto max-w-sm text-sm leading-relaxed text-muted-foreground">
                         Inquiries submitted by couples will appear here for review and confirmation.
                       </p>
                     </div>
                   ) : (
-                    <div className="divide-y divide-neutral-100">
+                    <div className="divide-y divide-border/50">
                       {bookings.map((booking) => (
                         <div
                           key={booking._id}
-                          className="p-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 hover:bg-neutral-50/50 transition-colors"
+                          className="flex flex-col justify-between gap-5 p-6 transition-colors hover:bg-background/40 lg:flex-row lg:items-center"
                         >
-                          <div className="space-y-2 flex-1">
-                            <div className="flex items-center gap-2">
-                              <h3 className="font-semibold text-neutral-900 text-base">
+                          <div className="flex-1 space-y-2">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h3 className="text-base font-semibold text-foreground">
                                 {booking.service?.serviceName || "Wedding Service"}
                               </h3>
-                              <Badge variant="outline" className="text-[10px]">
+                              <Badge variant="outline" className="text-[10px] border-border/70 text-muted-foreground">
                                 {booking.status.toUpperCase()}
                               </Badge>
                             </div>
 
                             {booking.customer && (
-                              <p className="text-xs text-neutral-700 flex items-center gap-2">
-                                <strong>Customer:</strong>
-                                <span>{booking.customer.name}</span>
-                                <span className="text-neutral-400">({booking.customer.email})</span>
+                              <p className="text-sm text-muted-foreground">
+                                <span className="font-medium text-foreground/85">Customer:</span> {booking.customer.name}
+                                <span className="text-muted-foreground"> ({booking.customer.email})</span>
                               </p>
                             )}
 
-                            <div className="flex flex-wrap items-center gap-4 text-xs text-neutral-500">
-                              <span className="flex items-center gap-1 font-medium text-neutral-800">
-                                <Calendar className="w-3.5 h-3.5 text-rose-500" />
-                                {new Date(booking.eventDate).toLocaleDateString(undefined, {
-                                  dateStyle: "medium",
-                                })}
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                              <span className="inline-flex items-center gap-1.5 font-medium text-foreground/85">
+                                <Calendar className="h-3.5 w-3.5 text-primary" />
+                                {new Date(booking.eventDate).toLocaleDateString(undefined, { dateStyle: "medium" })}
                               </span>
-                              <span className="flex items-center gap-1">
-                                <MapPin className="w-3.5 h-3.5 text-neutral-400" />
+                              <span className="inline-flex items-center gap-1.5">
+                                <MapPin className="h-3.5 w-3.5" />
                                 {booking.eventLocation}
                               </span>
                             </div>
 
                             {booking.message && (
-                              <p className="text-xs text-neutral-600 italic bg-neutral-50 p-2.5 rounded-lg max-w-xl">
+                              <p className="max-w-xl rounded-xl border border-border/50 bg-background/50 p-2.5 text-sm italic text-muted-foreground">
                                 &ldquo;{booking.message}&rdquo;
                               </p>
                             )}
                           </div>
 
-                          {/* Action Buttons */}
-                          <div className="flex items-center gap-3 w-full lg:w-auto justify-end border-t lg:border-t-0 pt-4 lg:pt-0 border-neutral-100">
+                          <div className="flex w-full items-center justify-end gap-2 border-t border-border/50 pt-4 lg:w-auto lg:border-t-0 lg:pt-0">
                             {booking.status === "pending" ? (
                               <>
                                 <Button
                                   size="sm"
                                   disabled={processingBookingId === booking._id}
                                   onClick={() => handleAcceptBooking(booking._id)}
-                                  className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs"
+                                  className="rounded-xl bg-emerald-600 text-xs text-white hover:bg-emerald-700"
                                 >
                                   {processingBookingId === booking._id ? (
-                                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
                                   ) : (
                                     <>
-                                      <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Accept
+                                      <CheckCircle2 className="mr-1 h-3.5 w-3.5" /> Accept
                                     </>
                                   )}
                                 </Button>
@@ -660,19 +634,19 @@ export default function VendorDashboardPage() {
                                   variant="outline"
                                   disabled={processingBookingId === booking._id}
                                   onClick={() => handleRejectBooking(booking._id)}
-                                  className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200 text-xs"
+                                  className="rounded-xl border-rose-200/70 text-xs text-rose-700 hover:bg-rose-50"
                                 >
                                   {processingBookingId === booking._id ? (
-                                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
                                   ) : (
                                     <>
-                                      <XCircle className="w-3.5 h-3.5 mr-1" /> Decline
+                                      <XCircle className="mr-1 h-3.5 w-3.5" /> Decline
                                     </>
                                   )}
                                 </Button>
                               </>
                             ) : (
-                              <span className="text-xs font-semibold text-neutral-400">
+                              <span className="text-sm font-medium text-muted-foreground">
                                 {booking.status === "accepted" ? "Booking Confirmed" : "Booking Closed"}
                               </span>
                             )}
@@ -684,68 +658,64 @@ export default function VendorDashboardPage() {
                 </div>
               </TabsContent>
 
-              {/* TAB 3: SUBSCRIPTION */}
               <TabsContent value="subscription" className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Free Plan Box */}
-                  <div className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-lg text-neutral-900">Free Tier</h3>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <div className="space-y-4 rounded-3xl border border-border/60 bg-card/50 p-6 shadow-sm backdrop-blur-sm">
+                    <div className="flex items-center justify-between gap-3">
+                      <h3 className="text-xl font-semibold text-foreground">Free Tier</h3>
                       {!isPremium && (
-                        <Badge variant="outline" className="bg-neutral-100 text-neutral-700">
+                        <Badge variant="outline" className="border-border/70 bg-muted/40 text-foreground/80">
                           Current Plan
                         </Badge>
                       )}
                     </div>
-                    <p className="text-xs text-neutral-500 leading-relaxed">
+                    <p className="text-sm leading-relaxed text-muted-foreground">
                       Basic vendor membership to showcase your wedding business.
                     </p>
-                    <div className="text-2xl font-bold text-neutral-900">$0</div>
-                    <ul className="space-y-2.5 text-xs text-neutral-600 pt-2 border-t border-neutral-100">
+                    <div className="text-3xl font-semibold text-foreground">$0</div>
+                    <ul className="space-y-2.5 border-t border-border/60 pt-3 text-sm text-muted-foreground">
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Max 3 Active Services
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Max 3 Active Services
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Direct Booking Requests
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Direct Booking Requests
                       </li>
-                      <li className="flex items-center gap-2 text-neutral-400">
-                        <XCircle className="w-3.5 h-3.5" /> Unlimited Services
+                      <li className="flex items-center gap-2 text-muted-foreground/70">
+                        <XCircle className="h-4 w-4" /> Unlimited Services
                       </li>
-                      <li className="flex items-center gap-2 text-neutral-400">
-                        <XCircle className="w-3.5 h-3.5" /> Premium Verified Badge
+                      <li className="flex items-center gap-2 text-muted-foreground/70">
+                        <XCircle className="h-4 w-4" /> Premium Verified Badge
                       </li>
                     </ul>
                   </div>
 
-                  {/* Premium Plan Box */}
-                  <div className="bg-gradient-to-b from-amber-50/50 to-white rounded-2xl p-6 border-2 border-amber-300 shadow-md space-y-4 relative overflow-hidden">
-                    <div className="flex items-center justify-between">
+                  <div className="relative space-y-4 overflow-hidden rounded-3xl border border-amber-300/70 bg-gradient-to-b from-amber-50/70 to-card/60 p-6 shadow-lg shadow-amber-500/5 backdrop-blur-sm">
+                    <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-amber-200/30 blur-2xl" />
+                    <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
-                        <Crown className="w-5 h-5 text-amber-600" />
-                        <h3 className="font-bold text-lg text-neutral-900">Premium Partner</h3>
+                        <Crown className="h-5 w-5 text-amber-600" />
+                        <h3 className="text-xl font-semibold text-foreground">Premium Partner</h3>
                       </div>
-                      {isPremium && (
-                        <Badge className="bg-amber-600 text-white">Active Plan</Badge>
-                      )}
+                      {isPremium && <Badge className="bg-amber-600 text-white hover:bg-amber-600">Active Plan</Badge>}
                     </div>
-                    <p className="text-xs text-neutral-600 leading-relaxed">
+                    <p className="text-sm leading-relaxed text-muted-foreground">
                       Scale your wedding studio with unlimited catalog listings & premium visibility.
                     </p>
-                    <div className="text-3xl font-serif font-bold text-neutral-900">
-                      $20 <span className="text-xs text-neutral-500 font-sans">/ one-time</span>
+                    <div className="font-serif text-4xl font-semibold text-foreground">
+                      $20 <span className="font-sans text-sm font-medium text-muted-foreground">/ one-time</span>
                     </div>
-                    <ul className="space-y-2.5 text-xs text-neutral-700 pt-2 border-t border-amber-100">
+                    <ul className="space-y-2.5 border-t border-amber-200/60 pt-3 text-sm text-foreground/85">
                       <li className="flex items-center gap-2 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Publish Unlimited Services
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Publish Unlimited Services
                       </li>
                       <li className="flex items-center gap-2 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Premium Verified Partner Badge
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Premium Verified Partner Badge
                       </li>
                       <li className="flex items-center gap-2 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Priority placement in search results
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Priority placement in search results
                       </li>
                       <li className="flex items-center gap-2 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Direct Client Inquiries
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Direct Client Inquiries
                       </li>
                     </ul>
 
@@ -753,11 +723,11 @@ export default function VendorDashboardPage() {
                       <Button
                         onClick={handleUpgradeToPremium}
                         disabled={isUpgrading}
-                        className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-semibold shadow-md mt-4"
+                        className="mt-2 w-full rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 font-semibold text-white shadow-md hover:from-amber-600 hover:to-amber-700"
                       >
                         {isUpgrading ? (
                           <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             Redirecting to Stripe...
                           </>
                         ) : (
@@ -765,7 +735,7 @@ export default function VendorDashboardPage() {
                         )}
                       </Button>
                     ) : (
-                      <div className="p-3 bg-amber-100/50 rounded-xl text-xs text-amber-900 font-medium text-center">
+                      <div className="rounded-xl border border-amber-200/70 bg-amber-100/50 p-3 text-center text-sm font-medium text-amber-900">
                         You are enjoying all Premium Partner privileges!
                       </div>
                     )}
@@ -776,17 +746,14 @@ export default function VendorDashboardPage() {
           </div>
         )}
 
-        {/* Add Service Modal */}
         {isAddingService && (
-          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-neutral-100 space-y-5">
-              <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
-                <h3 className="font-serif text-xl font-bold text-neutral-900">
-                  Publish Wedding Service
-                </h3>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+            <div className="max-h-[90vh] w-full max-w-lg space-y-5 overflow-y-auto rounded-3xl border border-border/60 bg-card p-6 shadow-2xl sm:p-8">
+              <div className="flex items-center justify-between border-b border-border/60 pb-3">
+                <h3 className="font-serif text-2xl font-semibold text-foreground">Publish Wedding Service</h3>
                 <button
                   onClick={() => setIsAddingService(false)}
-                  className="text-neutral-400 hover:text-neutral-600 text-sm font-semibold p-1"
+                  className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 >
                   ✕
                 </button>
@@ -794,7 +761,7 @@ export default function VendorDashboardPage() {
 
               <form onSubmit={handleCreateService} className="space-y-4">
                 <div>
-                  <Label htmlFor="srv-name" className="text-xs font-medium text-neutral-700">
+                  <Label htmlFor="srv-name" className="text-sm font-medium text-foreground">
                     Service / Package Name
                   </Label>
                   <Input
@@ -803,20 +770,20 @@ export default function VendorDashboardPage() {
                     placeholder="e.g. Fairytale Castle Ballroom & Catering"
                     value={serviceName}
                     onChange={(e) => setServiceName(e.target.value)}
-                    className="mt-1 text-sm border-neutral-200"
+                    className="mt-1.5 h-11 rounded-xl border-border/70 bg-background/70 text-sm"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div>
-                    <Label htmlFor="srv-cat" className="text-xs font-medium text-neutral-700">
+                    <Label htmlFor="srv-cat" className="text-sm font-medium text-foreground">
                       Category
                     </Label>
                     <select
                       id="srv-cat"
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
-                      className="w-full h-10 px-3 mt-1 rounded-md border border-neutral-200 bg-white text-xs text-neutral-800"
+                      className="mt-1.5 h-11 w-full rounded-xl border border-border/70 bg-background/70 px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
                     >
                       {CATEGORIES.map((c) => (
                         <option key={c} value={c}>
@@ -827,7 +794,7 @@ export default function VendorDashboardPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="srv-price" className="text-xs font-medium text-neutral-700">
+                    <Label htmlFor="srv-price" className="text-sm font-medium text-foreground">
                       Package Price ($ USD)
                     </Label>
                     <Input
@@ -838,13 +805,13 @@ export default function VendorDashboardPage() {
                       placeholder="2500"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
-                      className="mt-1 text-sm border-neutral-200"
+                      className="mt-1.5 h-11 rounded-xl border-border/70 bg-background/70 text-sm"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="srv-loc" className="text-xs font-medium text-neutral-700">
+                  <Label htmlFor="srv-loc" className="text-sm font-medium text-foreground">
                     Service Location
                   </Label>
                   <Input
@@ -853,12 +820,12 @@ export default function VendorDashboardPage() {
                     placeholder="e.g. Austin, TX & Hill Country"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="mt-1 text-sm border-neutral-200"
+                    className="mt-1.5 h-11 rounded-xl border-border/70 bg-background/70 text-sm"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="srv-desc" className="text-xs font-medium text-neutral-700">
+                  <Label htmlFor="srv-desc" className="text-sm font-medium text-foreground">
                     Description & Offerings
                   </Label>
                   <Textarea
@@ -868,12 +835,12 @@ export default function VendorDashboardPage() {
                     placeholder="Detail everything included in this package (hours, staff, equipment, deliverables)..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="mt-1 text-sm border-neutral-200"
+                    className="mt-1.5 rounded-xl border-border/70 bg-background/70 text-sm"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="srv-imgs" className="text-xs font-medium text-neutral-700">
+                  <Label htmlFor="srv-imgs" className="text-sm font-medium text-foreground">
                     Showcase Images (Upload files to ImgBB)
                   </Label>
                   <Input
@@ -882,30 +849,19 @@ export default function VendorDashboardPage() {
                     multiple
                     accept="image/*"
                     onChange={(e) => setImageFiles(e.target.files)}
-                    className="mt-1 text-xs cursor-pointer file:cursor-pointer"
+                    className="mt-1.5 h-11 cursor-pointer rounded-xl border-border/70 bg-background/70 text-xs file:mr-3 file:cursor-pointer file:rounded-lg file:border-0 file:bg-muted file:px-3 file:py-1.5 file:text-xs file:font-medium"
                   />
-                  <p className="text-[11px] text-neutral-400 mt-1">
-                    Select up to 5 photos showcasing your wedding work.
-                  </p>
+                  <p className="mt-1.5 text-xs text-muted-foreground">Select up to 5 photos showcasing your wedding work.</p>
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-3 border-t border-neutral-100">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setIsAddingService(false)}
-                    className="text-xs"
-                  >
+                <div className="flex items-center justify-end gap-3 border-t border-border/60 pt-3">
+                  <Button type="button" variant="outline" onClick={() => setIsAddingService(false)} className="rounded-xl border-border/70">
                     Cancel
                   </Button>
-                  <Button
-                    type="submit"
-                    disabled={submittingService}
-                    className="bg-rose-600 hover:bg-rose-700 text-white text-xs font-medium"
-                  >
+                  <Button type="submit" disabled={submittingService} className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90">
                     {submittingService ? (
                       <>
-                        <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                        <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
                         Uploading & Submitting...
                       </>
                     ) : (
@@ -917,17 +873,15 @@ export default function VendorDashboardPage() {
             </div>
           </div>
         )}
-        {/* Edit Service Modal */}
+
         {editingService && (
-          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl border border-neutral-100 space-y-5">
-              <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
-                <h3 className="font-serif text-xl font-bold text-neutral-900">
-                  Update Service Package
-                </h3>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+            <div className="max-h-[90vh] w-full max-w-lg space-y-5 overflow-y-auto rounded-3xl border border-border/60 bg-card p-6 shadow-2xl sm:p-8">
+              <div className="flex items-center justify-between border-b border-border/60 pb-3">
+                <h3 className="font-serif text-2xl font-semibold text-foreground">Update Service Package</h3>
                 <button
                   onClick={() => setEditingService(null)}
-                  className="text-neutral-400 hover:text-neutral-600 text-sm font-semibold p-1"
+                  className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 >
                   ✕
                 </button>
@@ -935,7 +889,7 @@ export default function VendorDashboardPage() {
 
               <form onSubmit={handleUpdateService} className="space-y-4">
                 <div>
-                  <Label htmlFor="edit-srv-name" className="text-xs font-medium text-neutral-700">
+                  <Label htmlFor="edit-srv-name" className="text-sm font-medium text-foreground">
                     Service Name
                   </Label>
                   <Input
@@ -943,20 +897,20 @@ export default function VendorDashboardPage() {
                     required
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
-                    className="mt-1 text-sm border-neutral-200"
+                    className="mt-1.5 h-11 rounded-xl border-border/70 bg-background/70 text-sm"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div>
-                    <Label htmlFor="edit-srv-cat" className="text-xs font-medium text-neutral-700">
+                    <Label htmlFor="edit-srv-cat" className="text-sm font-medium text-foreground">
                       Category
                     </Label>
                     <select
                       id="edit-srv-cat"
                       value={editCategory}
                       onChange={(e) => setEditCategory(e.target.value)}
-                      className="w-full h-10 px-3 mt-1 rounded-md border border-neutral-200 bg-white text-xs text-neutral-800"
+                      className="mt-1.5 h-11 w-full rounded-xl border border-border/70 bg-background/70 px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-ring"
                     >
                       {CATEGORIES.map((c) => (
                         <option key={c} value={c}>
@@ -967,7 +921,7 @@ export default function VendorDashboardPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="edit-srv-price" className="text-xs font-medium text-neutral-700">
+                    <Label htmlFor="edit-srv-price" className="text-sm font-medium text-foreground">
                       Price ($ USD)
                     </Label>
                     <Input
@@ -977,13 +931,13 @@ export default function VendorDashboardPage() {
                       min={1}
                       value={editPrice}
                       onChange={(e) => setEditPrice(e.target.value)}
-                      className="mt-1 text-sm border-neutral-200"
+                      className="mt-1.5 h-11 rounded-xl border-border/70 bg-background/70 text-sm"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="edit-srv-loc" className="text-xs font-medium text-neutral-700">
+                  <Label htmlFor="edit-srv-loc" className="text-sm font-medium text-foreground">
                     Location
                   </Label>
                   <Input
@@ -991,12 +945,12 @@ export default function VendorDashboardPage() {
                     required
                     value={editLocation}
                     onChange={(e) => setEditLocation(e.target.value)}
-                    className="mt-1 text-sm border-neutral-200"
+                    className="mt-1.5 h-11 rounded-xl border-border/70 bg-background/70 text-sm"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="edit-srv-desc" className="text-xs font-medium text-neutral-700">
+                  <Label htmlFor="edit-srv-desc" className="text-sm font-medium text-foreground">
                     Description & Offerings
                   </Label>
                   <Textarea
@@ -1005,27 +959,18 @@ export default function VendorDashboardPage() {
                     rows={4}
                     value={editDescription}
                     onChange={(e) => setEditDescription(e.target.value)}
-                    className="mt-1 text-sm border-neutral-200"
+                    className="mt-1.5 rounded-xl border-border/70 bg-background/70 text-sm"
                   />
                 </div>
 
-                <div className="flex items-center justify-end gap-3 pt-3 border-t border-neutral-100">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setEditingService(null)}
-                    className="text-xs"
-                  >
+                <div className="flex items-center justify-end gap-3 border-t border-border/60 pt-3">
+                  <Button type="button" variant="outline" onClick={() => setEditingService(null)} className="rounded-xl border-border/70">
                     Cancel
                   </Button>
-                  <Button
-                    type="submit"
-                    disabled={savingEdit}
-                    className="bg-rose-600 hover:bg-rose-700 text-white text-xs font-medium"
-                  >
+                  <Button type="submit" disabled={savingEdit} className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90">
                     {savingEdit ? (
                       <>
-                        <Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" />
+                        <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
                         Saving Changes...
                       </>
                     ) : (
