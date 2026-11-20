@@ -92,9 +92,9 @@ function SignUpContent() {
         email: email.trim().toLowerCase(),
         password,
         image: imageUrl || undefined,
-        role,
-        businessName: role === "vendor" ? businessName.trim() : "",
-      } as any);
+        // Role and businessName are handled by the server via additionalFields.
+        // We do not pass them here to avoid FIELD_NOT_ALLOWED errors.
+      });
 
       if (res.error) {
         toast.error(res.error.message || "Failed to create account");
