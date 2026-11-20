@@ -92,10 +92,8 @@ function SignUpContent() {
         email: email.trim().toLowerCase(),
         password,
         image: imageUrl || undefined,
-        // Role and businessName are passed in the raw body context,
-        // which the server's before middleware and databaseHooks
-        // handle securely. Passing them here explicitly will result
-        // in a FIELD_NOT_ALLOWED error because input: false.
+        role,
+        businessName: role === "vendor" ? businessName.trim() : undefined,
       } as any);
 
       if (res.error) {
