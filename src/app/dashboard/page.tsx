@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, getSession } from "@/lib/auth-client";
-import { Loader2, Sparkles, ArrowRight } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import { Button } from "@/components/ui/button";
 
 export default function DashboardRedirectPage() {
@@ -62,7 +63,7 @@ export default function DashboardRedirectPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
       <div className="flex w-full max-w-sm flex-col items-center gap-5 rounded-[2rem] border border-border/60 bg-card/70 p-8 text-center shadow-xl shadow-primary/5 backdrop-blur-xl">
         <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/15">
-          <Sparkles className="h-6 w-6 animate-pulse" />
+          <LogoMark className="h-8 w-8" />
         </div>
 
         <div className="space-y-1.5">

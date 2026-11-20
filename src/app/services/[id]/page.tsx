@@ -17,7 +17,6 @@ import {
   MapPin,
   Calendar,
   Store,
-  Sparkles,
   ShieldCheck,
   CheckCircle2,
   Loader2,
@@ -25,6 +24,7 @@ import {
   Mail,
   AlertCircle,
 } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import { Service } from "@/types";
 
 function ServiceDetailsContent({
@@ -269,7 +269,9 @@ function ServiceDetailsContent({
                     </div>
                   ) : !session ? (
                     <div className="space-y-3 rounded-2xl border border-border/60 bg-background/60 p-5 text-center">
-                      <Sparkles className="mx-auto h-6 w-6 text-primary" />
+                      <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
+                        <LogoMark className="h-6 w-6" />
+                      </div>
                       <p className="text-sm leading-relaxed text-muted-foreground">
                         Please sign in with your customer account to submit a booking inquiry.
                       </p>

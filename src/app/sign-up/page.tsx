@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
-  Sparkles,
   Heart,
   Store,
   Upload,
@@ -24,6 +23,7 @@ import {
   Loader2,
   CheckCircle2,
 } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 
 function SignUpContent() {
   const router = useRouter();
@@ -160,7 +160,7 @@ function SignUpContent() {
         <div className="w-full max-w-xl rounded-[2rem] border border-border/60 bg-card/70 p-8 shadow-xl shadow-primary/5 backdrop-blur-xl sm:p-10">
           <div className="mb-8 space-y-3 text-center">
             <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/15">
-              <Sparkles className="h-6 w-6" />
+              <LogoMark className="h-7 w-7" />
             </div>
             <h1 className="font-serif text-4xl font-semibold tracking-tight text-foreground">
               Create Your Account

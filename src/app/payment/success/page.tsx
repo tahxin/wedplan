@@ -8,7 +8,7 @@ import { useSession } from "@/lib/auth-client";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Crown, Loader2, Sparkles } from "lucide-react";
+import { CheckCircle2, Crown, Loader2, Store } from "lucide-react";
 
 function PaymentSuccessContent() {
   const router = useRouter();
@@ -112,7 +112,7 @@ function PaymentSuccessContent() {
       <div className="pt-2">
         <Link href="/dashboard/vendor">
           <Button className="w-full rounded-xl bg-primary font-semibold text-primary-foreground hover:bg-primary/90">
-            <Sparkles className="mr-2 h-4 w-4" /> Return to Vendor Dashboard
+            <Store className="mr-2 h-4 w-4" /> Return to Vendor Dashboard
           </Button>
         </Link>
       </div>

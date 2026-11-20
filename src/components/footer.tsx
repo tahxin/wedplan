@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Sparkles, Heart, Mail, Phone, MapPin } from "lucide-react";
+import { Heart, Mail, Phone, MapPin } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 
 export function Footer() {
   return (
@@ -11,8 +12,8 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           <div className="space-y-5 md:col-span-1">
             <Link href="/" className="group inline-flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
-                <Sparkles className="h-4 w-4" />
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-amber-500 text-primary-foreground shadow-lg shadow-primary/20">
+                <LogoMark className="h-5 w-5" />
               </div>
               <span className="font-serif text-2xl font-semibold tracking-tight text-white">
                 WedPlan

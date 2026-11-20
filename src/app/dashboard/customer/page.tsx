@@ -26,13 +26,13 @@ import {
   CheckCircle2,
   XCircle,
   Loader2,
-  Sparkles,
   MapPin,
   Heart,
   Store,
   Ban,
   Eye,
 } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import { Booking } from "@/types";
 
 interface CustomerOverview {
@@ -164,7 +164,7 @@ export default function CustomerDashboardPage() {
 
           <Link href="/services">
             <Button className="rounded-full bg-primary px-6 text-primary-foreground shadow-md shadow-primary/20 hover:bg-primary/90">
-              <Sparkles className="mr-2 h-4 w-4" /> Browse More Services
+              <LogoMark className="mr-2 h-4 w-4" /> Browse More Services
             </Button>
           </Link>
         </div>
@@ -222,7 +222,9 @@ export default function CustomerDashboardPage() {
 
               {bookings.length === 0 ? (
                 <div className="space-y-3 p-10 text-center sm:p-14">
-                  <Sparkles className="mx-auto h-10 w-10 text-primary/35" />
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary/70 ring-1 ring-primary/15">
+                    <LogoMark className="h-7 w-7" />
+                  </div>
                   <h3 className="text-lg font-semibold text-foreground">No booking requests yet</h3>
                   <p className="mx-auto max-w-sm text-sm leading-relaxed text-muted-foreground">
                     Explore our wedding catalog and inquire directly with vendors to begin reserving services.

@@ -9,7 +9,6 @@ import { getApiBaseUrl } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Sparkles,
   Camera,
   Building2,
   Flower2,
@@ -24,6 +23,7 @@ import {
   Heart,
   CheckCircle2,
 } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import { Service } from "@/types";
 
 const CATEGORIES_DATA = [
@@ -105,7 +105,7 @@ export default function HomePage() {
               className="relative z-10 space-y-7 lg:col-span-6"
             >
               <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary shadow-sm backdrop-blur">
-                <Sparkles className="h-4 w-4" />
+                <LogoMark className="h-4 w-4" />
                 Your Wedding, Perfectly Planned
               </div>
 
@@ -227,7 +227,9 @@ export default function HomePage() {
 
             {featuredServices.length === 0 ? (
               <div className="rounded-3xl border border-dashed border-border/70 bg-background/60 p-10 text-center sm:p-14">
-                <Sparkles className="mx-auto mb-4 h-10 w-10 text-primary/40" />
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary/70 ring-1 ring-primary/15">
+                  <LogoMark className="h-7 w-7" />
+                </div>
                 <h3 className="text-xl font-semibold text-foreground">New services coming soon</h3>
                 <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
                   Our premier wedding vendors are curating their offerings. Browse the full catalog or join as a vendor to publish your services.

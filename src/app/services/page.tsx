@@ -14,12 +14,12 @@ import {
   MapPin,
   Filter,
   ArrowUpDown,
-  Sparkles,
   Loader2,
   X,
   ChevronRight,
   Store,
 } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import { Service } from "@/types";
 import { getApiBaseUrl } from "@/lib/api";
 
@@ -212,8 +212,8 @@ function BrowseServicesContent() {
           </div>
         ) : services.length === 0 ? (
           <div className="mx-auto max-w-md space-y-4 rounded-3xl border border-dashed border-border/70 bg-card/40 p-10 text-center sm:p-12">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-              <Sparkles className="h-6 w-6" />
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/15">
+              <LogoMark className="h-7 w-7" />
             </div>
             <h3 className="text-lg font-semibold text-foreground">No services found</h3>
             <p className="text-sm leading-relaxed text-muted-foreground">

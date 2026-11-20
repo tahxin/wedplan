@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Home, Search } from "lucide-react";
+import { Home, Search } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 
 export default function NotFound() {
   return (
@@ -12,7 +13,7 @@ export default function NotFound() {
       <main className="flex flex-1 items-center justify-center px-4 py-20 sm:px-6 lg:px-8">
         <div className="w-full max-w-lg space-y-6 rounded-[2rem] border border-border/60 bg-card/70 p-10 text-center shadow-xl shadow-primary/5 backdrop-blur-xl sm:p-12">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-primary/10 text-primary ring-1 ring-primary/15">
-            <Sparkles className="h-8 w-8" />
+            <LogoMark className="h-9 w-9" />
           </div>
 
           <div className="space-y-3">

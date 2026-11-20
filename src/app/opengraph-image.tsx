@@ -18,9 +18,9 @@ export default async function Image() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#fff1f2",
-          backgroundImage: "radial-gradient(#f43f5e 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
+          backgroundColor: "#faf7f2",
+          backgroundImage:
+            "radial-gradient(circle at 20% 20%, rgba(190,18,60,0.14), transparent 28%), radial-gradient(circle at 80% 25%, rgba(245,158,11,0.14), transparent 24%)",
           color: "#1c1917",
           padding: "60px",
         }}
@@ -30,39 +30,53 @@ export default async function Image() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "#e11d48",
-            color: "white",
-            width: "80px",
-            height: "80px",
-            borderRadius: "24px",
-            marginBottom: "24px",
-            boxShadow: "0 10px 25px -5px rgba(225, 29, 72, 0.4)",
+            background: "linear-gradient(135deg, #be123c, #e11d48 55%, #f59e0b)",
+            width: "96px",
+            height: "96px",
+            borderRadius: "28px",
+            marginBottom: "28px",
+            boxShadow: "0 18px 40px -12px rgba(190, 18, 60, 0.45)",
           }}
         >
           <svg
-            width="44"
-            height="44"
-            viewBox="0 0 24 24"
+            width="58"
+            height="58"
+            viewBox="0 0 64 64"
             fill="none"
-            stroke="white"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M12 3v18" />
-            <path d="M3 12h18" />
-            <path d="m5.5 5.5 13 13" />
-            <path d="m18.5 5.5-13 13" />
+            <path
+              d="M24.5 18.5c-6.351 0-11.5 5.149-11.5 11.5S18.149 41.5 24.5 41.5c3.06 0 5.845-1.196 7.9-3.146"
+              stroke="white"
+              strokeWidth="4.8"
+              strokeLinecap="round"
+            />
+            <path
+              d="M39.5 18.5c6.351 0 11.5 5.149 11.5 11.5S45.851 41.5 39.5 41.5c-3.06 0-5.845-1.196-7.9-3.146"
+              stroke="white"
+              strokeWidth="4.8"
+              strokeLinecap="round"
+            />
+            <path
+              d="M22 44.5c3.2 4.2 6.5 6.8 10 9 3.5-2.2 6.8-4.8 10-9"
+              stroke="white"
+              strokeWidth="4.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path d="M32 13.5v8" stroke="white" strokeWidth="4.8" strokeLinecap="round" />
+            <circle cx="32" cy="11" r="2.6" fill="white" />
           </svg>
         </div>
 
         <h1
           style={{
-            fontSize: "64px",
-            fontWeight: "bold",
+            fontSize: "72px",
+            fontWeight: 700,
             margin: "0 0 16px 0",
             textAlign: "center",
-            letterSpacing: "-0.02em",
+            letterSpacing: "-0.03em",
+            color: "#1c1917",
           }}
         >
           WedPlan
@@ -70,12 +84,12 @@ export default async function Image() {
 
         <p
           style={{
-            fontSize: "26px",
-            color: "#44403c",
+            fontSize: "30px",
+            color: "#57534e",
             textAlign: "center",
-            maxWidth: "800px",
-            margin: "0 0 32px 0",
-            lineHeight: "1.4",
+            maxWidth: "860px",
+            margin: "0 0 34px 0",
+            lineHeight: "1.35",
           }}
         >
           Discover & Book Trusted Wedding Vendors in One Elegant Place
@@ -84,10 +98,10 @@ export default async function Image() {
         <div
           style={{
             display: "flex",
-            gap: "24px",
-            fontSize: "18px",
-            fontWeight: "600",
-            color: "#e11d48",
+            gap: "22px",
+            fontSize: "20px",
+            fontWeight: 600,
+            color: "#be123c",
           }}
         >
           <span>Photography</span>

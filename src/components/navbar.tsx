@@ -6,7 +6,6 @@ import { useRouter, usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
 import { toast } from "sonner";
 import {
-  Sparkles,
   Menu,
   X,
   LayoutDashboard,
@@ -17,6 +16,7 @@ import {
   Store,
   Heart,
 } from "lucide-react";
+import { LogoMark } from "@/components/brand/logo-mark";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -103,9 +103,8 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/75 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex items-center gap-3">
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-rose-500 text-primary-foreground shadow-lg shadow-primary/20 ring-1 ring-white/40 transition-transform duration-300 group-hover:-translate-y-0.5">
-            <Sparkles className="h-5 w-5" />
-            <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-amber-300 ring-2 ring-background" />
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-rose-500 to-amber-500 text-primary-foreground shadow-lg shadow-primary/20 ring-1 ring-white/40 transition-transform duration-300 group-hover:-translate-y-0.5">
+            <LogoMark className="h-6 w-6" />
           </div>
           <div className="leading-none">
             <span className="block font-serif text-2xl font-semibold tracking-tight text-foreground">
