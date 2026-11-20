@@ -12,6 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   ShieldCheck,
   Users,
   Store,
@@ -52,6 +62,7 @@ export default function AdminDashboardPage() {
   const [serviceStatusFilter, setServiceStatusFilter] = useState("all");
 
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
+  const [serviceToDelete, setServiceToDelete] = useState<Service | null>(null);
 
   const currentUser = session?.user as { role?: string; name?: string } | undefined;
 
@@ -151,9 +162,6 @@ export default function AdminDashboardPage() {
   };
 
   const handleDeleteService = async (serviceId: string) => {
-    if (!confirm("Are you sure you want to permanently delete this service as administrator?"))
-      return;
-
     setActionLoadingId(serviceId);
     try {
       await fetchApi(`/admin/services/${serviceId}`, { method: "DELETE" });
@@ -165,6 +173,12 @@ export default function AdminDashboardPage() {
     } finally {
       setActionLoadingId(null);
     }
+  };
+
+  const confirmDeleteService = async () => {
+    const service = serviceToDelete;
+    setServiceToDelete(null);
+    if (service) await handleDeleteService(service._id);
   };
 
   const filteredUsers = users.filter((u) => {
@@ -378,7 +392,7 @@ export default function AdminDashboardPage() {
                               size="sm"
                               variant="ghost"
                               disabled={actionLoadingId === service._id}
-                              onClick={() => handleDeleteService(service._id)}
+                              onClick={() => setServiceToDelete(service)}
                               className="rounded-xl text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
                               title="Delete service"
                             >
@@ -538,6 +552,36 @@ export default function AdminDashboardPage() {
           </div>
         )}
       </main>
+
+      <AlertDialog
+        open={Boolean(serviceToDelete)}
+        onOpenChange={(open) => {
+          if (!open) setServiceToDelete(null);
+        }}
+      >
+        <AlertDialogContent className="rounded-2xl border-border/60 bg-card">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this service?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {serviceToDelete
+                ? `“${serviceToDelete.serviceName}” will be permanently removed from the platform. This action cannot be undone.`
+                : "This service will be permanently removed from the platform. This action cannot be undone."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-xl">Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(event) => {
+                event.preventDefault();
+                void confirmDeleteService();
+              }}
+              className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete Service
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Footer />
     </div>
