@@ -278,17 +278,21 @@ export default function VendorDashboardPage() {
   const handleUpgradeToPremium = async () => {
     setIsUpgrading(true);
     try {
-      const res = await fetchApi<{ success: boolean; url: string }>(
+      const res = await fetchApi<{ success: boolean; url?: string; message?: string }>(
         "/payments/create-checkout-session",
         { method: "POST" }
       );
-      if (res.url) {
-        window.location.href = res.url;
-      } else {
-        toast.error("Failed to generate checkout session");
-        setIsUpgrading(false);
+      if (res?.url) {
+        window.location.assign(res.url);
+        return;
       }
+      toast.error(res?.message || "Failed to generate checkout session");
+      setIsUpgrading(false);
     } catch (err: unknown) {
+      const status = (err as { status?: number })?.status;
+      if (status === 401 || status === 403) {
+        return;
+      }
       const msg = err instanceof Error ? err.message : "Upgrade initiation failed";
       toast.error(msg);
       setIsUpgrading(false);
