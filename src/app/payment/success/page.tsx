@@ -1,34 +1,41 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { fetchApi } from "@/lib/api";
+import { useSession } from "@/lib/auth-client";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Crown, Loader2, Sparkles } from "lucide-react";
 
 function PaymentSuccessContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const { data: session } = useSession();
 
   const [checking, setChecking] = useState(true);
   const [isPremium, setIsPremium] = useState(false);
+  let interval: ReturnType<typeof setInterval> | null = null;
 
   useEffect(() => {
+    // Session guard - redirect unauthenticated users immediately
+    if (!session) {
+      router.replace("/sign-in?callbackUrl=%2Fpayment%2Fsuccess");
+      return;
+    }
+
     let isCancelled = false;
 
-    async function verifyPayment() {
-      // 1. Direct session confirmation if sessionId is present (Stripe sandbox & test mode backup)
+    const verifyPayment = async () => {
+      // Direct confirmation if sessionId present
       if (sessionId) {
         try {
           const confirmRes = await fetchApi<{ success: boolean; plan: string }>(
             "/payments/confirm-session",
-            {
-              method: "POST",
-              body: JSON.stringify({ sessionId }),
-            }
+            { method: "POST", body: JSON.stringify({ sessionId }) }
           );
           if (confirmRes.success && !isCancelled) {
             setIsPremium(true);
@@ -36,24 +43,22 @@ function PaymentSuccessContent() {
             return;
           }
         } catch {
-          // If confirmation endpoint errors (e.g. already processed or metadata), fall through to polling
+          // Fall through to polling
         }
       }
 
-      // 2. Poll /me to check if webhook or server has updated the user's subscription
+      // Poll /me endpoint for webhook update
       let attempts = 0;
-      const interval = setInterval(async () => {
+      interval = setInterval(async () => {
         attempts++;
-        try {
-          const res = await fetchApi<{
-            success: boolean;
-            user: { subscriptionPlan: string };
-          }>("/me");
+        if (isCancelled) return;
 
+        try {
+          const res = await fetchApi<{ user: { subscriptionPlan: string } }>("/me");
           if (res.user?.subscriptionPlan === "premium" && !isCancelled) {
             setIsPremium(true);
             setChecking(false);
-            clearInterval(interval);
+            if (interval) clearInterval(interval);
           }
         } catch {
           // Retry
@@ -61,19 +66,18 @@ function PaymentSuccessContent() {
 
         if (attempts >= 10 && !isCancelled) {
           setChecking(false);
-          clearInterval(interval);
+          if (interval) clearInterval(interval);
         }
       }, 2000);
-
-      return () => clearInterval(interval);
-    }
+    };
 
     verifyPayment();
 
     return () => {
       isCancelled = true;
+      if (interval) clearInterval(interval);
     };
-  }, [sessionId]);
+  }, [sessionId, session, router]);
 
   return (
     <div className="max-w-md w-full bg-white rounded-3xl p-8 sm:p-10 border border-rose-100 shadow-xl shadow-rose-100/50 text-center space-y-6">

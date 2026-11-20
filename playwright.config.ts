@@ -29,10 +29,12 @@ export default defineConfig({
       timeout: 30000,
     },
     {
-      command: "npm run start",
+      // `next start` requires a production build; build first so the suite never
+      // tests a stale or missing `.next` output.
+      command: "npm run build && npm run start",
       port: 3000,
       reuseExistingServer: true,
-      timeout: 30000,
+      timeout: 180000,
     },
   ],
 });
