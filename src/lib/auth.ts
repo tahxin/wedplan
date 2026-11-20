@@ -21,7 +21,7 @@ if (!global._betterAuthMongoClient) {
 }
 const client: MongoClient = global._betterAuthMongoClient;
 
-const db = client.db();
+const db = client.db("wedplan");
 
 function getBaseUrl() {
   const raw = process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || "";
