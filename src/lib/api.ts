@@ -45,13 +45,29 @@ async function resolveToken(explicitToken?: string): Promise<string | undefined>
 
   try {
     const sessionData = await authClient.getSession();
-    const token = sessionData?.data?.session?.token;
-    if (token) {
-      cachedToken = { value: token, expiresAt: Date.now() + TOKEN_CACHE_MS };
-      return token;
+    const tokenFromSession = (sessionData?.data as { session?: { token?: string } } | null)?.session?.token;
+    if (typeof tokenFromSession === "string" && tokenFromSession) {
+      cachedToken = { value: tokenFromSession, expiresAt: Date.now() + TOKEN_CACHE_MS };
+      return tokenFromSession;
+    }
+
+    if (sessionData?.data?.session) {
+      const res = await fetch("/api/auth/token", {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store",
+      });
+
+      if (res.ok) {
+        const data = (await res.json().catch(() => null)) as { token?: string } | null;
+        if (data?.token) {
+          cachedToken = { value: data.token, expiresAt: Date.now() + TOKEN_CACHE_MS };
+          return data.token;
+        }
+      }
     }
   } catch {
-    // Session retrieval failed or user is guest
+    // Session/token retrieval failed or user is guest
   }
 
   return undefined;
