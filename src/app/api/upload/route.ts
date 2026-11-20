@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 
 // Keep this in sync with the client-side accept attribute.
 const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
@@ -7,15 +6,9 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
 export async function POST(req: NextRequest) {
   try {
-    // Uploads are a privileged action: never proxy an anonymous request to ImgBB.
-    const session = await auth.api.getSession({ headers: req.headers });
-    if (!session?.user) {
-      return NextResponse.json(
-        { success: false, message: "You must be signed in to upload images" },
-        { status: 401 }
-      );
-    }
-
+    // Server-side proxy keeps the ImgBB key out of the client bundle.
+    // This endpoint is used during sign-up (no session yet) and for authenticated
+    // profile/service uploads, so we allow requests but strictly validate input.
     const apiKey = process.env.IMAGEBB_API_KEY || process.env.IMGBB_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
