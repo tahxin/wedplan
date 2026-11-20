@@ -10,31 +10,32 @@ export function LogoMark(props: SVGProps<SVGSVGElement>) {
       {...props}
     >
       <path
-        d="M24.5 18.5c-6.351 0-11.5 5.149-11.5 11.5S18.149 41.5 24.5 41.5c3.06 0 5.845-1.196 7.9-3.146"
-        stroke="currentColor"
-        strokeWidth="4.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M39.5 18.5c6.351 0 11.5 5.149 11.5 11.5S45.851 41.5 39.5 41.5c-3.06 0-5.845-1.196-7.9-3.146"
-        stroke="currentColor"
-        strokeWidth="4.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M22 44.5c3.2 4.2 6.5 6.8 10 9 3.5-2.2 6.8-4.8 10-9"
+        d="M10 22.5c5.2-4.8 11-4.8 16.2 0L32 28l5.8-5.5c5.2-4.8 11-4.8 16.2 0"
         stroke="currentColor"
         strokeWidth="4.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M32 13.5v8"
+        d="M14 22.5V39c0 2.2 1.1 4.3 3 5.5l13.2 8.4c1.1.7 2.5.7 3.6 0L47 44.5c1.9-1.2 3-3.3 3-5.5V22.5"
+        stroke="currentColor"
+        strokeWidth="4.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M32 28v24.5"
         stroke="currentColor"
         strokeWidth="4.5"
         strokeLinecap="round"
       />
-      <circle cx="32" cy="11" r="2.5" fill="currentColor" />
+      <path
+        d="M24.5 14.5c2.2-3 4.7-4.5 7.5-4.5s5.3 1.5 7.5 4.5"
+        stroke="currentColor"
+        strokeWidth="4.5"
+        strokeLinecap="round"
+      />
+      <circle cx="32" cy="16.5" r="2.6" fill="currentColor" />
     </svg>
   );
 }

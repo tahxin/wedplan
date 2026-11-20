@@ -9,12 +9,6 @@ import { getApiBaseUrl } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Camera,
-  Building2,
-  Flower2,
-  UtensilsCrossed,
-  Palette,
-  Shirt,
   ShieldCheck,
   Star,
   CalendarCheck,
@@ -24,42 +18,50 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { LogoMark } from "@/components/brand/logo-mark";
+import {
+  PhotographyIcon,
+  VenueIcon,
+  FloristIcon,
+  CateringIcon,
+  MakeupIcon,
+  FashionIcon,
+} from "@/components/brand/category-icons";
 import { Service } from "@/types";
 
 const CATEGORIES_DATA = [
   {
     name: "Photography & Videography",
-    icon: Camera,
+    icon: PhotographyIcon,
     desc: "Capture every timeless glance & tear",
     image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80",
   },
   {
     name: "Wedding Venues",
-    icon: Building2,
+    icon: VenueIcon,
     desc: "Castles, vineyards & grand ballrooms",
     image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=800&q=80",
   },
   {
     name: "Decoration & Florist",
-    icon: Flower2,
+    icon: FloristIcon,
     desc: "Breathtaking arches & floral elegance",
     image: "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80",
   },
   {
     name: "Catering Services",
-    icon: UtensilsCrossed,
+    icon: CateringIcon,
     desc: "Gourmet culinary experiences for your guests",
     image: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=800&q=80",
   },
   {
     name: "Makeup & Styling",
-    icon: Palette,
+    icon: MakeupIcon,
     desc: "Radiant bridal beauty & hair artistry",
     image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80",
   },
   {
     name: "Wedding Fashion",
-    icon: Shirt,
+    icon: FashionIcon,
     desc: "Boutique bridal gowns & bespoke tuxedos",
     image: "https://images.unsplash.com/photo-1594552072238-b8a33785b261?auto=format&fit=crop&w=800&q=80",
   },
