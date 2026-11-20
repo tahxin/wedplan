@@ -92,14 +92,14 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* Banner / Hero Section */}
-        <section className="relative overflow-hidden border-b border-border/50">
+        <section className="relative flex min-h-[calc(100svh-4.5rem)] items-center overflow-hidden border-b border-border/50">
           <div className="pointer-events-none absolute inset-0 -z-10">
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(250,247,242,0.9),rgba(255,255,255,1))]" />
             <div className="absolute right-[-8rem] top-[-6rem] h-[22rem] w-[22rem] rounded-full border border-primary/10" />
             <div className="absolute left-[35%] top-24 hidden h-px w-40 bg-primary/20 lg:block" />
           </div>
 
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)] lg:items-end lg:gap-16 lg:px-8 lg:pb-20 lg:pt-16">
+          <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)] lg:gap-12 lg:px-8 lg:py-6">
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
@@ -113,7 +113,7 @@ export default function HomePage() {
                 WedPlan Wedding Marketplace
               </p>
 
-              <h1 className="max-w-3xl font-serif text-[2.9rem] leading-[0.9] font-semibold tracking-tight text-foreground sm:text-6xl lg:text-[4.6rem]">
+              <h1 className="max-w-3xl font-serif text-[2.6rem] leading-[0.9] font-semibold tracking-tight text-foreground sm:text-5xl lg:text-[4rem] xl:text-[4.4rem]">
                 Plan the day
                 <span className="block text-foreground/90">with vendors you can</span>
                 <span className="block italic text-primary">truly trust.</span>
@@ -147,7 +147,7 @@ export default function HomePage() {
             >
               <div className="relative">
                 <div className="relative overflow-hidden rounded-tl-[2.5rem] rounded-br-[2.5rem] rounded-tr-xl rounded-bl-xl border border-border/60 bg-muted shadow-[0_30px_80px_-40px_rgba(28,25,23,0.45)]">
-                  <div className="aspect-[4/5] sm:aspect-[5/6] lg:aspect-[4/5]">
+                  <div className="aspect-[4/5] sm:aspect-[5/6] lg:aspect-auto lg:h-[min(62svh,560px)]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=80"
