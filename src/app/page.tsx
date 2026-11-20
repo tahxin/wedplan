@@ -90,91 +90,130 @@ export default function HomePage() {
 
       <main className="flex-1">
         {/* Banner / Hero Section */}
-        <section className="relative overflow-hidden px-4 pb-20 pt-10 sm:px-6 lg:px-8 lg:pb-28 lg:pt-16">
+        <section className="relative isolate overflow-hidden px-4 pb-16 pt-8 sm:px-6 lg:px-8 lg:pb-24 lg:pt-12">
           <div className="pointer-events-none absolute inset-0 -z-10">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(225,29,72,0.12),transparent_35%),radial-gradient(circle_at_85%_10%,rgba(251,191,36,0.14),transparent_30%),linear-gradient(to_bottom,rgba(255,255,255,0.2),transparent_40%)]" />
-            <div className="absolute -left-24 top-24 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-            <div className="absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-amber-200/20 blur-3xl" />
+            <div className="absolute inset-0 bg-[radial-gradient(1200px_500px_at_10%_-10%,rgba(190,18,60,0.14),transparent_60%),radial-gradient(900px_420px_at_100%_0%,rgba(245,158,11,0.14),transparent_55%),linear-gradient(to_bottom,rgba(255,255,255,0.35),transparent_45%)]" />
+            <div className="absolute left-1/2 top-[18%] h-[28rem] w-[28rem] -translate-x-1/2 rounded-full border border-primary/10 bg-primary/5 blur-3xl" />
           </div>
 
-          <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
             <motion.div
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="relative z-10 space-y-7 lg:col-span-6"
+              className="relative z-10"
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary shadow-sm backdrop-blur">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-background/70 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary shadow-sm backdrop-blur-md">
                 <LogoMark className="h-4 w-4" />
-                Your Wedding, Perfectly Planned
+                Curated Wedding Marketplace
               </div>
 
-              <h1 className="max-w-2xl font-serif text-5xl leading-[0.95] font-semibold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-                A refined way to discover{" "}
-                <span className="text-primary">trusted wedding vendors</span>{" "}
-                and bring your day to life.
-              </h1>
-
-              <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                From luminous venues and cinematic photography to couture styling and floral artistry,
-                WedPlan helps you explore, compare, and book exceptional wedding services with confidence.
-              </p>
-
-              <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
-                <Link href="/services">
-                  <Button size="lg" className="h-12 rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90">
-                    Explore Wedding Services
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link href="/sign-up">
-                  <Button size="lg" variant="outline" className="h-12 rounded-full border-border/70 bg-card/50 px-8 text-base font-semibold text-foreground hover:bg-card">
-                    Become a Vendor
-                  </Button>
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-1 gap-3 pt-4 text-sm text-muted-foreground sm:grid-cols-3 sm:gap-4">
-                <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card/50 px-3 py-2.5 backdrop-blur-sm">
-                  <ShieldCheck className="h-4 w-4 text-primary" />
-                  <span>Verified Vendors</span>
+              <div className="space-y-6 rounded-[2rem] border border-border/60 bg-card/55 p-6 shadow-xl shadow-primary/5 backdrop-blur-xl sm:p-8 lg:p-10">
+                <div className="space-y-4">
+                  <p className="text-sm font-medium tracking-[0.12em] text-muted-foreground uppercase">
+                    Your Wedding, Perfectly Planned
+                  </p>
+                  <h1 className="max-w-3xl font-serif text-5xl leading-[0.92] font-semibold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+                    Where timeless celebrations meet{" "}
+                    <span className="relative inline-block text-primary">
+                      trusted vendors
+                      <span className="absolute -bottom-1 left-0 h-[0.35em] w-full rounded-full bg-primary/10" aria-hidden="true" />
+                    </span>
+                    .
+                  </h1>
+                  <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                    Discover venues, photographers, florists, planners, and artisans in one elegant space.
+                    Compare offerings, send booking requests, and shape your wedding day with clarity and confidence.
+                  </p>
                 </div>
-                <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card/50 px-3 py-2.5 backdrop-blur-sm">
-                  <CalendarCheck className="h-4 w-4 text-primary" />
-                  <span>Direct Booking Requests</span>
+
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <Link href="/services" className="w-full sm:w-auto">
+                    <Button size="lg" className="h-12 w-full rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg shadow-primary/20 hover:bg-primary/90 sm:w-auto">
+                      Explore Wedding Services
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/sign-up" className="w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="h-12 w-full rounded-full border-border/70 bg-background/70 px-8 text-base font-semibold text-foreground hover:bg-background sm:w-auto">
+                      Become a Vendor
+                    </Button>
+                  </Link>
                 </div>
-                <div className="flex items-center gap-2 rounded-xl border border-border/60 bg-card/50 px-3 py-2.5 backdrop-blur-sm">
-                  <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                  <span>Top-Rated Quality</span>
+
+                <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-border/60 bg-background/70 p-3.5">
+                    <div className="mb-1.5 flex items-center gap-2 text-sm font-medium text-foreground">
+                      <ShieldCheck className="h-4 w-4 text-primary" />
+                      Verified Vendors
+                    </div>
+                    <p className="text-xs leading-relaxed text-muted-foreground">Reviewed profiles and approved services you can trust.</p>
+                  </div>
+                  <div className="rounded-2xl border border-border/60 bg-background/70 p-3.5">
+                    <div className="mb-1.5 flex items-center gap-2 text-sm font-medium text-foreground">
+                      <CalendarCheck className="h-4 w-4 text-primary" />
+                      Direct Booking
+                    </div>
+                    <p className="text-xs leading-relaxed text-muted-foreground">Send date-specific requests straight from service details.</p>
+                  </div>
+                  <div className="rounded-2xl border border-border/60 bg-background/70 p-3.5">
+                    <div className="mb-1.5 flex items-center gap-2 text-sm font-medium text-foreground">
+                      <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                      Premium Experience
+                    </div>
+                    <p className="text-xs leading-relaxed text-muted-foreground">Elegant discovery for venues, fashion, florals, and more.</p>
+                  </div>
                 </div>
               </div>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.97, y: 20 }}
+              initial={{ opacity: 0, scale: 0.98, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="relative lg:col-span-6"
+              className="relative"
             >
-              <div className="relative mx-auto max-w-xl">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-white/60 bg-muted shadow-2xl shadow-primary/10 ring-1 ring-border/50">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=80"
-                    alt="Elegant wedding celebration"
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+              <div className="relative mx-auto max-w-xl lg:max-w-none">
+                <div className="relative ml-auto w-[88%] overflow-hidden rounded-[2.2rem] border border-white/50 bg-muted shadow-2xl shadow-primary/10 ring-1 ring-border/50">
+                  <div className="aspect-[4/5]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=80"
+                      alt="Couple celebrating an elegant wedding ceremony"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-black/5 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/20 bg-black/25 p-4 text-white backdrop-blur-md">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/80">Signature Celebrations</p>
+                    <p className="mt-1 text-sm font-medium leading-snug text-white/95">From intimate garden vows to grand ballroom receptions.</p>
+                  </div>
                 </div>
 
                 <motion.div
-                  initial={{ opacity: 0, y: 16 }}
+                  initial={{ opacity: 0, x: -16, y: 12 }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  transition={{ delay: 0.35, duration: 0.55 }}
+                  className="absolute -left-2 bottom-10 w-[46%] overflow-hidden rounded-[1.5rem] border border-border/60 bg-card shadow-xl shadow-primary/10 ring-1 ring-white/30 sm:-left-6"
+                >
+                  <div className="aspect-[4/5]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=80"
+                      alt="Wedding floral styling details"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: -14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.45, duration: 0.5 }}
-                  className="absolute -bottom-6 -left-4 w-[220px] rounded-2xl border border-border/60 bg-card/90 p-4 shadow-xl backdrop-blur-md sm:-left-8"
+                  className="absolute -top-3 right-2 rounded-2xl border border-border/60 bg-card/90 px-4 py-3 shadow-xl backdrop-blur-md sm:right-6"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-md shadow-primary/20">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary ring-1 ring-primary/15">
                       <Heart className="h-5 w-5 fill-current" />
                     </div>
                     <div>
@@ -185,10 +224,10 @@ export default function HomePage() {
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, y: -16 }}
+                  initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.55, duration: 0.5 }}
-                  className="absolute -right-2 -top-4 hidden rounded-2xl border border-border/60 bg-card/90 p-3.5 shadow-xl backdrop-blur-md sm:-right-6 sm:flex sm:items-center sm:gap-2.5"
+                  className="absolute -bottom-4 right-6 hidden rounded-2xl border border-border/60 bg-card/90 px-4 py-3 shadow-xl backdrop-blur-md sm:flex sm:items-center sm:gap-2.5"
                 >
                   <div className="flex text-amber-400">
                     {[...Array(5)].map((_, i) => (
