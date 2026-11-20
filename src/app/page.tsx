@@ -106,13 +106,6 @@ export default function HomePage() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="relative"
             >
-              <p className="mb-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-primary/80">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 bg-primary/5 text-primary">
-                  <LogoMark className="h-4 w-4" />
-                </span>
-                WedPlan Wedding Marketplace
-              </p>
-
               <h1 className="max-w-3xl font-serif text-[2.6rem] leading-[0.9] font-semibold tracking-tight text-foreground sm:text-5xl lg:text-[4rem] xl:text-[4.4rem]">
                 Plan the day
                 <span className="block text-foreground/90">with vendors you can</span>
