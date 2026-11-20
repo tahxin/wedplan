@@ -190,11 +190,10 @@ function BrowseServicesContent() {
                 key={cat}
                 type="button"
                 onClick={() => setCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all shrink-0 cursor-pointer ${
-                  category === cat
-                    ? "bg-rose-600 text-white shadow-sm"
-                    : "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
-                }`}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all shrink-0 cursor-pointer ${category === cat
+                  ? "bg-rose-600 text-white shadow-sm"
+                  : "bg-neutral-100 hover:bg-neutral-200 text-neutral-700"
+                  }`}
               >
                 {cat}
               </button>
