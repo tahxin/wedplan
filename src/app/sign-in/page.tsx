@@ -4,6 +4,7 @@ import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
+import { clearAuthTokenCache } from "@/lib/api";
 import { toast } from "sonner";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -39,6 +40,7 @@ function SignInContent() {
         return;
       }
 
+      clearAuthTokenCache();
       toast.success("Welcome back!");
 
       const user = (res.data as { user?: { role?: string } })?.user;

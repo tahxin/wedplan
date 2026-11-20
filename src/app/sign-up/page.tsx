@@ -4,6 +4,7 @@ import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signUp, signIn } from "@/lib/auth-client";
+import { clearAuthTokenCache } from "@/lib/api";
 import { uploadImageToImgBB } from "@/lib/upload";
 import { toast } from "sonner";
 import { Navbar } from "@/components/navbar";
@@ -103,6 +104,7 @@ function SignUpContent() {
         return;
       }
 
+      clearAuthTokenCache();
       toast.success("Account created successfully! Welcome to WedPlan.");
       const defaultDestination = role === "vendor" ? "/dashboard/vendor" : "/dashboard/customer";
       const isSafeCallback =

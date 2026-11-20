@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
+import { clearAuthTokenCache } from "@/lib/api";
 import { toast } from "sonner";
 import {
   Menu,
@@ -59,11 +60,13 @@ export function Navbar() {
 
   const handleSignOut = async () => {
     try {
+      clearAuthTokenCache();
       await signOut();
+      clearAuthTokenCache();
       toast.success("Signed out successfully");
-      router.push("/sign-in");
-      router.refresh();
+      window.location.assign("/sign-in");
     } catch {
+      clearAuthTokenCache();
       toast.error("Failed to sign out");
     }
   };

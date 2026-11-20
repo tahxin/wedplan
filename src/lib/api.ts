@@ -32,8 +32,12 @@ interface FetchOptions extends RequestInit {
 let cachedToken: { value: string; expiresAt: number } | null = null;
 const TOKEN_CACHE_MS = 30_000;
 
-function clearTokenCache() {
+export function clearAuthTokenCache() {
   cachedToken = null;
+}
+
+function clearTokenCache() {
+  clearAuthTokenCache();
 }
 
 async function resolveToken(explicitToken?: string): Promise<string | undefined> {
