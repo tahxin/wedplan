@@ -14,19 +14,30 @@ function PaymentSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
 
   const [checking, setChecking] = useState(true);
   const [isPremium, setIsPremium] = useState(false);
-  let interval: ReturnType<typeof setInterval> | null = null;
 
   useEffect(() => {
+    if (isPending) return;
+
     if (!session) {
-      router.replace("/sign-in?callbackUrl=%2Fpayment%2Fsuccess");
+      const callbackPath = `/payment/success${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+      router.replace(`/sign-in?callbackUrl=${encodeURIComponent(callbackPath)}`);
       return;
     }
 
     let isCancelled = false;
+    let interval: ReturnType<typeof setInterval> | null = null;
+    let redirectTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const goToDashboard = () => {
+      if (redirectTimeout) clearTimeout(redirectTimeout);
+      redirectTimeout = setTimeout(() => {
+        if (!isCancelled) router.replace("/dashboard/vendor");
+      }, 1200);
+    };
 
     const verifyPayment = async () => {
       if (sessionId) {
@@ -38,6 +49,7 @@ function PaymentSuccessContent() {
           if (confirmRes.success && !isCancelled) {
             setIsPremium(true);
             setChecking(false);
+            goToDashboard();
             return;
           }
         } catch {
@@ -56,6 +68,8 @@ function PaymentSuccessContent() {
             setIsPremium(true);
             setChecking(false);
             if (interval) clearInterval(interval);
+            goToDashboard();
+            return;
           }
         } catch {
           // Retry
@@ -68,13 +82,14 @@ function PaymentSuccessContent() {
       }, 2000);
     };
 
-    verifyPayment();
+    void verifyPayment();
 
     return () => {
       isCancelled = true;
       if (interval) clearInterval(interval);
+      if (redirectTimeout) clearTimeout(redirectTimeout);
     };
-  }, [sessionId, session, router]);
+  }, [sessionId, session, isPending, router, searchParams]);
 
   return (
     <div className="w-full max-w-md space-y-6 rounded-[2rem] border border-border/60 bg-card/70 p-8 text-center shadow-xl shadow-primary/5 backdrop-blur-xl sm:p-10">
