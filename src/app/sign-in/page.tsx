@@ -44,9 +44,19 @@ function SignInContent() {
       const user = (res.data as { user?: { role?: string } })?.user;
       const role = user?.role || "customer";
 
-      // If user had an intended return URL (that is not generic /dashboard), send them there; otherwise direct role dashboard
-      if (callbackUrl && callbackUrl.startsWith("/") && callbackUrl !== "/dashboard") {
-        router.push(callbackUrl);
+      // Return to the intended page when a safe callbackUrl is provided (including
+      // public pages like home/services). Otherwise send users to their role dashboard.
+      const isSafeCallback =
+        !!callbackUrl &&
+        callbackUrl.startsWith("/") &&
+        !callbackUrl.startsWith("//");
+      const blockedTargets = ["/sign-in", "/sign-up"];
+      if (isSafeCallback && !blockedTargets.some((t) => callbackUrl === t || callbackUrl.startsWith(`${t}?`))) {
+        if (callbackUrl === "/dashboard") {
+          router.push(`/dashboard/${role}`);
+        } else {
+          router.push(callbackUrl);
+        }
       } else {
         router.push(`/dashboard/${role}`);
       }
@@ -61,9 +71,19 @@ function SignInContent() {
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
     try {
+      const isSafeCallback =
+        !!callbackUrl &&
+        callbackUrl.startsWith("/") &&
+        !callbackUrl.startsWith("//");
+      const blockedTargets = ["/sign-in", "/sign-up"];
+      const oauthCallback =
+        isSafeCallback && !blockedTargets.some((t) => callbackUrl === t || callbackUrl.startsWith(`${t}?`))
+          ? callbackUrl
+          : "/dashboard";
+
       await signIn.social({
         provider: "google",
-        callbackURL: callbackUrl || "/dashboard",
+        callbackURL: oauthCallback,
       });
     } catch {
       toast.error("Google sign in failed");
@@ -189,7 +209,10 @@ function SignInContent() {
 
           <p className="mt-6 text-center text-sm text-neutral-500">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="font-semibold text-rose-600 hover:text-rose-700">
+            <Link
+              href={callbackUrl ? `/sign-up?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/sign-up"}
+              className="font-semibold text-rose-600 hover:text-rose-700"
+            >
               Sign Up
             </Link>
           </p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession, signOut } from "@/lib/auth-client";
@@ -33,6 +33,18 @@ export function Navbar() {
   const pathname = usePathname();
   const { data: session, isPending } = useSession();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentSearch, setCurrentSearch] = useState("");
+
+  useEffect(() => {
+    setCurrentSearch(window.location.search);
+  }, [pathname]);
+
+  const currentPath = `${pathname}${currentSearch}`;
+  const isAuthRoute = pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
+  const authHref = (base: "/sign-in" | "/sign-up") =>
+    !isAuthRoute && currentPath
+      ? `${base}?callbackUrl=${encodeURIComponent(currentPath)}`
+      : base;
 
   const user = session?.user as
     | {
@@ -177,12 +189,12 @@ export function Navbar() {
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <Link href="/sign-in">
+              <Link href={authHref("/sign-in")}>
                 <Button variant="ghost" className="text-neutral-700 hover:text-rose-600 hover:bg-rose-50">
                   Sign In
                 </Button>
               </Link>
-              <Link href="/sign-up">
+              <Link href={authHref("/sign-up")}>
                 <Button className="bg-rose-600 hover:bg-rose-700 text-white shadow-sm shadow-rose-200">
                   Sign Up
                 </Button>
@@ -269,12 +281,12 @@ export function Navbar() {
               </div>
             ) : (
               <div className="flex flex-col gap-2 pt-2">
-                <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}>
+                <Link href={authHref("/sign-in")} onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="outline" className="w-full justify-center">
                     Sign In
                   </Button>
                 </Link>
-                <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)}>
+                <Link href={authHref("/sign-up")} onClick={() => setMobileMenuOpen(false)}>
                   <Button className="w-full justify-center bg-rose-600 hover:bg-rose-700 text-white">
                     Sign Up
                   </Button>

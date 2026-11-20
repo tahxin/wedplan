@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signUp, signIn } from "@/lib/auth-client";
 import { uploadImageToImgBB } from "@/lib/upload";
 import { toast } from "sonner";
@@ -25,8 +25,10 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-export default function SignUpPage() {
+function SignUpContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || searchParams.get("redirect");
 
   const [role, setRole] = useState<"customer" | "vendor">("customer");
   const [name, setName] = useState("");
@@ -92,7 +94,7 @@ export default function SignUpPage() {
         image: imageUrl || undefined,
         role,
         businessName: role === "vendor" ? businessName.trim() : "",
-      });
+      } as any);
 
       if (res.error) {
         toast.error(res.error.message || "Failed to create account");
@@ -101,8 +103,21 @@ export default function SignUpPage() {
       }
 
       toast.success("Account created successfully! Welcome to WedPlan.");
-      const destination = role === "vendor" ? "/dashboard/vendor" : "/dashboard/customer";
-      router.push(destination);
+      const defaultDestination = role === "vendor" ? "/dashboard/vendor" : "/dashboard/customer";
+      const isSafeCallback =
+        !!callbackUrl &&
+        callbackUrl.startsWith("/") &&
+        !callbackUrl.startsWith("//");
+      const blockedTargets = ["/sign-in", "/sign-up"];
+      if (isSafeCallback && !blockedTargets.some((t) => callbackUrl === t || callbackUrl.startsWith(`${t}?`))) {
+        if (callbackUrl === "/dashboard") {
+          router.push(defaultDestination);
+        } else {
+          router.push(callbackUrl);
+        }
+      } else {
+        router.push(defaultDestination);
+      }
       router.refresh();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Sign up failed";
@@ -114,9 +129,20 @@ export default function SignUpPage() {
   const handleGoogleSignUp = async () => {
     setIsGoogleLoading(true);
     try {
+      const defaultDestination = role === "vendor" ? "/dashboard/vendor" : "/dashboard/customer";
+      const isSafeCallback =
+        !!callbackUrl &&
+        callbackUrl.startsWith("/") &&
+        !callbackUrl.startsWith("//");
+      const blockedTargets = ["/sign-in", "/sign-up"];
+      const oauthCallback =
+        isSafeCallback && !blockedTargets.some((t) => callbackUrl === t || callbackUrl.startsWith(`${t}?`))
+          ? callbackUrl
+          : defaultDestination;
+
       await signIn.social({
         provider: "google",
-        callbackURL: role === "vendor" ? "/dashboard/vendor" : "/dashboard/customer",
+        callbackURL: oauthCallback,
       });
     } catch {
       toast.error("Google sign up failed");
@@ -391,7 +417,10 @@ export default function SignUpPage() {
 
           <p className="mt-6 text-center text-sm text-neutral-500">
             Already have an account?{" "}
-            <Link href="/sign-in" className="font-semibold text-rose-600 hover:text-rose-700">
+            <Link
+              href={callbackUrl ? `/sign-in?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/sign-in"}
+              className="font-semibold text-rose-600 hover:text-rose-700"
+            >
               Sign In
             </Link>
           </p>
@@ -400,5 +429,19 @@ export default function SignUpPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-neutral-50/50">
+          <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+        </div>
+      }
+    >
+      <SignUpContent />
+    </Suspense>
   );
 }
