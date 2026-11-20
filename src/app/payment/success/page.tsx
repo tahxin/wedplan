@@ -21,7 +21,6 @@ function PaymentSuccessContent() {
   let interval: ReturnType<typeof setInterval> | null = null;
 
   useEffect(() => {
-    // Session guard - redirect unauthenticated users immediately
     if (!session) {
       router.replace("/sign-in?callbackUrl=%2Fpayment%2Fsuccess");
       return;
@@ -30,7 +29,6 @@ function PaymentSuccessContent() {
     let isCancelled = false;
 
     const verifyPayment = async () => {
-      // Direct confirmation if sessionId present
       if (sessionId) {
         try {
           const confirmRes = await fetchApi<{ success: boolean; plan: string }>(
@@ -47,7 +45,6 @@ function PaymentSuccessContent() {
         }
       }
 
-      // Poll /me endpoint for webhook update
       let attempts = 0;
       interval = setInterval(async () => {
         attempts++;
@@ -80,42 +77,42 @@ function PaymentSuccessContent() {
   }, [sessionId, session, router]);
 
   return (
-    <div className="max-w-md w-full bg-white rounded-3xl p-8 sm:p-10 border border-rose-100 shadow-xl shadow-rose-100/50 text-center space-y-6">
-      <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto shadow-sm">
-        <Crown className="w-8 h-8" />
+    <div className="w-full max-w-md space-y-6 rounded-[2rem] border border-border/60 bg-card/70 p-8 text-center shadow-xl shadow-primary/5 backdrop-blur-xl sm:p-10">
+      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-100/70 text-amber-700 ring-1 ring-amber-200/70">
+        <Crown className="h-8 w-8" />
       </div>
 
       <div className="space-y-2">
-        <h1 className="font-serif text-3xl font-bold text-neutral-900">
+        <h1 className="font-serif text-4xl font-semibold tracking-tight text-foreground">
           Payment Confirmed!
         </h1>
-        <p className="text-sm text-neutral-500">
+        <p className="text-sm leading-relaxed text-muted-foreground">
           Thank you for upgrading your wedding vendor membership.
         </p>
       </div>
 
-      <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 text-xs text-neutral-600 space-y-2">
+      <div className="space-y-2 rounded-2xl border border-border/60 bg-background/60 p-4 text-sm text-muted-foreground">
         {checking ? (
-          <div className="flex items-center justify-center gap-2 text-amber-700 font-medium">
-            <Loader2 className="w-4 h-4 animate-spin" />
+          <div className="flex items-center justify-center gap-2 font-medium text-primary">
+            <Loader2 className="h-4 w-4 animate-spin" />
             <span>Verifying Stripe checkout session...</span>
           </div>
         ) : isPremium ? (
-          <div className="flex items-center justify-center gap-2 text-emerald-700 font-bold">
-            <CheckCircle2 className="w-4 h-4" />
+          <div className="flex items-center justify-center gap-2 font-semibold text-emerald-700">
+            <CheckCircle2 className="h-4 w-4" />
             <span>Your Premium Membership is Now Active!</span>
           </div>
         ) : (
-          <div className="text-neutral-500">
+          <div>
             Payment received. Your subscription privileges will reflect shortly as Stripe webhook processing completes.
           </div>
         )}
       </div>
 
-      <div className="pt-2 flex flex-col gap-2">
+      <div className="pt-2">
         <Link href="/dashboard/vendor">
-          <Button className="w-full bg-rose-600 hover:bg-rose-700 text-white font-medium">
-            <Sparkles className="w-4 h-4 mr-2" /> Return to Vendor Dashboard
+          <Button className="w-full rounded-xl bg-primary font-semibold text-primary-foreground hover:bg-primary/90">
+            <Sparkles className="mr-2 h-4 w-4" /> Return to Vendor Dashboard
           </Button>
         </Link>
       </div>
@@ -125,15 +122,15 @@ function PaymentSuccessContent() {
 
 export default function PaymentSuccessPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50/50">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
+      <main className="flex flex-1 items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
         <Suspense
           fallback={
-            <div className="max-w-md w-full bg-white rounded-3xl p-8 sm:p-10 border border-rose-100 shadow-xl shadow-rose-100/50 text-center flex flex-col items-center justify-center space-y-4">
-              <Loader2 className="w-8 h-8 animate-spin text-rose-500" />
-              <p className="text-sm text-neutral-500">Loading payment details...</p>
+            <div className="flex w-full max-w-md flex-col items-center justify-center space-y-4 rounded-[2rem] border border-border/60 bg-card/70 p-8 text-center shadow-xl shadow-primary/5 backdrop-blur-xl sm:p-10">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="text-sm text-muted-foreground">Loading payment details...</p>
             </div>
           }
         >

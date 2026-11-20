@@ -17,31 +17,31 @@ export default function ErrorBoundary({
   }, [error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-4 py-16 text-center">
-      <div className="max-w-md w-full bg-white rounded-3xl p-8 sm:p-10 border border-neutral-100 shadow-xl space-y-6">
-        <div className="w-16 h-16 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto">
-          <AlertCircle className="w-8 h-8" />
+    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-16 text-center text-foreground">
+      <div className="w-full max-w-md space-y-6 rounded-[2rem] border border-border/60 bg-card/70 p-8 shadow-xl shadow-primary/5 backdrop-blur-xl sm:p-10">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-destructive/10 text-destructive ring-1 ring-destructive/20">
+          <AlertCircle className="h-8 w-8" />
         </div>
 
         <div className="space-y-2">
-          <h2 className="font-serif text-2xl font-bold text-neutral-900">
+          <h2 className="font-serif text-3xl font-semibold tracking-tight text-foreground">
             Something went wrong
           </h2>
-          <p className="text-xs text-neutral-500 leading-relaxed">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {error.message || "An unexpected error occurred while loading this page."}
           </p>
         </div>
 
-        <div className="flex items-center justify-center gap-3 pt-2">
+        <div className="flex flex-col items-center justify-center gap-3 pt-2 sm:flex-row">
           <Button
             onClick={() => reset()}
-            className="bg-rose-600 hover:bg-rose-700 text-white text-xs"
+            className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90 sm:w-auto"
           >
-            <RefreshCw className="w-3.5 h-3.5 mr-1.5" /> Try Again
+            <RefreshCw className="mr-2 h-4 w-4" /> Try Again
           </Button>
-          <Link href="/">
-            <Button variant="outline" className="text-xs">
-              <Home className="w-3.5 h-3.5 mr-1.5" /> Home
+          <Link href="/" className="w-full sm:w-auto">
+            <Button variant="outline" className="w-full rounded-full border-border/70 bg-background/60 sm:w-auto">
+              <Home className="mr-2 h-4 w-4" /> Home
             </Button>
           </Link>
         </div>

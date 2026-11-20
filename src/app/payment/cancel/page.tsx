@@ -6,28 +6,28 @@ import { AlertCircle, Store } from "lucide-react";
 
 export default function PaymentCancelPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-50/50">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full bg-white rounded-3xl p-8 sm:p-10 border border-neutral-200 shadow-xl text-center space-y-6">
-          <div className="w-16 h-16 rounded-2xl bg-neutral-100 text-neutral-500 flex items-center justify-center mx-auto">
-            <AlertCircle className="w-8 h-8" />
+      <main className="flex flex-1 items-center justify-center px-4 py-16 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md space-y-6 rounded-[2rem] border border-border/60 bg-card/70 p-8 text-center shadow-xl shadow-primary/5 backdrop-blur-xl sm:p-10">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-muted text-muted-foreground ring-1 ring-border/60">
+            <AlertCircle className="h-8 w-8" />
           </div>
 
           <div className="space-y-2">
-            <h1 className="font-serif text-3xl font-bold text-neutral-900">
+            <h1 className="font-serif text-4xl font-semibold tracking-tight text-foreground">
               Upgrade Cancelled
             </h1>
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm leading-relaxed text-muted-foreground">
               The Stripe checkout session was cancelled. No charges were made to your payment method.
             </p>
           </div>
 
           <div className="pt-2">
             <Link href="/dashboard/vendor">
-              <Button className="w-full bg-neutral-900 hover:bg-neutral-800 text-white font-medium">
-                <Store className="w-4 h-4 mr-2" /> Back to Vendor Portal
+              <Button className="w-full rounded-xl bg-foreground text-background hover:bg-foreground/90">
+                <Store className="mr-2 h-4 w-4" /> Back to Vendor Portal
               </Button>
             </Link>
           </div>
