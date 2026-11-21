@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition, useCallback, Suspense } from "react";
+import { useEffect, useState, useTransition, useCallback, Suspense, useRef } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
@@ -53,19 +53,30 @@ function BrowseServicesContent() {
   const [totalCount, setTotalCount] = useState(0);
 
   const [, startTransition] = useTransition();
+  const abortControllerRef = useRef<AbortController | null>(null);
 
-  const fetchServices = useCallback(async () => {
-    setLoading(true);
+  const fetchServices = useCallback(async (searchQuery: string, categoryFilter: string, locationFilter: string, sortOrder: string, isInitial = false) => {
+    // If not initial fetch, we can show a subtle indicator or keep existing grid without flashing full skeleton
+    if (isInitial) {
+      setLoading(true);
+    }
+
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+
     const apiUrl = getApiBaseUrl();
-
     const params = new URLSearchParams();
-    if (search.trim()) params.append("search", search.trim());
-    if (category && category !== "All Categories") params.append("category", category);
-    if (location.trim()) params.append("location", location.trim());
-    if (sort) params.append("sort", sort);
+    if (searchQuery.trim()) params.append("search", searchQuery.trim());
+    if (categoryFilter && categoryFilter !== "All Categories") params.append("category", categoryFilter);
+    if (locationFilter.trim()) params.append("location", locationFilter.trim());
+    if (sortOrder) params.append("sort", sortOrder);
 
     try {
-      const res = await fetch(`${apiUrl}/services?${params.toString()}`);
+      const res = await fetch(`${apiUrl}/services?${params.toString()}`, {
+        signal: abortControllerRef.current.signal,
+      });
       if (res.ok) {
         const data = await res.json();
         setServices(data.services || []);
@@ -74,21 +85,38 @@ function BrowseServicesContent() {
         setServices([]);
         setTotalCount(0);
       }
-    } catch {
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === "AbortError") {
+        return; // Ignore aborted requests
+      }
       setServices([]);
       setTotalCount(0);
     } finally {
-      setLoading(false);
+      if (isInitial) {
+        setLoading(false);
+      }
     }
-  }, [category, sort, search, location]);
+  }, []);
 
+  // Initial load
   useEffect(() => {
-    fetchServices();
-  }, [fetchServices]);
+    fetchServices(initialSearch, initialCategory, initialLocation, initialSort, true);
+  }, [initialSearch, initialCategory, initialLocation, initialSort, fetchServices]);
+
+  // Debounced search & filter effect
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      fetchServices(search, category, location, sort, false);
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search, category, location, sort, fetchServices]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchServices();
+    fetchServices(search, category, location, sort, true);
   };
 
   const clearFilters = () => {

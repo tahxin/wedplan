@@ -16,7 +16,7 @@ test.describe("Authentication Flows", () => {
 
     await page.getByLabel(/Email Address/i).fill("nonexistent_user_test@example.com");
     await page.getByLabel(/Password/i).fill("WrongPass123!");
-    await page.getByRole("button", { name: /^Sign In$/i }).click();
+    await page.locator("form").getByRole("button", { name: /^Sign In$/i }).click();
 
     // Verify error toast or feedback
     await expect(page.locator("body")).toContainText(/invalid|failed|not found/i, { timeout: 10000 });

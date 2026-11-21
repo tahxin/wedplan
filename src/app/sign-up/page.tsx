@@ -94,7 +94,7 @@ function SignUpContent() {
         image: imageUrl || undefined,
         role,
         businessName: role === "vendor" ? businessName.trim() : undefined,
-      } as any);
+      } as Parameters<typeof signUp.email>[0]);
 
       if (res.error) {
         toast.error(res.error.message || "Failed to create account");
@@ -130,6 +130,12 @@ function SignUpContent() {
   const handleGoogleSignUp = async () => {
     setIsGoogleLoading(true);
     try {
+      // Persist selected role so it survives Google OAuth redirect/callback
+      localStorage.setItem("wedplan_signup_role", role);
+      if (businessName.trim()) {
+        localStorage.setItem("wedplan_signup_business", businessName.trim());
+      }
+
       const defaultDestination = role === "vendor" ? "/dashboard/vendor" : "/dashboard/customer";
       const isSafeCallback =
         !!callbackUrl &&

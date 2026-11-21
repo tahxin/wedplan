@@ -10,11 +10,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   ShieldCheck,
-  Star,
   CalendarCheck,
   ArrowRight,
   MapPin,
-  Heart,
   CheckCircle2,
 } from "lucide-react";
 import { LogoMark } from "@/components/brand/logo-mark";

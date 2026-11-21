@@ -18,6 +18,7 @@ function SignInContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || searchParams.get("redirect");
+  const isBlocked = searchParams.get("blocked") === "1";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -109,6 +110,12 @@ function SignInContent() {
               Sign in to manage your bookings, services, and wedding plans.
             </p>
           </div>
+
+          {isBlocked && (
+            <div className="mb-6 rounded-2xl border border-rose-200/70 bg-rose-50/80 p-4 text-center text-sm font-medium text-rose-800">
+              Your account is blocked. Please contact support.
+            </div>
+          )}
 
           <div className="mb-6">
             <Button

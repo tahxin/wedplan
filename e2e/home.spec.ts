@@ -6,7 +6,7 @@ test.describe("Home Page & Core Layout", () => {
     await expect(page).toHaveTitle(/WedPlan/i);
 
     // Hero title & CTA
-    await expect(page.locator("h1")).toContainText(/Discover & Book Trusted Wedding Vendors/i);
+    await expect(page.locator("h1")).toContainText(/Plan the day/i);
     const exploreBtn = page.getByRole("link", { name: /Explore Wedding Services/i });
     await expect(exploreBtn).toBeVisible();
     await expect(exploreBtn).toHaveAttribute("href", "/services");
@@ -35,8 +35,9 @@ test.describe("Home Page & Core Layout", () => {
 
   test("should fetch and render featured wedding packages from the database", async ({ page }) => {
     await page.goto("/");
-    // Featured section heading
-    await expect(page.getByRole("heading", { name: /Popular Wedding Packages/i })).toBeVisible();
+    // Featured section badge & heading
+    await expect(page.getByText(/Featured Wedding Services/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Popular packages curated for every celebration/i })).toBeVisible();
 
     // Check that at least some service cards are displayed
     const viewDetailsLinks = page.getByRole("link", { name: /View Details/i });
