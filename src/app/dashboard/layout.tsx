@@ -69,7 +69,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const customerLinks = [
     { name: "Overview", href: "/dashboard/customer", icon: LayoutDashboard },
-    { name: "My Bookings", href: "/dashboard/customer", icon: CalendarDays },
     { name: "Browse Services", href: "/services", icon: Search },
     { name: "Settings", href: "/dashboard/customer/settings", icon: Settings },
   ];
