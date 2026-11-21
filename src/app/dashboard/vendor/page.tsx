@@ -59,27 +59,15 @@ function VendorDashboardContent() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<"services" | "bookings" | "subscription">("services");
+  const tabParam = searchParams.get("tab");
+  const activeTab: "services" | "bookings" | "subscription" =
+    tabParam === "bookings" || tabParam === "subscription" ? tabParam : "services";
 
-  // Sync tab from URL (supports sidebar links / direct navigation)
-  useEffect(() => {
-    const tab = searchParams.get("tab");
-    if (tab === "services" || tab === "bookings" || tab === "subscription") {
-      setActiveTab(tab);
-    } else {
-      setActiveTab("services");
-    }
-  }, [searchParams]);
-
-  // Keep URL in sync when tab changes locally (skip default to keep /dashboard/vendor clean)
-  useEffect(() => {
-    const current = searchParams.get("tab");
-    if (current === activeTab) return;
-    if (!current && activeTab === "services") return;
+  const setActiveTab = (tab: "services" | "bookings" | "subscription") => {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("tab", activeTab);
-    router.replace(`${window.location.pathname}?${params.toString()}`, { scroll: false });
-  }, [activeTab, router, searchParams]);
+    params.set("tab", tab);
+    router.replace(`/dashboard/vendor?${params.toString()}`, { scroll: false });
+  };
 
   // Add Service Form State
   const [isAddingService, setIsAddingService] = useState(false);
