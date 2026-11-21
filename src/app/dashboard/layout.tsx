@@ -61,9 +61,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const vendorLinks = [
     { name: "Overview", href: "/dashboard/vendor", icon: LayoutDashboard },
-    { name: "My Services", href: "/dashboard/vendor", icon: Layers },
-    { name: "Bookings", href: "/dashboard/vendor", icon: CalendarDays },
-    { name: "Subscription", href: "/dashboard/vendor", icon: CreditCard },
+    { name: "My Services", href: "/dashboard/vendor?tab=services", icon: Layers },
+    { name: "Bookings", href: "/dashboard/vendor?tab=bookings", icon: CalendarDays },
+    { name: "Subscription", href: "/dashboard/vendor?tab=subscription", icon: CreditCard },
     { name: "Settings", href: "/dashboard/vendor/settings", icon: Settings },
   ];
 

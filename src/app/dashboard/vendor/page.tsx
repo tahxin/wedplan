@@ -57,7 +57,22 @@ export default function VendorDashboardPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"services" | "bookings" | "subscription">("services");
+  const [activeTab, setActiveTab] = useState<"services" | "bookings" | "subscription">(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get("tab");
+      return (tab === "services" || tab === "bookings" || tab === "subscription") ? tab : "services";
+    }
+    return "services";
+  });
+
+  // Keep URL in sync with activeTab
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", activeTab);
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState(null, "", newUrl);
+  }, [activeTab]);
 
   // Add Service Form State
   const [isAddingService, setIsAddingService] = useState(false);
