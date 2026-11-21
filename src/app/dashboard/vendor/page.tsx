@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { Suspense, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
@@ -50,7 +50,7 @@ interface VendorOverview {
   subscriptionExpiresAt?: string | null;
 }
 
-export default function VendorDashboardPage() {
+function VendorDashboardContent() {
   const router = useRouter();
   const { data: session, isPending: sessionPending } = useSession();
 
@@ -1017,5 +1017,19 @@ export default function VendorDashboardPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function VendorDashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background text-muted-foreground">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      }
+    >
+      <VendorDashboardContent />
+    </Suspense>
   );
 }
