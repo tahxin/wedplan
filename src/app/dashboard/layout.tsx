@@ -53,9 +53,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // Sidebar links based on role
   const adminLinks = [
     { name: "Overview", href: "/dashboard/admin", icon: LayoutDashboard },
-    { name: "Manage Services", href: "/dashboard/admin/services", icon: Layers, isTab: true },
-    { name: "User Directory", href: "/dashboard/admin/users", icon: Users, isTab: true },
-    { name: "Transactions", href: "/dashboard/admin/transactions", icon: CreditCard, isTab: true },
+    { name: "Manage Services", href: "/dashboard/admin?tab=services", icon: Layers },
+    { name: "User Directory", href: "/dashboard/admin?tab=users", icon: Users },
+    { name: "Transactions", href: "/dashboard/admin?tab=transactions", icon: CreditCard },
     { name: "Settings", href: "/dashboard/admin/settings", icon: Settings },
   ];
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useCallback, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 import { fetchApi } from "@/lib/api";
 import { toast } from "sonner";
@@ -46,8 +46,19 @@ interface AdminOverview {
   totalTransactions: number;
 }
 
-export default function AdminDashboardPage() {
+export default function AdminPage() {
+  return (
+    <Suspense>
+      <AdminDashboardPage />
+    </Suspense>
+  );
+}
+
+function AdminDashboardPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get("tab") || "services";
+  
   const { data: session, isPending: sessionPending } = useSession();
 
   const [overview, setOverview] = useState<AdminOverview | null>(null);
@@ -245,7 +256,7 @@ export default function AdminDashboardPage() {
               </div>
             </div>
 
-            <Tabs defaultValue="services" className="space-y-6">
+            <Tabs value={activeTab} onValueChange={(val) => router.push(`/dashboard/admin?tab=${val}`)} className="space-y-6">
               <TabsList className="h-auto w-full flex-wrap justify-start gap-1.5 rounded-2xl border border-border/60 bg-card/50 p-1.5 shadow-sm backdrop-blur-sm sm:w-fit">
                 <TabsTrigger value="services" className="rounded-xl px-4 py-2 text-xs font-semibold sm:text-sm">
                   <Layers className="mr-1.5 h-3.5 w-3.5" />
