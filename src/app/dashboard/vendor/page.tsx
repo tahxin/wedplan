@@ -109,6 +109,11 @@ export default function VendorDashboardPage() {
     | undefined;
 
   const loadVendorData = useCallback(async () => {
+    // Only load data if session is ready and user is vendor
+    if (!session || !user || user.role !== "vendor") {
+      return;
+    }
+    
     setLoading(true);
     try {
       const [ovRes, srvRes, bkgRes] = await Promise.all([
@@ -126,22 +131,26 @@ export default function VendorDashboardPage() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [session, user]);
 
   useEffect(() => {
-    if (!sessionPending) {
-      if (!session) {
-        router.replace("/sign-in?callbackUrl=/dashboard/vendor");
-        return;
-      }
-
-      if (user?.role && user.role !== "vendor") {
-        router.replace(`/dashboard/${user.role}`);
-        return;
-      }
-
-      loadVendorData();
+    if (sessionPending) {
+      // Still loading session, wait
+      return;
     }
+    
+    if (!session) {
+      router.replace("/sign-in?callbackUrl=/dashboard/vendor");
+      return;
+    }
+
+    if (user?.role && user.role !== "vendor") {
+      router.replace(`/dashboard/${user.role}`);
+      return;
+    }
+
+    // Load data only after session is confirmed and user is vendor
+    loadVendorData();
   }, [session, sessionPending, user, router, loadVendorData]);
 
   const handleCreateService = async (e: React.FormEvent) => {
