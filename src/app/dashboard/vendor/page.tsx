@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "@/lib/auth-client";
 import { fetchApi } from "@/lib/api";
 import { uploadImageToImgBB } from "@/lib/upload";
@@ -57,22 +58,28 @@ export default function VendorDashboardPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"services" | "bookings" | "subscription">(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const tab = params.get("tab");
-      return (tab === "services" || tab === "bookings" || tab === "subscription") ? tab : "services";
-    }
-    return "services";
-  });
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<"services" | "bookings" | "subscription">("services");
 
-  // Keep URL in sync with activeTab
+  // Sync tab from URL (supports sidebar links / direct navigation)
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    const tab = searchParams.get("tab");
+    if (tab === "services" || tab === "bookings" || tab === "subscription") {
+      setActiveTab(tab);
+    } else {
+      setActiveTab("services");
+    }
+  }, [searchParams]);
+
+  // Keep URL in sync when tab changes locally (skip default to keep /dashboard/vendor clean)
+  useEffect(() => {
+    const current = searchParams.get("tab");
+    if (current === activeTab) return;
+    if (!current && activeTab === "services") return;
+    const params = new URLSearchParams(searchParams.toString());
     params.set("tab", activeTab);
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.replaceState(null, "", newUrl);
-  }, [activeTab]);
+    router.replace(`${window.location.pathname}?${params.toString()}`, { scroll: false });
+  }, [activeTab, router, searchParams]);
 
   // Add Service Form State
   const [isAddingService, setIsAddingService] = useState(false);
@@ -388,20 +395,18 @@ export default function VendorDashboardPage() {
         ) : (
           <div className="space-y-8">
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 sm:gap-5">
-              <button
-                type="button"
-                onClick={() => setActiveTab("services")}
+              <Link
+                href="/dashboard/vendor?tab=services"
                 className="rounded-3xl border border-border/60 bg-card/50 p-5 text-left shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   Total Services
                 </span>
                 <p className="text-3xl font-semibold text-foreground">{overview?.totalServices ?? 0}</p>
-              </button>
+              </Link>
 
-              <button
-                type="button"
-                onClick={() => setActiveTab("services")}
+              <Link
+                href="/dashboard/vendor?tab=services"
                 className="rounded-3xl border border-border/60 bg-card/50 p-5 text-left shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -411,29 +416,27 @@ export default function VendorDashboardPage() {
                   {overview?.activeServices ?? 0}
                   {!isPremium && <span className="ml-1 text-xs font-normal text-muted-foreground">/ 3 max</span>}
                 </p>
-              </button>
+              </Link>
 
-              <button
-                type="button"
-                onClick={() => setActiveTab("bookings")}
+              <Link
+                href="/dashboard/vendor?tab=bookings"
                 className="rounded-3xl border border-border/60 bg-card/50 p-5 text-left shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   Pending Requests
                 </span>
                 <p className="text-3xl font-semibold text-amber-700">{overview?.pendingRequests ?? 0}</p>
-              </button>
+              </Link>
 
-              <button
-                type="button"
-                onClick={() => setActiveTab("bookings")}
+              <Link
+                href="/dashboard/vendor?tab=bookings"
                 className="rounded-3xl border border-border/60 bg-card/50 p-5 text-left shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-primary/20 hover:bg-card/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <span className="mb-1 block text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   Accepted Bookings
                 </span>
                 <p className="text-3xl font-semibold text-primary">{overview?.acceptedBookings ?? 0}</p>
-              </button>
+              </Link>
             </div>
 
             <Tabs

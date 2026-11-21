@@ -10,21 +10,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Loader2 } from "lucide-react";
-import { Calendar, Clock, CheckCircle2, XCircle, Heart, Store } from "lucide-react";
-import { LogoMark } from "@/components/brand/logo-mark";
-import {
-  Calendar,
-  Clock,
-  CheckCircle2,
-  XCircle,
-  Loader2,
-  MapPin,
-  Heart,
-  Store,
-  Ban,
-  Eye,
-} from "lucide-react";
+import { Calendar, Clock, CheckCircle2, XCircle, Heart, Loader2 } from "lucide-react";
 import { LogoMark } from "@/components/brand/logo-mark";
 
 interface CustomerOverview {
@@ -40,13 +26,9 @@ export default function CustomerDashboardPage() {
   const { data: session, isPending: sessionPending } = useSession();
 
   const [overview, setOverview] = useState<CustomerOverview | null>(null);
-  const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
-
   const user = session?.user as { role?: string; name?: string } | undefined;
-
-  const [activeTab, setActiveTab] = useState<"overview">("overview");
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -68,7 +50,7 @@ export default function CustomerDashboardPage() {
     if (sessionPending) {
       return;
     }
-    
+
     if (!session) {
       router.replace("/sign-in?callbackUrl=/dashboard/customer");
       return;
@@ -81,14 +63,6 @@ export default function CustomerDashboardPage() {
 
     loadData();
   }, [session, sessionPending, user, router, loadData]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const tab = params.get("tab");
-    if (tab === "bookings") {
-      setActiveTab("overview");
-    }
-  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
@@ -104,7 +78,7 @@ export default function CustomerDashboardPage() {
               Welcome, {user?.name || "Friend"}
             </h1>
             <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Track your wedding service inquiries, review booking statuses, and manage pending requests.
+              Track your wedding service inquiries and review booking overview metrics.
             </p>
           </div>
 
@@ -154,7 +128,6 @@ export default function CustomerDashboardPage() {
             </div>
           </div>
         )}
-
       </main>
 
       <Footer />

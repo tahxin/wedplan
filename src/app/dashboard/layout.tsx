@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession, signOut } from "@/lib/auth-client";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { 
   LayoutDashboard, 
@@ -31,6 +31,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { data: session, isPending } = useSession();
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -135,11 +136,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
           <nav className="flex-1 space-y-1 px-3 py-6 overflow-y-auto">
             {links.map((link) => {
-              // For now, if the path doesn't exist as a separate file, 
-              // we treat "Overview" as the active link for all dashboard sub-views 
-              // unless we implement the tab splitting.
-              const isActive = pathname === link.href || (pathname.startsWith(link.href) && link.href !== "/dashboard" && link.href !== "/services");
-              
+              const [linkPath, linkQuery] = link.href.split("?");
+              const linkTab = new URLSearchParams(linkQuery || "").get("tab");
+              const currentTab = searchParams.get("tab");
+              const isActive = linkTab
+                ? pathname === linkPath && currentTab === linkTab
+                : pathname === linkPath && !currentTab && link.href !== "/services";
+
               return (
                 <Link
                   key={link.name}
@@ -218,7 +221,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="flex h-full flex-col px-6 pb-8 pt-24">
               <nav className="flex-1 space-y-2 overflow-y-auto">
                 {links.map((link) => {
-                  const isActive = pathname === link.href || (pathname.startsWith(link.href) && link.href !== "/dashboard" && link.href !== "/services");
+                  const [linkPath, linkQuery] = link.href.split("?");
+                  const linkTab = new URLSearchParams(linkQuery || "").get("tab");
+                  const currentTab = searchParams.get("tab");
+                  const isActive = linkTab
+                    ? pathname === linkPath && currentTab === linkTab
+                    : pathname === linkPath && !currentTab && link.href !== "/services";
                   return (
                     <Link
                       key={link.name}
